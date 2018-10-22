@@ -13,13 +13,26 @@ module.exports = {
                 children: [
                     '/architecture/ddd',
                     '/architecture/rest',
-                    '/architecture/microservices'
+                    '/architecture/microservices/',
                 ]
             },
             {
                 title: 'Java Backend',
                 children: [
                     '/java-backend/',
+                ]
+            },
+            {
+                title: 'Database',
+                children: [
+                    '/database/',
+                ]
+            },
+            {
+                title: 'API',
+                children: [
+                    '/api/naming',
+                    '/api/resources'
                 ]
             }
         ],

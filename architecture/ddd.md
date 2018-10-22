@@ -139,3 +139,64 @@ Keeping Domain Services along with your Domain Objects is sensible - they are al
 can inject Repositories into your Services.
 
 Application Services will typically use both Domain Services and Repositories to deal with external requests.
+
+## When, where & how to determine the Id of an Entity?
+
+Extracted [from](https://matthiasnoback.nl/2018/05/when-and-where-to-determine-the-id-of-an-entity/)
+
+This is really an important question which pops very often:
+
+Summary: Generate identity in the application service, but let the repository do the real work.
+
+### Entity must have an identity before its persisted:
+Traditionally, all you need for an entity to have an ID is to designate one integer column in the database as the 
+primary key, and mark it as "auto-incrementing". So, once a new entity gets persisted as a record in the database 
+(using your favorite ORM), it will get an ID. That is, the entity has no identity until it has been persisted. Even 
+though this happens everywhere, and almost always; it's a bit weird, because:
+
+- The application logic now relies on some external system to determine the identity of an entity we create.
+- The entity will have no identity at first, meaning it can be created with an invalid (incomplete) state. This is 
+  not a desirable quality for an entity (for almost no object I'd say).
+
+It's pretty annoying to have an entity without an identity, because you can't use its identity yet; you first have to 
+wait. When I'm working with entities, I always like to generate domain events (plain objects), which contain relevant 
+values or value objects. For example, when I create a Meetup entity (in fact, when I "schedule it"), I want to record an
+ event about that. But at that point, I have no ID yet, so I actually can't even record that event.
+
+The only thing I can do is record the event later, outside the Meetup entity, when we finally have the ID. But that 
+would be a bit sad, since we'd have to move the construction of the event object out of the entity, breaking up the 
+entity's originally excellent encapsulation.
+
+So a better approach would be to generate the ID before creating the new entity, and to pass it in as a constructor argument.
+  
+### The ID generation process itself should happen outside of the entity: 
+Besides, even though it's technically possible to generate a UUID inside an entity, it's something that conceptually 
+isn't right. The idea behind an ID is that it's unique for the kind of thing it identifies. The entity is only aware of 
+itself, and can never reach across its own object boundaries to find out if an ID it has generated is actually unique. 
+That's why, at least conceptually, generating an identity should not happen inside the entity, only outside of it.
+
+### Let the repository generate the next identity:
+However, at this point we still have the issue of generating the UUID being an infrastructure concern. It should move 
+out of the application layer too. This is where you can use a handy suggestion I learned from Vaughn Vernon's book 
+"Implementing Domain-Driven Design": let the repository "hand out" a new identity whenever you need it.
+
+e.g.
+
+```
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
+
+    // Note that if this is a SERIAL column, you need to find the sequence's name based on the table and column name, as follows:
+    @Query(value = "SELECT nextval(pg_get_serial_sequence('my_table', 'id')) as new_id", nativeQuery = true)
+    Long getNextIdentity();
+    
+}
+```
+
+The advantages of letting the repository generate the next identity are:
+
+- There's a natural, conceptual relation: repositories manage the entities and their identities.
+- You can easily change the way an ID is being generated because the process is now properly encapsulated. No scattered 
+calls to Uuid::uuid4(), but only calls to Repository::nextIdentity().
+- You can in fact still use an incremental ID if you like. You can use the database after all if it natively supports 
+sequences. Or you can implement your own sequence.
+
