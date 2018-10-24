@@ -33,7 +33,8 @@ module.exports = {
                 title: 'API',
                 children: [
                     '/api/naming',
-                    '/api/resources'
+                    '/api/resources',
+                    '/api/request-response',
                 ]
             }
         ],
