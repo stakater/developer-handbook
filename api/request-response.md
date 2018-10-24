@@ -14,6 +14,8 @@ Why separate classes; why not just ONE jumbo class:
 related annotations and members (e.g. validation annotations that the JAX-RS implementation knows how to enforce). 
 These interface-related annotations should not be in the model object.
 - From an OO perspective ApiCreateVehicleRequest is not a Vehicle (not IS_A) nor does it contain a vehicle.
+- You might have some internal fields which shouldn't be exposed; e.g. entity id won't exist at create time but will be 
+returned at response API calls
 
 Now to the question asked... What should be the relationship between the requests and response classes?
 
