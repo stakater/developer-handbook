@@ -8,23 +8,10 @@ LABEL name="Stakater Developer Handbook" \
 
 WORKDIR $HOME/application
 
-ARG USER=1001
-
 RUN npm install -g yarn
 
-ADD [--chown=$USER:root] . ./
-
-# Change the group to root group
-RUN chgrp -R 0 /$HOME && \
-    chmod -R g=u /$HOME
-
-# Change back to USER
-USER $USER
+ADD . ./
 
 RUN yarn
 
-CMD yarn run dev
-
-
-
-
+CMD ["yarn", "run", "dev"]
