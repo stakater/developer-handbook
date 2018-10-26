@@ -10,7 +10,7 @@ WORKDIR $HOME/application
 
 RUN npm install -g yarn
 
-ADD . ./
+COPY application/ .
 
 RUN yarn
 
