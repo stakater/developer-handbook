@@ -3,11 +3,14 @@ handbook:
     group: com.stakater.platform
     provider: stakater
     version: 1.0.0
+    expose: 'true'
   deployment:
     replicas: 1
     podLabels:      
       app: developer-handbook
     containerName: handbook
+    imagePullSecrets: docker-registry-secret 
+    
     image:
       name: stakater/developer-handbook
       tag: 1.0.0

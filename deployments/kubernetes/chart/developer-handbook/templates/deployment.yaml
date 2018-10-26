@@ -13,7 +13,7 @@ spec:
 {{ toYaml .Values.handbook.deployment.podLabels | indent 8 }}
     spec:
       imagePullSecrets:
-      - name: docker-registry-secret      
+      - name: {{ .Values.handbook.deployment.imagePullSecrets }}     
       containers:
       - name: {{ .Values.handbook.deployment.containerName }}
         image: "{{ .Values.handbook.deployment.image.name }}:{{ .Values.handbook.deployment.image.tag }}"
