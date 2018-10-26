@@ -1,0 +1,18 @@
+kubernetes:
+  host: https://kubernetes.default
+
+handbook:
+  labels:
+    group: com.stakater.platform
+    provider: stakater
+    version: {{ getenv "VERSION" }}
+  deployment:
+    replicas: 1
+    podLabels:      
+      app: developer-handbook
+    containerName: handbook
+    image:
+      name: {{ getenv "DOCKER_IMAGE" }}
+      tag: "{{ getenv "VERSION" }}"
+
+

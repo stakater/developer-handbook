@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+{{ include "developer-handbook.labels.stakater" . | indent 4 }}
+{{ include "developer-handbook.labels.chart" . | indent 4 }}
+  name: {{ template "developer-handbook.name" . }}
+spec:
+  selector:
+{{ toYaml .Values.handbook.deployment.podLabels | indent 4 }}
+  ports:
+  - name: web
+    port: 8080
+    protocol: TCP
+    targetPort: 8080

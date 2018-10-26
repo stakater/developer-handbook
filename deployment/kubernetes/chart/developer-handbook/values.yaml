@@ -1,0 +1,14 @@
+handbook:
+  labels:
+    group: com.stakater.platform
+    provider: stakater
+    version: 1.0.0
+  deployment:
+    replicas: 1
+    podLabels:      
+      app: developer-handbook
+    containerName: handbook
+    image:
+      name: stakater/developer-handbook
+      tag: 1.0.0
+
