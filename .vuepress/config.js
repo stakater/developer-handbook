@@ -1,5 +1,4 @@
 module.exports = {
-    host: 'localhost',
     title: 'Developer Handbook',
 
     head: [
