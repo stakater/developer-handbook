@@ -5,7 +5,7 @@ metadata:
 {{ include "developer-handbook.labels.stakater" . | indent 4 }}
 {{ include "developer-handbook.labels.chart" . | indent 4 }}
     expose: {{ .Values.handbook.service.labels.expose | quote }}
-  name: {{ template "developer-handbook.name" . }}
+  name: {{ .Values.handbook.service.name | quote }}
   annotations:
 {{ toYaml .Values.handbook.service.annotations | indent 4 }}  
 spec:

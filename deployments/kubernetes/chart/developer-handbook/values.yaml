@@ -4,13 +4,15 @@ handbook:
     provider: stakater
     version: 1.0.0    
   service:
+    name: "developerhandbook"
     annotations:
       xposer.stakater.com/annotations: |-
         kubernetes.io/ingress.class: external-ingress
         ingress.kubernetes.io/force-ssl-redirect: false
+        certmanager.k8s.io/cluster-issuer: letsencrypt-production
       config.xposer.stakater.com/IngressURLTemplate: "{{ `{{.Service}}-{{.Namespace}}.{{.Domain}}` }}"
       config.xposer.stakater.com/Domain: stackator.com
-      config.xposer.stakater.com/IngressNameTemplate: "{{ `{{.Service}}-{{.Namespace}}` }}"
+      config.xposer.stakater.com/TLS: "true"
     labels:
       expose: 'true'
   deployment:
