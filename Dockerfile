@@ -8,9 +8,9 @@ LABEL name="Stakater Developer Handbook" \
 
 WORKDIR $HOME/application
 
-RUN npm install -g yarn
-
 COPY application/ .
+
+RUN npm install -g yarn
 
 RUN yarn
 
