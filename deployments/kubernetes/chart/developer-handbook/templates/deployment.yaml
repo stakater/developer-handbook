@@ -12,6 +12,8 @@ spec:
       labels:
 {{ toYaml .Values.handbook.deployment.podLabels | indent 8 }}
     spec:
+      imagePullSecrets:
+      - name: docker-registry-secret      
       containers:
       - name: {{ .Values.handbook.deployment.containerName }}
         image: "{{ .Values.handbook.deployment.image.name }}:{{ .Values.handbook.deployment.image.tag }}"
