@@ -1,4 +1,4 @@
-FROM stakater/pipeline-tools:v1.16.2
+FROM stakater/pipeline-tools:1.15.0
 
 LABEL name="Stakater Developer Handbook" \    
       maintainer="Stakater <stakater@aurorasolutions.io>" \
