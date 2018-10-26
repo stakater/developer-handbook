@@ -2,8 +2,17 @@ handbook:
   labels:
     group: com.stakater.platform
     provider: stakater
-    version: 1.0.0
-    expose: 'true'
+    version: 1.0.0    
+  service:
+    annotations:
+      xposer.stakater.com/annotations: |-
+        kubernetes.io/ingress.class: external-ingress
+        ingress.kubernetes.io/force-ssl-redirect: false
+      config.xposer.stakater.com/IngressURLTemplate: "{{ `{{.Service}}-{{.Namespace}}.{{.Domain}}` }}"
+      config.xposer.stakater.com/Domain: stackator.com
+      config.xposer.stakater.com/IngressNameTemplate: "{{ `{{.Service}}-{{.Namespace}}` }}"
+    labels:
+      expose: 'true'
   deployment:
     replicas: 1
     podLabels:      

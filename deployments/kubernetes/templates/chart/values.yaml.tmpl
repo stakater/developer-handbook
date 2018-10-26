@@ -6,7 +6,16 @@ handbook:
     group: com.stakater.platform
     provider: stakater
     version: {{ getenv "VERSION" }}
-    expose: 'true'
+  service:
+    annotations:
+      xposer.stakater.com/annotations: |-
+        kubernetes.io/ingress.class: external-ingress
+        ingress.kubernetes.io/force-ssl-redirect: false
+      config.xposer.stakater.com/IngressURLTemplate: "{{ `{{.Service}}-{{.Namespace}}.{{.Domain}}` }}"
+      config.xposer.stakater.com/Domain: stackator.com
+      config.xposer.stakater.com/IngressNameTemplate: "{{ `{{.Service}}-{{.Namespace}}` }}"
+    labels:
+      expose: 'true'
   deployment:
     replicas: 1
     podLabels:      

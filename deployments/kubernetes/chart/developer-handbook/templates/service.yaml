@@ -4,8 +4,10 @@ metadata:
   labels:
 {{ include "developer-handbook.labels.stakater" . | indent 4 }}
 {{ include "developer-handbook.labels.chart" . | indent 4 }}
-    expose: {{ .Values.handbook.labels.expose | quote }}
+    expose: {{ .Values.handbook.service.labels.expose | quote }}
   name: {{ template "developer-handbook.name" . }}
+  annotations:
+{{ toYaml .Values.handbook.service.annotations | indent 4 }}  
 spec:
   selector:
 {{ toYaml .Values.handbook.deployment.podLabels | indent 4 }}
