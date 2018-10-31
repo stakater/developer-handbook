@@ -200,3 +200,4 @@ calls to Uuid::uuid4(), but only calls to Repository::nextIdentity().
 - You can in fact still use an incremental ID if you like. You can use the database after all if it natively supports 
 sequences. Or you can implement your own sequence.
 
+Here is working example of entity id generation: https://github.com/stakater-lab/entity-id
