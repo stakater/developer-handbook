@@ -13,7 +13,10 @@ handbook:
         kubernetes.io/ingress.class: external-ingress
         ingress.kubernetes.io/force-ssl-redirect: false
         certmanager.k8s.io/cluster-issuer: letsencrypt-production
-      config.xposer.stakater.com/IngressURLTemplate: "{{ `{{.Service}}-{{.Namespace}}.{{.Domain}}` }}"
+        forecastle.stakater.com/appName: Developer-Handbook
+        forecastle.stakater.com/expose: true
+        forecastle.stakater.com/icon: https://raw.githubusercontent.com/stakater/ForecastleIcons/master/book.png
+      config.xposer.stakater.com/IngressURLTemplate: "{{ `{{.Service}}.{{.Namespace}}.{{.Domain}}` }}"
       config.xposer.stakater.com/Domain: stackator.com
       config.xposer.stakater.com/TLS: "true"
       config.xposer.stakater.com/IngressNameTemplate: "{{ `{{.Service}}-{{.Namespace}}` }}"
