@@ -29,7 +29,7 @@ handbook:
       authproxy.stakater.com/image-tag: v2.1.1
       authproxy.stakater.com/enabled: "true"
       authproxy.stakater.com/upstream-url: "http://127.0.0.1:8080"
-      authproxy.stakater.com/source-service-name: developer-handbook
+      authproxy.stakater.com/source-service-name: developerhandbook
       authproxy.stakater.com/redirection-url: "https://developerhandbook.tools.stackator.com"
       authproxy.stakater.com/listen: "0.0.0.0:8080"
     
