@@ -5,6 +5,8 @@ metadata:
 {{ include "developer-handbook.labels.stakater" . | indent 4 }}
 {{ include "developer-handbook.labels.chart" . | indent 4 }}
   name: {{ template "developer-handbook.name" . }}
+  annotations:
+{{ toYaml .Values.handbook.deployment.annotations | indent 4 }}
 spec:
   replicas: {{ .Values.handbook.deployment.replicas }}
   template:
