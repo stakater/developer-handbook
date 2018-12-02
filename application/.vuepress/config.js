@@ -21,6 +21,7 @@ module.exports = {
                 children: [
                     '/java-backend/',
                     '/java-backend/datetime',
+                    '/java-backend/logging',                    
                 ]
             },
             {
