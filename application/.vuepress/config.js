@@ -37,6 +37,8 @@ module.exports = {
                     '/api/naming',
                     '/api/resources',
                     '/api/request-response',
+                    '/api/http',
+                    '/api/json-guidelines'
                 ]
             }
         ],
