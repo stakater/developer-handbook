@@ -22,7 +22,9 @@ module.exports = {
                     '/java-backend/',
                     '/java-backend/datetime',
                     '/java-backend/logging',
-                    '/java-backend/dto'
+                    '/java-backend/dto',
+                    '/java-backend/eda',
+                    '/java-backend/force-not-null'
                 ]
             },
             {
