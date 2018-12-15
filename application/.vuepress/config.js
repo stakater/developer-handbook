@@ -21,6 +21,10 @@ module.exports = {
                 children: [
                     '/java-backend/',
                     '/java-backend/datetime',
+                    '/java-backend/logging',
+                    '/java-backend/dto',
+                    '/java-backend/eda',
+                    '/java-backend/force-not-null'
                 ]
             },
             {
@@ -35,6 +39,8 @@ module.exports = {
                     '/api/naming',
                     '/api/resources',
                     '/api/request-response',
+                    '/api/http',
+                    '/api/json-guidelines'
                 ]
             }
         ],
