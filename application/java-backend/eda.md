@@ -51,6 +51,11 @@ Like APIs, events are contracts between an event producer and its subscribers. T
 
 If you cannot apply the rules above, then you likely need to define a new event on a new topic to address the need. Over time, you can attempt to guide subscribers to move to the new topic and remove the deprecated one. This, however, can be a big challenge so be prepared to support both for some time.
 
+For this to work we have to add two rules;
+
+- we are not allowed to rename anything, and 
+- we may not change the semantic meaning of a property. 
+
 ### Principle #4: Manage Your Event Dependencies
 
 It is important to understand the kind of dependencies you are creating between event producers and subscribers. Evolvable event streams require producers to be unaware of their subscribers.
@@ -69,6 +74,23 @@ For example, background job progress events might be used within your system to 
 
 When designing event streams to support your APIs and microservices, share only the events necessary for downstream subscribers. This will allow your internal microservices to evolve independently from your subscribers. In some cases, it is often best to start with all private event streams, then migrate some of your private events to public events as you better understand stakeholder needs.
 
+## Versioning of Events in Event Sourced Systems
+
+A challenge with event sourced systems is that events put in the event store years ago must be readable today, even though the software has gone through numerous changes. There are downstream consumers like projections and other systems that must be able to handle old as well as new versions of events.
+
+If a system can be taken down, updated and brought back up, versioning of events is relatively simple. The the real challenge comes when a system can’t be taken down and you have two versions of the software running at the same time.
+
+A general rule when versioning events is that adding things does not cause a versioning conflict. Adding a new version of an event is therefore not a problem, as long as we don’t break the definition of a new version event; it must be convertible from an old version of the same event. If this is not possible, then it’s a new event. Following these rules, when old versions are read from the store, they can first be converted, or upcasted, to the latest version before handled. This means that an event handler only needs to know how to deal with the latest version, an important benefit if many new versions have been created. To be able to convert an old version of an event when a property has been added to the new version, we use the same principle as when we add a new not nullable column to a database; we use a default value.
+
+With events based on a type system, we are using a strong schema. With that we will not get any support from the serializer; it can only read events that exactly match the type or schema. Young notes that this approach only works if you can take the system down and upgrade it, otherwise consumers may read new versions of events that they don’t know about and are unable to deserialize them. He therefore generally recommends against this approach.
+
+Using JSON or XML as a format for describing an event we have a weak schema, and instead of deserializing we map from JSON data to an event object. If a property has the same name in the two we copy the value into the event. If something in the JSON data is missing in the event we just leave the corresponding value. If a property in the event is not found in the JSON data, it will get a default value. For this to work we have to add two rules; we are not allowed to rename anything, and we may not change the semantic meaning of a property. One advantage of this technique is that we don’t need to create new versions of events; we only need the latest versions. For Young this technique is much preferable since now an old version of the software is able to read a new event.
+
+Another option, related to a weak schema, is a hybrid schema where things an event needs to make sense, like the identity of the order for an event related to that order, are required and the rest are optional.
+
+Other more complex kinds of problems include events that shouldn’t have been published and situations when you find out that the aggregate boundaries are wrong. Updating an existing event can cause large problems and Young strongly argues against this. Instead, he prefers using streams for manipulation, one example being transform streams. During the release process, you can make any transformation that is needed by reading from one stream, make a transformation and write to a new stream. The old stream can afterwards be deleted. Other examples include joining and splitting streams.
+
 ## References / Acknowledgements
 
 - https://medium.com/capital-one-tech/5-principles-for-designing-evolvable-event-streams-f32e90dcbb79
+- https://www.infoq.com/news/2017/07/versioning-event-sourcing
