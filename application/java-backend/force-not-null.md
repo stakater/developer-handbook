@@ -1,4 +1,4 @@
-# Problem
+# Force not null
 Having the freedom to return `null` is the root cause for most `NullPointerExceptions`. It also makes the client code for any API or method etc dirty by having a lot of `null` checks.
 
 # Solution
