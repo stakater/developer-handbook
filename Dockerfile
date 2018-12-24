@@ -9,7 +9,7 @@ LABEL name="Stakater Developer Handbook" \
 WORKDIR $HOME/application
 
 # copy the entire application
-COPY application/ .
+COPY . .
 
 # install yarn globaly
 RUN npm install -g yarn
