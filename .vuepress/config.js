@@ -24,7 +24,8 @@ module.exports = {
                     '/java-backend/logging',
                     '/java-backend/dto',
                     '/java-backend/eda',
-                    '/java-backend/force-not-null'
+                    '/java-backend/force-not-null',
+                    '/java-backend/wf-engine'
                 ]
             },
             {
