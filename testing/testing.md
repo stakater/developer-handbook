@@ -4,13 +4,13 @@ how to test microservices based applications?
 
 > There has been a shift in service based architectures over the last few years towards smaller, more focussed "micro" services. There are many benefits with this approach such as the ability to independently deploy, scale and maintain each component and parallelize development across multiple teams. However, once these additional network partitions have been introduced, the testing strategies that applied for monolithic in process applications need to be reconsidered.
 
-![Testing Pyramid 1](../img/testing-pyramid.png)
+![Testing Pyramid 1](../img/test-pyramid-1.png)
 
 Unit tests are fast to execute, give the right level of feedback about what is broken. As you go up the pyramid, the tests are slower and it becomes harder to point out root cause of failures because the surface area is larger.
 
 Its essential point is that you should have many more low-level unit tests than high level end-to-end tests running through a GUI.
 
-![Test Pyramid](../img/test-pyramid.png)
+![Test Pyramid](../img/test-pyramid-2.png)
 
 A common problem is that teams conflate the concepts of end-to-end tests, UI tests, and customer facing tests. These are all orthogonal characteristics. For example a rich javascript UI should have most of its UI behavior tested with javascript unit tests using something like Jasmine. A complex set of business rules could have tests captured in a customer-facing form, but run just on the relevant module much as unit tests are.
 
@@ -18,7 +18,7 @@ A common problem is that teams conflate the concepts of end-to-end tests, UI tes
 
 # Microservices can usually be split into similar kinds of modules
 
-![Architecture](../img/architecture.png)
+![Architecture](../img/application-architecture.png)
 
 * **Resources** act as mappers between the application protocol exposed by the service and messages to objects representing the domain. Typically, they are thin, with responsibility for sanity checking the request and providing a protocol specific response according to the outcome of the business transaction.
 
