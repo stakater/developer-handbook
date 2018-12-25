@@ -114,10 +114,6 @@ After you are using a mocking framework for other levels of testing, it makes se
     
 Limit the scope of the exercised software to a portion of the system under test, manipulating the system through internal code interfaces and using test doubles to isolate the code under test from other components.
 
-### 3.1 In Process
-
-### 3.2 Out Process
-
 ## 4. Contract tests
 
 Verify interactions at the boundary of an external service asserting that it meets the contract expected by a consuming service.
