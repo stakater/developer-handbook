@@ -10,7 +10,7 @@ Unit tests are fast to execute, give the right level of feedback about what is b
 
 Its essential point is that you should have many more low-level unit tests than high level end-to-end tests running through a GUI.
 
-![Test Pyramid](img/test-pyramid.png)
+![Test Pyramid](../img/test-pyramid.png)
 
 A common problem is that teams conflate the concepts of end-to-end tests, UI tests, and customer facing tests. These are all orthogonal characteristics. For example a rich javascript UI should have most of its UI behavior tested with javascript unit tests using something like Jasmine. A complex set of business rules could have tests captured in a customer-facing form, but run just on the relevant module much as unit tests are.
 
@@ -18,7 +18,7 @@ A common problem is that teams conflate the concepts of end-to-end tests, UI tes
 
 # Microservices can usually be split into similar kinds of modules
 
-![Architecture](img/architecture.png)
+![Architecture](../img/architecture.png)
 
 * **Resources** act as mappers between the application protocol exposed by the service and messages to objects representing the domain. Typically, they are thin, with responsibility for sanity checking the request and providing a protocol specific response according to the outcome of the business transaction.
 
@@ -50,7 +50,7 @@ Since these resources are more privileged in terms of the control they have or t
 
 # Testing Strategies for Microservices
 
-![Testing Strategies for Microservices](img/test-types.png)
+![Testing Strategies for Microservices](../img/test-types.png)
 
 ## 1. Unit Tests
 
