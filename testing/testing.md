@@ -4,7 +4,7 @@ how to test microservices based applications?
 
 > There has been a shift in service based architectures over the last few years towards smaller, more focussed "micro" services. There are many benefits with this approach such as the ability to independently deploy, scale and maintain each component and parallelize development across multiple teams. However, once these additional network partitions have been introduced, the testing strategies that applied for monolithic in process applications need to be reconsidered.
 
-![Testing Pyramid 1](img/testing-pyramid.png)
+![Testing Pyramid 1](../img/testing-pyramid.png)
 
 Unit tests are fast to execute, give the right level of feedback about what is broken. As you go up the pyramid, the tests are slower and it becomes harder to point out root cause of failures because the surface area is larger.
 
