@@ -43,6 +43,12 @@ module.exports = {
                     '/api/http',
                     '/api/json-guidelines'
                 ]
+            },
+            {
+                title: 'Testing',
+                children: [
+                    '/testing/testing'
+                ]
             }
         ],
 
