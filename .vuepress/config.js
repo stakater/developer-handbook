@@ -14,6 +14,7 @@ module.exports = {
                     '/architecture/ddd',
                     '/architecture/rest',
                     '/architecture/microservices/',
+                    '/architecture/eda',
                 ]
             },
             {
@@ -23,7 +24,6 @@ module.exports = {
                     '/java-backend/datetime',
                     '/java-backend/logging',
                     '/java-backend/dto',
-                    '/java-backend/eda',
                     '/java-backend/force-not-null',
                     '/java-backend/wf-engine'
                 ]
