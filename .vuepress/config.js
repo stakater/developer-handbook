@@ -49,7 +49,20 @@ module.exports = {
                 children: [
                     '/testing/testing'
                 ]
+            },
+            {
+                title: 'React Frontend',
+                children: [
+                    '/react-frontend/react'
+                ]
+            },
+            {
+                title: 'Git',
+                children: [
+                    '/git/tbd'
+                ]
             }
+
         ],
 
         repo: 'stakater/developer-handbook',
