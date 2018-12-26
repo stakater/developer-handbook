@@ -14,6 +14,7 @@ module.exports = {
                     '/architecture/ddd',
                     '/architecture/rest',
                     '/architecture/microservices/',
+                    '/architecture/eda',
                 ]
             },
             {
@@ -23,8 +24,8 @@ module.exports = {
                     '/java-backend/datetime',
                     '/java-backend/logging',
                     '/java-backend/dto',
-                    '/java-backend/eda',
-                    '/java-backend/force-not-null'
+                    '/java-backend/force-not-null',
+                    '/java-backend/wf-engine'
                 ]
             },
             {
@@ -42,7 +43,26 @@ module.exports = {
                     '/api/http',
                     '/api/json-guidelines'
                 ]
+            },
+            {
+                title: 'Testing',
+                children: [
+                    '/testing/testing'
+                ]
+            },
+            {
+                title: 'React Frontend',
+                children: [
+                    '/react-frontend/react'
+                ]
+            },
+            {
+                title: 'Git',
+                children: [
+                    '/git/tbd'
+                ]
             }
+
         ],
 
         repo: 'stakater/developer-handbook',
