@@ -15,6 +15,8 @@ module.exports = {
                     '/architecture/rest',
                     '/architecture/microservices/',
                     '/architecture/eda',
+                    '/architecture/architecting-applications-for-kubernetes',
+                    '/architecture/12-factors',
                 ]
             },
             {
@@ -37,6 +39,7 @@ module.exports = {
             {
                 title: 'API',
                 children: [
+                    '/api/general-guidelines',
                     '/api/naming',
                     '/api/resources',
                     '/api/request-response',
