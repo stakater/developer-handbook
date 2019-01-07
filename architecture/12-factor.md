@@ -18,3 +18,7 @@ A quick summary of the Twelve Factors are:
 - **Admin processes**: One-off administration processes should be run against specific releases and shipped with the main process code.
 
 By adhering to the guidelines provided by the Twelve Factors, you can create and run applications using a model that fits the Kubernetes execution environment. The Twelve Factors encourage developers to focus on their application's primary responsibility, consider the operating conditions and interfaces between components, and use inputs, outputs, and standard process management features to run predictably in Kubernetes.
+
+## References
+
+- https://12factor.net/
