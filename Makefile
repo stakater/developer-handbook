@@ -1,5 +1,5 @@
 CHART_NAME ?= developer-handbook
-NAMESPACE_NAME ?= tools
+NAMESPACE_NAME ?= global
 RELEASE_NAME ?= $(NAMESPACE_NAME)-$(CHART_NAME)
 
 install-chart:

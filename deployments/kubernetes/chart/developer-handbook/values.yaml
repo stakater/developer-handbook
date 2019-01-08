@@ -8,13 +8,13 @@ handbook:
     annotations:
       xposer.stakater.com/annotations: |-
         kubernetes.io/ingress.class: external-ingress
-        ingress.kubernetes.io/force-ssl-redirect: false
+        ingress.kubernetes.io/force-ssl-redirect: true
         certmanager.k8s.io/cluster-issuer: letsencrypt-production
         forecastle.stakater.com/appName: Developer-Handbook
         forecastle.stakater.com/expose: true
         forecastle.stakater.com/icon: https://raw.githubusercontent.com/stakater/ForecastleIcons/master/book.png
       config.xposer.stakater.com/IngressURLTemplate: "{{ `{{.Service}}-{{.Namespace}}.{{.Domain}}` }}"
-      config.xposer.stakater.com/Domain: stackator.com
+      config.xposer.stakater.com/Domain: stakater.com
       config.xposer.stakater.com/TLS: "true"
     labels:
       expose: 'true'
@@ -30,7 +30,7 @@ handbook:
       authproxy.stakater.com/enabled: "true"
       authproxy.stakater.com/upstream-url: "http://127.0.0.1:8080"
       authproxy.stakater.com/source-service-name: developerhandbook
-      authproxy.stakater.com/redirection-url: "https://developerhandbook.tools.stackator.com"
+      authproxy.stakater.com/redirection-url: "https://developerhandbook.global.stakater.com"
       authproxy.stakater.com/listen: "0.0.0.0:80"
     
     image:
