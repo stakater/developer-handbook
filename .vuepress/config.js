@@ -54,9 +54,9 @@ module.exports = {
                 ]
             },
             {
-                title: 'React Frontend',
+                title: 'Frontend',
                 children: [
-                    '/react-frontend/react'
+                    '/frontend/css/css-best-practices'
                 ]
             },
             {
