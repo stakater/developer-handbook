@@ -8,7 +8,7 @@ Local development
 
 All dependencies for the developer handbook is handled with yarn.
 
-```
+```bash
 # install nodejs with brew
 brew install node
 
