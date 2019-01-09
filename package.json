@@ -6,6 +6,7 @@
     "http-server": "^0.11.1"
   },
   "scripts": {
+    "start": "vuepress dev",
     "dev": "vuepress dev",
     "build": "vuepress build",
     "serve": "http-server .vuepress/dist"
