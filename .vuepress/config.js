@@ -31,6 +31,15 @@ module.exports = {
                 ]
             },
             {
+                title: 'Frontend',
+                children: [
+                    '/frontend/js-frameworks/javascript-frameworks-seo-challenges',
+                    '/frontend/css/css-best-practices',
+                    '/frontend/architecture/spa-applications-architecture',
+                    '/frontend/architecture/micro-frontends'
+                ]
+            },
+            {
                 title: 'Database',
                 children: [
                     '/database/',
@@ -51,12 +60,6 @@ module.exports = {
                 title: 'Testing',
                 children: [
                     '/testing/testing'
-                ]
-            },
-            {
-                title: 'Frontend',
-                children: [
-                    '/frontend/css/css-best-practices'
                 ]
             },
             {
