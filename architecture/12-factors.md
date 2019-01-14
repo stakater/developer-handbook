@@ -1,4 +1,4 @@
-# 12 Factor Apps
+# 12 Factor Apps 
 
 One popular methodology that can help you focus on the characteristics that matter most when creating cloud-ready web apps is the Twelve-Factor App philosophy. Written to help developers and operations teams understand the core qualities shared by web services designed to run in the cloud, the principles apply very well to software that will live in a clustered environment like Kubernetes. While monolithic applications can benefit from following these recommendations, microservices architectures designed around these principles work particularly well.
 
@@ -12,10 +12,12 @@ A quick summary of the Twelve Factors are:
 - **Processes**: Applications are implemented as processes that should not rely on storing state locally. State should be offloaded to a backing service as described in the fourth factor.
 - **Port binding**: Applications should natively bind to a port and listen for connections. Routing and request forwarding should be handled externally.
 - **Concurrency**: Applications should rely on scaling through the process model. Running multiple copies of an application concurrently, potentially across multiple servers, allows scaling without adjusting application code.
-- **Disposability**: Processes should be able to start quickly and stop gracefully without serious side effects.
+- **Disposability**: Processes should be able to start quickly and stop gracefully without serious side effects. Services should not store state so they can be disposed of and recreated at any time by the infrastructure. 
 - **Dev/prod parity**: Your testing, staging, and production environments should match closely and be kept in sync. Differences between environments are opportunities for incompatibilities and untested configurations to appear.
 - **Logs**: Applications should stream logs to standard output so external services can decide how to best handle them.
 - **Admin processes**: One-off administration processes should be run against specific releases and shipped with the main process code.
+- **Stateless**: Applications should be stateless by design, and if they require to store state, they should bind to a data source to store it (i.e. backing service). 
+- **Telemetry**: Applications should expose metrics and health indicators.
 
 By adhering to the guidelines provided by the Twelve Factors, you can create and run applications using a model that fits the Kubernetes execution environment. The Twelve Factors encourage developers to focus on their application's primary responsibility, consider the operating conditions and interfaces between components, and use inputs, outputs, and standard process management features to run predictably in Kubernetes.
 
