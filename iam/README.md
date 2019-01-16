@@ -72,7 +72,7 @@ Scopes are what you see on the authorization screens when an app requests permis
 ![OAuth Scopes](../img/oauth-scopes.png)
 
 
-### 2.2 OAuth Tokens
+### 2.3 OAuth Tokens
 
 **Access Token And Refresh Token**
 
@@ -97,7 +97,7 @@ Since you can get access to your data with access_token, if it’s compromised t
 
 If the refresh token is compromised, your resources are still safe because client id and client secret are needed to request for aceess_token, to get access to resources.
 
-### 2.3 OAuth Grant Types / Flows - When and Why
+### 2.4 OAuth Grant Types / Flows - When and Why
 
 1. Authorization Code
 2. Implicit (e.g. browser to keycloak)
