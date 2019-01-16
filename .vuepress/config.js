@@ -53,7 +53,8 @@ module.exports = {
                     '/api/resources',
                     '/api/request-response',
                     '/api/http',
-                    '/api/json-guidelines'
+                    '/api/json-guidelines',
+                    '/api/foundations',
                 ]
             },
             {

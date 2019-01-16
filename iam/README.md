@@ -48,6 +48,8 @@ OAuth should be interpreted not as Authentication, and not as Authorization, but
 
 OAuth has four main roles/actors:
 
+![OAuth Actors](../img/oauth-actors.png)
+
 - Resource Owner (That means, You)
 - Client (Means the application you’re using, that accesses your data on the resource server) e.g. web browser
 - Resource Server (Where your data are stored) e.g. backend REST API
@@ -60,6 +62,9 @@ Public clients are browsers, mobile apps, and IoT devices.
 ### OAuth Scopes
 
 Scopes are what you see on the authorization screens when an app requests permissions. They’re bundles of permissions asked for by the client when requesting a token. These are coded by the application developer when writing the application.
+
+![OAuth Scopes](../img/oauth-scopes.png)
+
 
 
 ### OAuth Tokens
