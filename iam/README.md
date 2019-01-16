@@ -18,7 +18,7 @@ In this lesson we will learn following:
 6. Authorization per Microservice
 7. Multifactor Authentication
 
-## Security claims of microservice architecture
+## 1. Security claims of microservice architecture
 
 Before digging into OAuth2; it’s important to clarify the claims to a solid security solution.
 
@@ -40,11 +40,11 @@ No matter how much problems a security solution may solve, it should be strong a
 6. **Scalability:**
 Using stateless protocols is not a warranty of the security solution is scalable. In the end, there should not be any single point of failure. A counter-example is a shared auth database or single auth-server-instance, which is hit once per request.
 
-## OAuth
+## 2. OAuth
 
 OAuth should be interpreted not as Authentication, and not as Authorization, but as Delegation. In the web realm, the underlying message is there, yet it also means having the ability to offer, accept, or deny the exchange of data
 
-### OAuth Roles/Actors
+### 2.1 OAuth Roles/Actors
 
 OAuth has four main roles/actors:
 
@@ -55,21 +55,24 @@ OAuth has four main roles/actors:
 - Resource Server (Where your data are stored) e.g. backend REST API
 - Authorization Server (Responsible for authenticating your identity and gives you an authorization token, so that you can request resource server for your data with this token. this token is called access_token) → e.g. KeyCloak
 
-##### Confidential Clients
-Clients can be public and confidential. There is a significant distinction between the two in OAuth nomenclature. Confidential clients can be trusted to store a secret. They’re not running on a desktop or distributed through an app store. People can’t reverse engineer them and get the secret key. They’re running in a protected area where end users can’t access them.
+#### 2.1.1 Clients
 
-##### Public Clients
+Clients can be public and confidential. 
+
+##### 2.1.1.1 Confidential Clients
+There is a significant distinction between the two in OAuth nomenclature. Confidential clients can be trusted to store a secret. They’re not running on a desktop or distributed through an app store. People can’t reverse engineer them and get the secret key. They’re running in a protected area where end users can’t access them.
+
+##### 2.1.1.2 Public Clients
 Public clients are browsers, mobile apps, and IoT devices.
 
-### OAuth Scopes
+### 2.2 OAuth Scopes
 
 Scopes are what you see on the authorization screens when an app requests permissions. They’re bundles of permissions asked for by the client when requesting a token. These are coded by the application developer when writing the application.
 
 ![OAuth Scopes](../img/oauth-scopes.png)
 
 
-
-### OAuth Tokens
+### 2.2 OAuth Tokens
 
 **Access Token And Refresh Token**
 
@@ -94,7 +97,7 @@ Since you can get access to your data with access_token, if it’s compromised t
 
 If the refresh token is compromised, your resources are still safe because client id and client secret are needed to request for aceess_token, to get access to resources.
 
-### OAuth Grant Types / Flows - When and Why
+### 2.3 OAuth Grant Types / Flows - When and Why
 
 1. Authorization Code
 2. Implicit (e.g. browser to keycloak)
@@ -131,11 +134,11 @@ Finally, since there’s not a user involved, it doesn’t support OpenID Connec
 
 It's used for communication from microservices to keycloak.
 
-## OpenID Connect
+## 3. OpenID Connect
 
 
 
-## JWT
+## 4. JWT
 
 JSON Web Tokens, commonly known as JWTs, are tokens that are used to authenticate users on applications. This technology has gained popularity over the past few years because it enables backends to accept requests simply by validating the contents of these JWTs. That is, applications that use JWTS no longer have to hold cookies or other session data about their users. This characteristic facilitates scalability while keeping applications secure.
 
@@ -176,7 +179,7 @@ JWT Authentication flow is very simple:
 
 
 
-## Common mistakes
+## 5. Common mistakes
 
 Here is a brief list of the very major things a developer should be aware of.
 
@@ -192,7 +195,7 @@ As of standard, access tokens can be either passed by URL, in headers, or in a c
 4. **Switching to symmetric signing keys:**
 RSA is not required for JWT signing, and Spring Security does provide symmetric token signing as well; which does solve some problems, which make development harder. But this is insecure, since an attacker just needs to get into one single microservice to be able to generate its own JWT tokens.
 
-## Authorization per Microservice
+## 6. Authorization per Microservice
 
 Each microservice should not have to do its own authentication, but it does need to do its own authorization.
 
@@ -206,7 +209,7 @@ Reference:
 
 - http://richardwellum.com/2017/04/authentication-authorization-and-bounded-contexts/
 
-## Multifactor Authentication
+## 7. Multifactor Authentication
 
 Multifactor Authentication (MFA) is a method of verifying a user's identity by requiring them to present more than one piece of identifying information. This method provides an additional layer of security, decreasing the likelihood of unauthorized access. The type of information required from the user is typically two or more of the following:
 
