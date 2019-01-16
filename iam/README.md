@@ -71,7 +71,6 @@ Scopes are what you see on the authorization screens when an app requests permis
 
 ![OAuth Scopes](../img/oauth-scopes.png)
 
-
 ### 2.3 OAuth Tokens
 
 **Access Token And Refresh Token**
@@ -134,13 +133,103 @@ Finally, since there’s not a user involved, it doesn’t support OpenID Connec
 
 It's used for communication from microservices to keycloak.
 
+### 2.5 OAuth is not an Authentication Protocol
+
+To summarize some of the misconceptions of OAuth 2.0: it’s not backwards compatible with OAuth 1.0. It replaces signatures with HTTPS for all communication. When people talk about OAuth today, they’re talking about OAuth 2.0.
+
+Because OAuth is an authorization framework and not a protocol, you may have interoperability issues. There are lots of variances in how teams implement OAuth and you might need custom code to integrate with vendors.
+
+OAuth 2.0 is not an authentication protocol.
+
+We’ve been talking about delegated authorization this whole time. **It’s not about authenticating the user, and this is key. OAuth 2.0 alone says absolutely nothing about the user. You just have a token to get access to a resource.**
+
 ## 3. OpenID Connect
 
+To solve the pseudo authentication problem, the best parts of OAuth 2.0, Facebook Connect, and SAML 2.0 were combined to create OpenID Connect. OpenID Connect (OIDC) extends OAuth 2.0 with a **new signed id_token** for the client and a UserInfo endpoint to fetch user attributes. Unlike SAML, OIDC provides a standard set of scopes and claims for identities. Examples include: profile, email, address, and phone.
+
+Request
+
+```	
+GET https://accounts.google.com/o/oauth2/auth?
+scope=openid email&
+redirect_uri=https://app.example.com/oauth2/callback&
+response_type=code&
+client_id=812741506391&
+state=af0ifjsldkj
+```
+
+Response	
+
+```
+HTTP/1.1 302 Found
+Location: https://app.example.com/oauth2/callback?
+code=MsCeLvIaQm6bTrgtp7&state=af0ifjsldkj
+```
+
+The code returned is the authorization grant and state is to ensure it's not forged and it's from the same request.
+
+And the authorization grant for tokens response contains an ID token.
+
+Request	
+
+```
+POST /oauth2/v3/token HTTP/1.1
+Host: www.googleapis.com
+Content-Type: application/x-www-form-urlencoded
+
+code=MsCeLvIaQm6bTrgtp7&client_id=812741506391&
+  client_secret={client_secret}&
+  redirect_uri=https://app.example.com/oauth2/callback&
+  grant_type=authorization_code
+```  
+  
+Response	
+
+```
+{
+  "access_token": "2YotnFZFEjr1zCsicMWpAA",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "tGzv3JOkF0XG5Qx2TlKWIA",
+  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ..."
+}
+```
+
+You can see this is layered nicely on top of OAuth to give back an ID token as a structured token. An ID token is a JSON Web Token (JWT). A JWT (aka “jot”) is much smaller than a giant XML-based SAML assertion and can be efficiently passed around between different devices. A JWT has three parts: a header, a body, and a signature. The header says what algorithm was used to sign it, the claims are in the body, and its signed in the signature.
+
+An Open ID Connect flow involves the following steps:
+
+1. Discover OIDC metadata
+2. Perform OAuth flow to obtain id token and access token
+3. Get JWT signature keys and optionally dynamically register the Client application
+4. Validate JWT ID token locally based on built-in dates and signature
+5. Get additional user attributes as needed with access token
+
+![OAuth Actors](../img/oauth-flow.png)
+
+### The ID Token / Identity Token
 
 
 ## 4. JWT
 
 JSON Web Tokens, commonly known as JWTs, are tokens that are used to authenticate users on applications. This technology has gained popularity over the past few years because it enables backends to accept requests simply by validating the contents of these JWTs. That is, applications that use JWTS no longer have to hold cookies or other session data about their users. This characteristic facilitates scalability while keeping applications secure.
+
+It contains:
+
+- **user's identity** (subject id, name, group, roles, etc.) and 
+- some **metadata** relatives to the authorization process (issuer, time to live, etc.). 
+
+**JWT Are Signed! Not Encrypted**
+
+A JSON Web Token is comprised of three parts:
+
+- the header, 
+- payload, and 
+- Signature.
+
+The format of a JWT is `header.payload.signature`.
+
+The very important thing to note here, is that, this token is signed by the HMACSHA256 algorithm, and the header and payload are Base64URL encoded, it is not encrypted. If I go to jwt.io, paste this token and select the HMACSHA256 algorithm, I could decode the token and read its contents. Therefore, it should go without saying that sensitive data, such as passwords, should never be stored in the payload.
 
 During the authentication process, when a user successfully logs in using their credentials, a JSON Web Token is returned and must be saved locally (typically in local storage). Whenever the user wants to access a protected route or resource (an endpoint), the user agent (e.g. browser) must send the JWT, usually in the Authorization header using the Bearer schema, along with the request.
 
@@ -175,9 +264,17 @@ JWT Authentication flow is very simple:
 - User sends Access token with each request to access protected API resource
 - Access token is signed and contains user identity (e.g. user id) and authorization claims.
 
-## The ID Token / Identity Token
+### JWT Size
 
+- The biggest disadvantage of token authentication is the size of JWTs. 
+- A session cookie is relatively tiny compared to even the smallest JWT.
+- Depending on your use case, the size of the token could become problematic if you add many claims to it. Remember, each request to the server must include the JWT along with it.
 
+### Where to store JWT?
+
+- Commonly, the JWT is placed in the browser's **local storage** and this works well for most use cases. Unlike cookies, local storage is sandboxed to a specific domain and its data cannot be accessed by any other domain including subdomains.
+- You can store the token in a **cookie** instead, but the max size of a cookie is only 4kb so that may be problematic if you have many claims attached to the token
+- Additionally, you can store the token in **session storage** which is similar to local storage but is cleared as soon as the user closes the browser.
 
 ## 5. Common mistakes
 
@@ -194,6 +291,8 @@ As of standard, access tokens can be either passed by URL, in headers, or in a c
 
 4. **Switching to symmetric signing keys:**
 RSA is not required for JWT signing, and Spring Security does provide symmetric token signing as well; which does solve some problems, which make development harder. But this is insecure, since an attacker just needs to get into one single microservice to be able to generate its own JWT tokens.
+
+The biggest complaint about OAuth in general comes from Security people. It’s regarding the Bearer tokens and that they can be passed just like session cookies. You can pass it around and you’re good to go, it’s not cryptographically bound to the user. Using JWTs helps because they can’t be tampered with. However, in the end, a JWT is just a string of characters so they can easily be copied and used in an Authorization header.
 
 ## 6. Authorization per Microservice
 
@@ -217,8 +316,70 @@ Multifactor Authentication (MFA) is a method of verifying a user's identity by r
 - **Possession**: Something the user has (e.g. a cell phone)
 - **Inheritance**: Something the user is (e.g. a fingerprint or retina scan)
 
+## 8. Identity Brokering
+
+An Identity Broker is an intermediary service that connects multiple service providers with different identity providers. As an intermediary service, the identity broker is responsible for creating a trust relationship with an external identity provider in order to use its identities to access internal services exposed by service providers.
+
+From a user perspective, an identity broker provides a user-centric and centralized way to manage identities across different security domains or realms. An existing account can be linked with one or more identities from different identity providers or even created based on the identity information obtained from them.
+
+An identity provider is usually based on a specific protocol that is used to authenticate and communicate authentication and authorization information to their users. It can be a social provider such as Facebook, Google or Twitter. It can be a business partner whose users need to access your services. Or it an be a cloud-based identity service that you want to integrate with.
+
+#### KeyCloak
+
+When using KeyCloak as an identity broker, users are not forced to provide their credentials in order to authenticate in a specific realm. Instead, they are presented with a list of identity providers from which they can authenticate.
+
+You can also configure a default broker. In this case the user will not be given a choice, but instead be redirected directly to the parent broker. The following diagram demonstrates the steps involved when using KeyCloak to broker an external identity provider:
+
+![OAuth Scopes](../img/identity_broker_flow.png)
+
+1. User is not authenticated and requests a protected resource in a client application.
+2. The client applications redirects the user to KeyCloak to authenticate.
+3. At this point the user is presented with the login page where there is a list of identity providers supported by a realm.
+4. User selects one of the identity providers by clicking on its respective button or link.
+5. KeyCloak issues an authentication request to the target identity provider asking for authentication and the user is redirected to the login page of the identity provider. The connection properties and other configuration options for the identity provider were previously set by the administrator in the Admin Console.
+6. User provides his credentials or consent in order to authenticate in the identity provider.
+7. Upon a successful authentication by the identity provider, the user is redirected back to KeyCloak with an authentication response. Usually this response contains a security token that will be used by KeyCloak to trust the authentication performed by the identity provider and retrieve information about the user.
+8. Now KeyCloak is going to check if the response from the identity provider is valid. If valid, it will import and create a new user or just skip that if the user already exists. If it is a new user, KeyCloak may ask the identity provider for information about the user if that info doesn’t already exist in the token. This is what we call identity federation. If the user already exists KeyCloak may ask him to link the identity returned from the identity provider with his existing account. We call this process account linking. What exactly is done is configurable and can be specified by setup of First Login Flow . At the end of this step, KeyCloak authenticates the user and issues its own token in order to access the requested resource in the service provider.
+9. Once the user is locally authenticated, KeyCloak redirects the user to the service provider by sending the token previously issued during the local authentication.
+10. The service provider receives the token from KeyCloak and allows access to the protected resource.
+
+As you may notice, at the end of the authentication process KeyCloak will always issue its own token to client applications. What this means is that client applications are completely decoupled from external identity providers. They don’t need to know which protocol (eg.: SAML, OpenID Connect, OAuth, etc) was used or how the user’s identity was validated. They only need to know about KeyCloak.
+
+## 9. Others
+
+### What are the 3 tokens?
+
+OAuth2 had these two tokens:
+
+(1). Access Token
+(2). Refresh Token
+
+OpenId Connect adds this 3rd token:
+
+(3). ID Token
+
+So, you can see auth is added by OpenID Connect
+
+### Scopes vs Claims
+
+### How does the Resource Server validate the access token with the Auth Server?
+
+Two options here. The OAuth specification does not dictate the format for tokens and as such, they are considered "opaque". 
+
+- In this case, the Resource Server must make an introspect request of the Authorization Server to get back the information (like scopes and timeout) that the token represents. 
+- However, the second approach is now more prevalent and is used by most. In this case, the access token is a JWT that has a signature computed using the RS-256 algorithm and a private key used by e.g. KeyCloak. The resource server can use the corresponding public key (which it can obtain using the metadata from the well known endpoint to validate the access token WITHOUT having to make the introspect request of the Authorization Server. This saves a lot of network traffic.
+
+### Does the Resource Server need to validate the access token every time?
+
+Yes. But, HOW the validation is done is dependent on the formatting of the token. 
+
+### How does the whole workflow look like?
+
+This diagram depicts pretty nicely:
+
+![OAuth Actors](../img/auth-workflow.png)
+
 ## References
 
-Worth reading:
-
 - https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth
+- https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/identity_broker
