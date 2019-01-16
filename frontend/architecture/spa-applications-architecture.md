@@ -59,6 +59,12 @@ If there are new changes in a page, to incorporate those changes designer will e
 
 Having components separated out in their own files is the recommended approach. It helps you follow the Single Responsibility Priciple easily, code is manageble and maintenance becomes easier. However there might be case where you want to keep similar looking components in a single file or any other reason of the sort, like in alert-component file you may want to export info, danger and warning component etc.
 
+## API Calls & Response 
+
+- When using `Observables` it's easier lose hold of the subsriber which might lead to redundent calls if not handled properly. So make sure to open your network tab in browser and check if there are any redundent/duplicate call being made without any reason.
+- Coordinate with Backend developers for the response being sent, if you are receiving redundent data, report it to the Backend team and get it trimmed, it will help in reducing the payload and in result quicker response from the APIs.
+- Request body should not contain any empty string. Javascript treats empty string as false value but JAVA does not.
+
 ## State Management
 
 State Management is the `Single Source of Truth` in your application. Changes in your application not occur because of AJAX requests but there are states for indicating whether the spinner is running or the modal is opened etc. all of these has nothing to do with the API your app is connected with. So how do manage state changes within the application? Since data is changing over the time efficiently and these changes in state of SPA application can cause re-rendering, which is expensive.
