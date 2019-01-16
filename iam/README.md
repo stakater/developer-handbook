@@ -205,7 +205,7 @@ An Open ID Connect flow involves the following steps:
 4. Validate JWT ID token locally based on built-in dates and signature
 5. Get additional user attributes as needed with access token
 
-![OAuth Actors](../img/oauth-flow.png)
+![OIDC Flow](../img/oidc-flow.png)
 
 ### The ID Token / Identity Token
 
