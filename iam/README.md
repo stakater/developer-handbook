@@ -55,8 +55,10 @@ OAuth has four main roles/actors:
 - Resource Server (Where your data are stored) e.g. backend REST API
 - Authorization Server (Responsible for authenticating your identity and gives you an authorization token, so that you can request resource server for your data with this token. this token is called access_token) → e.g. KeyCloak
 
+##### Confidential Clients
 Clients can be public and confidential. There is a significant distinction between the two in OAuth nomenclature. Confidential clients can be trusted to store a secret. They’re not running on a desktop or distributed through an app store. People can’t reverse engineer them and get the secret key. They’re running in a protected area where end users can’t access them.
 
+##### Public Clients
 Public clients are browsers, mobile apps, and IoT devices.
 
 ### OAuth Scopes
