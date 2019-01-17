@@ -6,8 +6,10 @@ metadata:
 {{ include "developer-handbook.labels.chart" . | indent 4 }}
     expose: {{ .Values.handbook.service.labels.expose | quote }}
   name: {{ .Values.handbook.service.name | quote }}
+{{ if .Values.handbook.service.annotations }}
   annotations:
 {{ toYaml .Values.handbook.service.annotations | indent 4 }}  
+{{ end }}
 spec:
   selector:
 {{ toYaml .Values.handbook.deployment.podLabels | indent 4 }}
