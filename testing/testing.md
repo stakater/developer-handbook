@@ -229,7 +229,7 @@ Having a different architecture on top of an Electron app also allows Cypress to
 * Only support Mocha & Chai framework
 * Cypress doesn't handle redirects within your applications. Such as if you are going to automate google
   & facebook login scenarios in your application through cypress then you are going have a deep trouble. 
-  You will have write hooks or stubs to achieve this but it's daunting task
+  You will have to write hooks or stubs to achieve this but it's a daunting task
 
  **If you don't know what you're doing when it comes to building out a test automation framework, Cypress may be a good option**
 
