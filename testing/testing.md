@@ -227,6 +227,10 @@ Having a different architecture on top of an Electron app also allows Cypress to
 * Doesn't work out of the box with OAuth/OpenID
 * Only support javascript language for test development
 * Only support Mocha & Chai framework
+* Cypress doesn't handle redirects, so it's mean if your application is redirects to some third party application 
+  for authentication then you are in a deep trouble. Such as you can't directly automate gmail & facebook
+  login scenarios directly through cypress. you will have write some hooks or stub to achieve this but this
+  is a daunting task
 
  **If you don't know what you're doing when it comes to building out a test automation framework, Cypress may be a good option**
 
