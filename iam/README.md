@@ -345,6 +345,11 @@ You can also configure a default broker. In this case the user will not be given
 
 As you may notice, at the end of the authentication process KeyCloak will always issue its own token to client applications. What this means is that client applications are completely decoupled from external identity providers. They don’t need to know which protocol (eg.: SAML, OpenID Connect, OAuth, etc) was used or how the user’s identity was validated. They only need to know about KeyCloak.
 
+## 9. Threat Model Mitigation
+
+- [KeyCloak Threat Model Mitigation](https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/threat_model_mitigation)
+- 
+
 ## 9. Others
 
 ### What are the 3 tokens?
@@ -352,6 +357,11 @@ As you may notice, at the end of the authentication process KeyCloak will always
 OAuth2 had these two tokens:
 
 (1). Access Token
+
+Access tokens are used as bearer tokens. A bearer token means that the bearer (who hold the access token) can access authorized resources without further identification. Because of this, it’s important that bearer tokens are protected. If I can somehow get ahold of and “bear” your access token, I can pretend as you.
+
+These tokens usually have a short lifespan (dictated by its expiration) for improved security. That is, when the access token expires, the user must authenticate again to get a new access token limiting the exposure of the fact that it’s a bearer token.
+
 (2). Refresh Token
 
 OpenId Connect adds this 3rd token:
@@ -361,6 +371,8 @@ OpenId Connect adds this 3rd token:
 So, you can see auth is added by OpenID Connect
 
 ### Scopes vs Claims
+
+Claims are name/value pairs that contain information about a user
 
 ### How does the Resource Server validate the access token with the Auth Server?
 
@@ -378,6 +390,16 @@ Yes. But, HOW the validation is done is dependent on the formatting of the token
 This diagram depicts pretty nicely:
 
 ![OAuth Actors](../img/auth-workflow.png)
+
+### Is it permissible for the access token to be a JWT? 
+
+Using a JWT as an access token is certainly permissible by spec exactly because the spec does not restrict its format.
+
+### If it is permissible according to the spec, are there any additional considerations that would make using a JWT as an access token a bad idea?
+
+The idea behind using a JWT as an access token is that it can then be self-contained so that the target can verify the access token and use the associated content without having to go back to the Authorization Server. That is a great property but makes revocation harder. So if your system requires a capability for immediate revocation of access, a JWT is probably not the right choice for an access token (though you can get pretty far by reducing the lifetime of the JWT).
+
+The trick to revocation is to use a refresh token. The refresh token is supplied by the Authorization Server at the same time as your JWT access token, but has a much longer lifetime and - crucially - can only be used in a request to the Authorization Server to get a new access token (without user interaction). E.g. the AS issues a refresh token that lasts 5 hours and an access JWT that lasts 5 minutes. You get 5 minutes worth of requests with no slow AS calls, and a chance to revoke every 5 minutes (when the Access Token expires and the Refresh token is used to request a new one from the AS)
 
 ## References
 
