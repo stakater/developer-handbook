@@ -348,9 +348,9 @@ As you may notice, at the end of the authentication process KeyCloak will always
 ## 9. Threat Model Mitigation
 
 - [KeyCloak Threat Model Mitigation](https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/threat_model_mitigation)
-- 
+- [https://tools.ietf.org/html/rfc6819](https://tools.ietf.org/html/rfc6819)
 
-## 9. Others
+## 10. Others
 
 ### What are the 3 tokens?
 
@@ -372,7 +372,9 @@ So, you can see auth is added by OpenID Connect
 
 ### Scopes vs Claims
 
-Claims are name/value pairs that contain information about a user
+A scope represents the access authorization associated with a particular token with respect to resource servers, resources, and methods on those resources.  Scopes are the OAuth way to explicitly manage the power associated with an access token.  A scope can be controlled by the authorization server and/or the end user in order to limit access to resources for OAuth clients that these parties deem less secure or trustworthy.
+   
+Claims are name/value pairs that contain information about a user.
 
 ### How does the Resource Server validate the access token with the Auth Server?
 
@@ -400,6 +402,14 @@ Using a JWT as an access token is certainly permissible by spec exactly because 
 The idea behind using a JWT as an access token is that it can then be self-contained so that the target can verify the access token and use the associated content without having to go back to the Authorization Server. That is a great property but makes revocation harder. So if your system requires a capability for immediate revocation of access, a JWT is probably not the right choice for an access token (though you can get pretty far by reducing the lifetime of the JWT).
 
 The trick to revocation is to use a refresh token. The refresh token is supplied by the Authorization Server at the same time as your JWT access token, but has a much longer lifetime and - crucially - can only be used in a request to the Authorization Server to get a new access token (without user interaction). E.g. the AS issues a refresh token that lasts 5 hours and an access JWT that lasts 5 minutes. You get 5 minutes worth of requests with no slow AS calls, and a chance to revoke every 5 minutes (when the Access Token expires and the Refresh token is used to request a new one from the AS)
+
+### What is purpose of Redirect URI?
+
+A redirect URI helps to detect malicious clients and prevents phishing attacks from clients attempting to trick the user into believing the phisher is the client.  The value of the actual redirect URI used in the authorization request has to be presented and is verified when an authorization "code" is exchanged for tokens. This helps to prevent attacks where the authorization "code" is revealed through redirectors and counterfeit web application clients. The authorization server should require public clients and confidential clients using the implicit grant type to pre-register their redirect URIs and validate against the registered redirect URI in the authorization request.
+
+### What is bearer token?
+
+A 'bearer token' is a token that can be used by any client who has received the token (e.g., [RFC6750]).  Because mere possession is enough to use the token, it is important that communication between endpoints be secured to ensure that only authorized endpoints may capture the token.  The bearer token is convenient for client applications, as it does not require them to do anything to use them (such as a proof of identity). Bearer tokens have similar characteristics to web single-sign-on (SSO) cookies used in browsers.
 
 ## References
 
