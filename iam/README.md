@@ -17,6 +17,8 @@ In this lesson we will learn following:
 5. Common Mistakes
 6. Authorization per Microservice
 7. Multifactor Authentication
+8. Identity Brokering
+9. Threat Model Mitigation
 
 ## 1. Security claims of microservice architecture
 
@@ -410,6 +412,22 @@ A redirect URI helps to detect malicious clients and prevents phishing attacks f
 ### What is bearer token?
 
 A 'bearer token' is a token that can be used by any client who has received the token (e.g., [RFC6750]).  Because mere possession is enough to use the token, it is important that communication between endpoints be secured to ensure that only authorized endpoints may capture the token.  The bearer token is convenient for client applications, as it does not require them to do anything to use them (such as a proof of identity). Bearer tokens have similar characteristics to web single-sign-on (SSO) cookies used in browsers.
+
+### What will be API flow?
+
+Here is an example flow:
+
+![API Flow](../img/api-flow.png)
+
+The process is following:
+
+1. The user is signing in on the client app. He is redirected to the Keycloak login page. He can use his credentials or use a third party identity provider (depending the IAM configuration).
+2. Once logged, Keycloak is issuing an access token and a refresh to the user.
+3. Both tokens are saved by the client app for the next usage.
+4. Now the client application can access to the API by filling the Authorization http header with the access token. The access token is short-lived and must be refreshed before its expiration date. So the client app should verify each time that the access token is not about to expire. In this case, the client app shall use the refresh token to claim a new access token to Keycloak.
+5. Kong validates the access token. It verify the signature, the issuer and the expiration time of the token.
+6. If everything is ok, Kong transfers the request to the backend service. The access token is still carried by the the Authorization header and can be decoded by the backend services to gather information required by the fine grained authorization layer (subject id, group, roles). Note than Kong add the client app ID into the header. This can be useful to the backend service in order to identify where the user comes from.
+7. And the service response is transmitted to the client app through all layers.
 
 ## References
 
