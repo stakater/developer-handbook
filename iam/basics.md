@@ -1,5 +1,7 @@
 # Identity and Access Management (IAM)
 
+**Disclaimer:** This content has been gathered from lots of different posts!
+
 IAM == Authentication and Authorization
 
 Unlike a traditional monolithic structure that may have a single security portal, microservices pose many problems. Should each service have it’s own independent security firewall? How should identity be distributed between microservices and throughout my entire system? What is the most efficient method for the exchange of user data?
@@ -211,6 +213,31 @@ An Open ID Connect flow involves the following steps:
 
 ### The ID Token / Identity Token
 
+You will get id token if you are using scope as openid. Id token is specific to openid scope. With openid scope you can get both id token and access token.
+
+The primary extension that OpenID Connect makes to OAuth 2.0 to enable End-Users to be Authenticated is the ID Token data structure. The ID Token is a security token that contains Claims(claims are name/value pairs that contain information about a user) about the Authentication of an End-User by an Authorization Server when using a Client, and potentially other requested Claims. The ID Token is represented as a JSON Web Token (JWT)
+
+```
+{
+   "iss": "https://server.example.com",
+   "sub": "24400320",
+   "aud": "s6BhdRkqt3",
+   "nonce": "n-0S6_WzA2Mj",
+   "exp": 1311281970,
+   "iat": 1311280970,
+   "auth_time": 1311280969,
+   "acr": "urn:mace:incommon:iap:silver"
+}
+```
+  
+The above is default JWT claims, in addition to that, if you requested claims from service provider then you will get those as well.
+
+An id_token is a JWT, per the OIDC Specification. This means that:
+
+- identity information about the user is encoded right into the token and
+- the token can be definitively verified to prove that it hasn’t been tampered with.
+
+There’s a set of [rules](http://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation) in the specification for validating an id_token. Among the claims encoded in the id_token is an expiration (exp), which must be honored as part of the validation process. Additionally, the signature section of JWT is used in concert with a key to validate that the entire JWT has not been tampered with in any way.
 
 ## 4. JWT
 
@@ -265,6 +292,38 @@ JWT Authentication flow is very simple:
 - User obtains Refresh and Access tokens by providing credentials to the Authorization server
 - User sends Access token with each request to access protected API resource
 - Access token is signed and contains user identity (e.g. user id) and authorization claims.
+
+### Anatomy of a JWT
+
+If you encounter a JWT in the wild, you’ll notice that it’s separated into three sections, the header, payload, and signature. (Follow along with Stormpath’s open-source Java JWT tool as we dissect the anatomy of a JWT!) Here’s an example of a typical JWT:
+
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+.
+eyJzdWIiOiJ1c2Vycy9Uek1Vb2NNRjRwIiwibmFtZSI6IlJvYmVydCBUb2tlbiBNYW4iLCJzY29wZSI6InNlbGYgZ3JvdXBzL2FkbWlucyIsImV4cCI6IjEzMDA4MTkzODAifQ
+.
+1pVOLQduFWW3muii1LExVBt2TK1-MdRI4QjhKryaDwc
+```
+
+In this example, Section 1 is a header which describes the token. Section 2 is the payload, which contains the JWT’s claims, and Section 3 is the signature hash that can be used to verify the integrity of the token (if you have the secret key that was used to sign it).
+
+When we decode the payload we get this nice, tidy JSON object containing the claims of the JWS:
+
+
+{
+  "sub": "users/TzMUocMF4p",
+  "name": "Robert Token Man",
+  "scope": "self groups/admins",
+  "exp": "1300819380"
+}
+
+The claims tell you, at minimum:
+
+- Who this person is and the URI to their user resource (the sub claim)
+- What this person can access with this token (the scope claim)
+- When the token expires. Your API should be using this when it verifies the token.
+
+Because the token is signed with a secret key you can verify its signature and implicitly trust what is being claimed.
 
 ### JWT Size
 
