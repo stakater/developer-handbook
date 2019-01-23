@@ -4,12 +4,10 @@ CSS as simple as it seems to write can easily go out of hand if not written with
 
 There are no hard and fast rules on how to write your CSS but there are some pointers that can help you write CSS that's more readable and maintainable. 
 
-
 ## CSS Reset
 
 Browsers have different built-in styles and they effect HTML elements differently including heights, margin, padding. That brings inconsistency within your app across different browsers. To address this issue we use CSS Reset. 
 You either write your own CSS Reset or use the one that everyone else is using. The most popular styles reset is probably [Eric Meyer's](https://meyerweb.com/eric/tools/css/reset/index.html) CSS Reset.
-
 
 ## Combining CSS Rules
 
@@ -21,14 +19,14 @@ h1, h2, h3, a {
     text-transform: uppercase;
 }
 ```
-And you can always add distintive styles to these elements separately as well.
+
+And you can always add distinctive styles to these elements separately as well.
 
 ## Write your Markup first
 
 Writing your Markup first will actually save you time, writing CSS along with your HTML seems to be more appropriate but this way you might end up having duplicate properties. 
 
 But with Markup first approach you know how HTML is structured and what styles do you need to make it look good with maximum re-usability. 
-
 
 ## Readability
 
