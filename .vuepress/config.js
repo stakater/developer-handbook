@@ -35,6 +35,7 @@ module.exports = {
                 children: [
                     '/frontend/js-frameworks/javascript-frameworks-seo-challenges',
                     '/frontend/css/css-best-practices',
+                    '/frontend/js-frameworks/angular-code-guidelines',
                     '/frontend/architecture/spa-applications-architecture',
                     '/frontend/architecture/micro-frontends'
                 ]
