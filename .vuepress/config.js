@@ -17,6 +17,7 @@ module.exports = {
                     '/architecture/eda',
                     '/architecture/architecting-applications-for-kubernetes',
                     '/architecture/12-factors',
+                    '/architecture/object-calisthenics'
                 ]
             },
             {
@@ -69,8 +70,13 @@ module.exports = {
                 children: [
                     '/git/tbd'
                 ]
+            },
+            {
+                title: 'IAM',
+                children: [
+                    '/iam/basics'
+                ]
             }
-
         ],
 
         repo: 'stakater/developer-handbook',
