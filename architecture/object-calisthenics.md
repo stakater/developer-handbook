@@ -152,6 +152,14 @@ Following this rule is pretty easy, you simply have to encapsulate all the primi
 
 If the variable of your primitive type has a behaviors, you MUST encapsulate it. And this is especially true for Domain Driven Design. DDD describes Value Objects like Money, or Hour for instance.
 
+In the Java language, int is a primitive, not a real object, so it obeys different rules than objects. It is used with a syntax that isn’t object-oriented. More importantly, an int on its own is just a scalar, so it has no meaning. When a method takes an int as a parameter, the method name needs to do all of the work of expressing the intent. If the same method takes an Hour as a parameter, it’s much easier to see what’s going on. Small objects like this can make programs more maintainable, since it isn’t possible to pass a Year to a method that takes an Hour parameter. With a primitive variable the compiler can’t help you write semantically correct programs. With an object, even a small one, you are giving both the compiler and the programmer additional info about what the value is and why it is being used.
+
+Small objects like Hour or Money also give us an obvious place to put behavior that would otherwise have been littered around other classes. This becomes especially true when you apply Rule 9, and only the small object can access the value. Note that this does not mean using object wrappers that are available in languages like Java. Using an Integer instead of an int confers no additional advantages in terms of expressing intent, whereas using a wrapper that expresses meaning within the problem domain both clarifies its usage and makes intent evident.
+
+See also:
+
+- [Primitive Obsession Anti-Pattern](http://c2.com/cgi/wiki?PrimitiveObsession)
+
 ## 4. First Class Collections
 
 Any class that contains a collection should contain no other member variables. If you have a set of elements and want to manipulate them, create a class that is dedicated for this set.
@@ -203,6 +211,12 @@ I often say that if you can’t find a decent name for a class or a method, some
 
 Don’t abbreviate, period.
 
+It’s often tempting to abbreviate in the names of classes, methods, or variables. Resist the temptation – abbreviations can be confusing, and they tend to hide larger problems.
+
+Think about why you want to abbreviate. Is it because you’re typing the same word over and over again? If that’s the case, perhaps your method is used too heavily and you are missing opportunities to remove duplication. Is it because your method names are getting long? This might be a sign of a misplaced responsibility, or a missing class.
+
+Try to keep class and method names to 1-2 words, and avoid names that duplicate the context. If the class is an Order, the method doesn’t need to be called shipOrder(). Simply name the method ship() so that clients call order.ship() – a simple and clear representation of what’s going on.
+
 > Naming things is hard, that’s right, but naming things by their right names is even harder!
 
 > My Golden Rule is: if you’re not able to find a name for a class, then ask yourself if this class makes sense, or if you can decouple things a bit more.
@@ -212,6 +226,10 @@ Don’t abbreviate, period.
 No class over 50 lines and no package over 10 files. Well, it depends on you, but I think you could change the number of lines from 50 to 150.
 
 The idea behind this rule is that long files are harder to read, harder to understand, and harder to maintain.
+
+Classes over 50 lines usually do more than one thing, which makes them harder to understand and harder to reuse. 50-line classes have the added benefit of being visible on one screen without scrolling, which makes them easier to grasp quickly.
+
+What’s challenging about creating such small classes is that there are often groups of behaviors that make logical sense together. This is where we need to leverage packages. As your classes become smaller and have fewer responsibilities, and as you limit package size, you’ll start to see that packages represent clusters of related classes that work together to achieve a goal. Packages, like classes, should be cohesive and have a purpose. Keeping those packages small forces them to have a real identity. If the real identity comes out to more than 50 lines, that is ok. This is software engineering; there is no black and white- as Uncle Bob regularly stresses, our craft is about trade-offs.
 
 ## References
 
