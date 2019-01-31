@@ -231,6 +231,50 @@ Classes over 50 lines usually do more than one thing, which makes them harder to
 
 What’s challenging about creating such small classes is that there are often groups of behaviors that make logical sense together. This is where we need to leverage packages. As your classes become smaller and have fewer responsibilities, and as you limit package size, you’ll start to see that packages represent clusters of related classes that work together to achieve a goal. Packages, like classes, should be cohesive and have a purpose. Keeping those packages small forces them to have a real identity. If the real identity comes out to more than 50 lines, that is ok. This is software engineering; there is no black and white- as Uncle Bob regularly stresses, our craft is about trade-offs.
 
+## 8. Do Not Use Classes With More Than Two Instance Variables 
+
+
+## 9. Do not Use Getters and Setters
+
+This rules is partially related to Domain Driven Design.
+
+- Classes should not contain public properties.
+- Method should represent behavior, not set values.
+
+:x:
+
+```php
+class ImmutableBankAccount
+{
+    public $currency = 'USD';
+```
+```php
+    private $amount;
+
+    public function setAmount(int $amount)
+    {
+        $this->amount = $amount;
+    }
+}
+```
+
+:+1:
+
+```php
+class ImmutableBankAccount
+{
+    private $currency = 'USD';
+```
+```php
+    private $amount;
+
+    public function withdrawAmount(int $withdrawnAmount)
+    {
+        $this->amount -= $withdrawnAmount;
+    }
+}
+```
+
 ## References
 
 - https://github.com/TheLadders/object-calisthenics
