@@ -325,6 +325,20 @@ The claims tell you, at minimum:
 
 Because the token is signed with a secret key you can verify its signature and implicitly trust what is being claimed.
 
+Within the payload, there are a number of keys with values. These keys are called **claims** and the JWT specification has seven of these specified as “registered” claims. They are:
+
+```
+iss	Issuer
+sub	Subject
+aud	Audience
+exp	Expiration
+nbf	Not Before
+iat	Issued At
+jti	JWT ID
+```
+
+When building a JWT, you can put in any custom claims you wish. The list above simply represents the claims that are reserved both in the key that is used and the expected type. 
+
 ### JWT Size
 
 - The biggest disadvantage of token authentication is the size of JWTs. 
