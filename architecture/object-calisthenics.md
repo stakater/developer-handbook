@@ -233,6 +233,7 @@ What’s challenging about creating such small classes is that there are often g
 
 ## 8. Do Not Use Classes With More Than Two Instance Variables 
 
+**TODO**
 
 ## 9. Do not Use Getters and Setters
 
