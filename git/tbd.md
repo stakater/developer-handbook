@@ -16,6 +16,8 @@ trunk-based development (TBD) continuous delivery (CD) workflow
 
 > The pattern that is central to Continuous Delivery is the deployment pipeline. A **deployment pipeline** is, in essence, an automated implementation of your application’s build, deploy, test, and release process. Every organization will have differences in the implementation of their deployment pipelines, depending on their value-stream for releasing software, but the principles that govern them do not vary
 
+> Continuous deployment is the next step of continuous delivery: Every change that passes the automated tests is deployed to production automatically.
+
 # Common anti-patterns with branch based workflows?
 ---
 
