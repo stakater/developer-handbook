@@ -16,6 +16,10 @@ spec:
       labels:
 {{ toYaml .Values.handbook.deployment.podLabels | indent 8 }}
     spec:
+      {{- if .Values.handbook.deployment.tolerations }}
+      tolerations:
+{{ toYaml .Values.handbook.deployment.tolerations | indent 8 -}}
+      {{- end }}
       imagePullSecrets:
       - name: {{ .Values.handbook.deployment.imagePullSecrets }}     
       containers:
