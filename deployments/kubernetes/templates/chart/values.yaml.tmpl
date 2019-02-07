@@ -23,6 +23,11 @@ handbook:
     labels:
       expose: 'true'
   deployment:
+    tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "app"
+      effect: "NoSchedule"
     replicas: 1
     podLabels:      
       app: developer-handbook
