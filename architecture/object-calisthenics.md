@@ -146,6 +146,18 @@ See also:
 - [Strategy Pattern](https://en.wikipedia.org/wiki/Strategy_pattern)
 - [State Pattern](https://en.wikipedia.org/wiki/State_pattern)
 
+**Early Return**: for parameter validation return immediately
+
+**Polymorphism**: is an alternative to if/else/switch statements. For instance, it is possible to use Strategy Pattern or inheritence to replace every clause in the control statement.
+
+There are variations to how the "right" strategy is obtained.
+
+- caller provides the strategy (as a method argument)
+- strategy is memorised as member variable
+- strategy is obtained from a map (or any other lookup mechanism)
+
+**Null Object or Optional or Empty list**: Dramatically reduces the need for null checking.
+
 ## 3. Wrap All Primitives And Strings
 
 Following this rule is pretty easy, you simply have to encapsulate all the primitives within objects, in order to avoid the Primitive Obsession anti-pattern.
@@ -170,6 +182,7 @@ From the original: "any class that contains a collection should contain no other
 
 Thus the logic for using a collection goes into the wrapper class, instead of in the "client" code. This feels more like working with an object instead of in it.
 
+Behaviors related to the collection have a home
 
 ## 5. One Dot Per Line
 
@@ -235,6 +248,9 @@ What’s challenging about creating such small classes is that there are often g
 
 **TODO**
 
+Object Model decomposition
+Class Cohesion
+
 ## 9. Do not Use Getters and Setters
 
 This rules is partially related to Domain Driven Design.
@@ -275,6 +291,32 @@ class ImmutableBankAccount
     }
 }
 ```
+
+:x:
+
+```
+q.setQuality(q.getQuality() - 1);
+```
+
+:+1:
+
+```
+q.decrease();
+```
+
+:x:
+
+```
+q.quality = 0;
+```
+
+:+1:
+
+```
+q.dropToZero();
+```
+
+> Rule: Tell don't ask!
 
 ## References
 
