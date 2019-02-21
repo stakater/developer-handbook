@@ -253,6 +253,10 @@ Class Cohesion
 
 ## 9. Do not Use Getters and Setters
 
+The simplest way to avoid setters is to hand the values to the constructor method when you new up the object. This is also the usual pattern when you want to make an object immutable.
+
+DTOs are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have getters.
+
 This rules is partially related to Domain Driven Design.
 
 - Classes should not contain public properties.
