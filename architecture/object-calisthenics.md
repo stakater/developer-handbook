@@ -168,6 +168,114 @@ In the Java language, int is a primitive, not a real object, so it obeys differe
 
 Small objects like Hour or Money also give us an obvious place to put behavior that would otherwise have been littered around other classes. This becomes especially true when you apply Rule 9, and only the small object can access the value. Note that this does not mean using object wrappers that are available in languages like Java. Using an Integer instead of an int confers no additional advantages in terms of expressing intent, whereas using a wrapper that expresses meaning within the problem domain both clarifies its usage and makes intent evident.
 
+Example: 
+You have a SMS subscription which has a quantity and is valid for a month and year, you have to store month a as integer. 1 will represent January and 12 will represent December, quantity of SMS can be minimum 1 and maximum 250 and year cannot be less than 1970.  
+One way of doing it is:
+```java
+public class SMSSubscription
+{
+	private String id;
+	private int quantity;
+	private int month;
+	private int year;
+	
+	public SMSSubscription(String id, int quantity, int month, int year)  
+	{  
+	    this.id = id;  
+	  
+	    if (quantity < 1 || quantity > 250)  
+	    {  
+	        throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250");  
+	    }  
+	    this.quantity = quantity;  
+	  
+	    if (month < 1 || month > 12)  
+	    {  
+	        throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12");  
+	    }  
+	    this.month = month;  
+	  
+	    if (year < 1970)  
+	    {  
+	        throw new IllegalArgumentException("Year cannot be less than 1970");  
+	    }  
+	    this.year = year;  
+	}
+}
+```
+You can clearly see in above code that SMSSubsctiption is doing more then what it is supposed to do. Quantity, month and year has their own specific behaviors, which must be encapsulated. 
+
+Lets do it in a right way, first we will encapsulate quantity, month and year.
+**Quantity.java**
+```java
+public class Quantity  
+{  
+    private int quantity;  
+  
+    public Quantity(int quantity)  
+    {  
+        if (quantity < 1 || quantity > 250)  
+        {  
+            throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250");  
+        }  
+        this.quantity = quantity;  
+    }  
+}
+```
+ **Month.java**
+ ```java
+ public class Month  
+{  
+    private int month;  
+  
+    public Month(int month)  
+    {  
+        if (month < 1 || month > 12)  
+        {  
+            throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12");  
+        }  
+        this.month = month;  
+    }  
+}
+ ```
+ **Year.java**
+ ```java
+ public class Year  
+{  
+    private int year;  
+    
+    public Year(int year)  
+    {  
+        if (year < 1970)  
+        {  
+            throw new IllegalArgumentException("Year cannot be less than 1970");  
+        }  
+        this.year = year;  
+    }  
+}
+ ```
+ and now this this is how SMSSubscription looks like:
+**SMSSubscription.java**
+```java
+public class SMSSubscription  
+{  
+    private String id;  
+    private Quantity quantity;  
+    private Month month;  
+    private Year year;  
+  
+    public SMSSubscription(String id, Quantity quantity, Month month, Year year)  
+    {  
+        this.id = id;  
+        this.quantity = quantity;  
+        this.month = month;  
+        this.year = year;  
+    }  
+}
+```
+
+
+
 See also:
 
 - [Primitive Obsession Anti-Pattern](http://c2.com/cgi/wiki?PrimitiveObsession)
