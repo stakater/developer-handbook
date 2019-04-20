@@ -139,24 +139,123 @@ else
 }
 ```
 
-Object-oriented languages give us a powerful tool, polymorphism, for handling complex conditional cases. Designs that use polymorphism can be easier to read and maintain, and express their intent more clearly. But it’s not always easy to make the transition, especially when we have ELSE in our back pocket. So as part of this exercise, you’re not allowed to use ELSE. Try the [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern); it may help in some situations. 
+**a) Early Return**: If your validating data, than to avoid else you can use early return. E.g You have a  java method which takes list as an argument and returns last index of list. 
+:x: Wrong way:
+```java
+private Integer getFinalIndexOfList(List<String> names)  
+{  
+    if (CollectionUtils.isEmpty(names))  
+    {  
+        return null;  
+    }  
+    else   
+	{  
+        return names.size() - 1;  
+    }  
+}
+```
+:+1: Right way:
+```java
+private Integer getFinalIndexOfList(List<String> names)
+{
+	if (CollectionUtils.isEmpty(names))
+	{
+		return null;
+	}
+	
+	return names.size() - 1;
+}
+```
 
-See also:
+**b) Polymorphism**: 
+Object-oriented languages give us a powerful tool, polymorphism, for handling conditional cases, but on the other hand we should not hate if/else or conditionals more than we should. Introducing polymorphism too soon will complicate your code.
+Lets take a quick example: 
+We have a class that processes order, and discount is deducted from total amount of item based on the type of customer.
+**Solution with conditionals:**  
+Customer.java
+```java
+public class Customer
+{
+	public String type;
+}
+```
+ProcessOrder.java
+```java
+public class ProcessOrder
+{
+	public int getOrderGrandTotal(Customer customer, int subTotal)
+	{
+		if (customer.type.equals("EMPLOYEE"))
+		{
+			return subTotal - 20;
+		}
+		else if (customer.type.equals("NON_EMPLOYEE"))
+		{
+			return subTotal - 10;
+		}
+		return subsTotal;
+	}
+}
+```
+**Solution with polymorphism:**
+Customer.java
+```java
+public abstract class Customer  
+{  
+    public abstract int getDiscount();  
+}
+```
 
-- [Strategy Pattern](https://en.wikipedia.org/wiki/Strategy_pattern)
-- [State Pattern](https://en.wikipedia.org/wiki/State_pattern)
+Employee.java
+```java
+public class Employee extends Customer  
+{  
+    @Override  
+    public int getDiscount()  
+    {  
+        return 20;  
+    }  
+}
+```
 
-**Early Return**: for parameter validation return immediately
+NonEmployee.java
+```java
+public class NonEmployee extends Customer  
+{  
+    @Override  
+    public int getDiscount()  
+    {  
+        return 10;  
+    }  
+}
+```
 
-**Polymorphism**: is an alternative to if/else/switch statements. For instance, it is possible to use Strategy Pattern or inheritence to replace every clause in the control statement.
-
-There are variations to how the "right" strategy is obtained.
-
-- caller provides the strategy (as a method argument)
-- strategy is memorised as member variable
-- strategy is obtained from a map (or any other lookup mechanism)
+ProcessOrder.java
+```java
+public class ProcessOrder  
+{  
+    public int getOrderGrandTotal(Customer customer, int itemAmount)  
+    {  
+        return itemAmount - customer.getDiscount();  
+    }  
+}
+```
 
 **Null Object or Optional or Empty list**: Dramatically reduces the need for null checking.
+Lets take an example of lists, we have a invoice class has list of line items, whenever null list is passed to invoice constructor, set it to empty list to avoid null check wherever invoice class is used. 
+```java
+public class Invoice
+{
+	private final String id;
+	private final List<LineItem> lineItems;
+	
+	public Invoice(String id, List<LineItem> linesItems)
+	{
+		this.id = id;
+		this.lineItems = lineItems == null ? new ArrayList() : lineItems;
+	}
+}
+```
 
 ## 3. Wrap All Primitives And Strings
 
