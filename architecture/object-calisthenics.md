@@ -372,9 +372,6 @@ public class SMSSubscription
     }  
 }
 ```
-
-
-
 See also:
 
 - [Primitive Obsession Anti-Pattern](http://c2.com/cgi/wiki?PrimitiveObsession)
@@ -464,71 +461,131 @@ The simplest way to avoid setters is to hand the values to the constructor metho
 
 DTOs are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have getters.
 
-This rules is partially related to Domain Driven Design.
-
-- Classes should not contain public properties.
-- Method should represent behavior, not set values.
-
-:x:
-
-```php
-class ImmutableBankAccount
-{
-    public $currency = 'USD';
+Lets explain in detail why we should avoid getter and setters methods:
+Lets say we have a class Car1.java
+```java
+public class Car1 {
+  public Engine engine;
+}
 ```
-```php
-    private $amount;
+Now I want to point out that there is not functional difference between a public class with public member and a public class bellow with private member having a getter and setter method. 
+```java
+public class Car2 {
+  private Engine engine;
 
-    public function setAmount(int $amount)
+  public Engine getEngine() {
+    return engine;
+  }
+
+  public void setEngine(Engine engine) {
+    this.engine = engine;
+  }
+}
+```
+I can read and write engine of car in both classes in almost the same way:
+```java
+// Car1 member read and write
+Car1 car1 = new Car1();
+logger.debug("Car1's engine is {}.", car1.engine);
+car1.engine = new HemiEngine();
+
+// Car2 member read and write
+Car2 car2 = new Car2();
+logger.debug("Car2's engine is {}.", car2.getEngine());
+car2.setEngine(new HemiEngine();
+```
+Point of this example is to show that, I can anything with Car1, I can do with Car2 and vice versa. Whenever we see a a public member in a class, very first thought that crosses our mind is "its not safe", but on the other side a getter/setter method a sigh of relief. 
+
+**Some major disadvantages:**
+**Getter/Setter expose implementation level details:**
+Lets save we have api of Car
+```
+| Car                             |
+|---------------------------------|
+| + getGasAmount(): Liters        |
+| + setGasAmount(liters: Liters)  |
+|_________________________________|
+```
+If you assume that this is a gas-powered car that internally tracks gasoline in liters, then you are going to be right 99.999% of the time. That's really bad and this is why getters and setters expose implementation / violate encapsulation. Now this code is brittle and hard to change. What if we want a hydrogen-fuelled car? We have to throw out this whole Car class now. It would have been better just to have behavior methods like `fillUp(Fuel fuel)`.
+
+**Getters and setters can actually be dangerous**
+Using getter method blindly can actually cause problems. Lets say we have debt class and there is a list of debts inside. 
+```java
+public class Debts 
+{
+  private List<Debt> debts;
+
+  public List<Debt> getDebts() 
+  {
+    return debts;
+  }
+}
+```
+Class seems pretty reasonable. I can use this class to get debts and create a report. Simple as that. 
+But, Can I add more debts? There is no setter method. How? 
+Because Java returns reference for collections. 
+```java
+Debts scottsDebts = DebtTracker.lookupDebts(scott);
+List<Debt> debts = scottsDebts.getDebts();
+
+// add the debt outside scotts debts, outside the debt tracker even
+debts.add(new Debt(new BigDecimal(1000000))); 
+
+// prints a new entry with one million dollars
+DebtTracker.lookupDebts(scott).printReport();
+```
+One way to guard against this is to return a copy instead. Another way is to have an immutable member. The best way, though, is to not expose the member in any way at all and instead bring the behavior that manipulates the member inside the class. This achieves full isolation of the implementation and creates only one place to change.
+
+Let see how we can avoid getter and setter methods: 
+
+**Tell, Dont Ask**
+Rule is very simple, classes should not have getter/setter method which simple get/set values, rather there should be method which represent behaviors. Lets explain it with a example.
+We have *BankAccount* class which has amount, in below implementation we have setter method with set amount.
+```java
+public class BankAccount
+{
+    private final int amount;
+	
+	public BankAccount(int amount)
+	{
+		this.amount = amount;
+	}
+	
+    public void setAmount(int amount)
     {
-        $this->amount = $amount;
+        this.amount = amount;
     }
 }
 ```
-
-:+1:
-
-```php
-class ImmutableBankAccount
+This is the code we need to avoid, because it exposes implementation level details. Lets apply the rule and add methods which represent behavior.
+```java
+public class BankAccount
 {
-    private $currency = 'USD';
-```
-```php
-    private $amount;
-
-    public function withdrawAmount(int $withdrawnAmount)
+    private final int amount;
+	
+	public BankAccount(int amount)
+	{
+		this.amount = amount;
+	}
+	
+    public void depositAmount(int amount)
     {
-        $this->amount -= $withdrawnAmount;
+        this.amount+=amount;
     }
+	
+	public void withdrawAmount(int amount)
+	{
+		this.amount -= amount;
+	}
 }
 ```
+This way, implementation level details are hidden and even if you have have to change the way amount is kept in account, your exposed methods will remain the same, providing the same behavior. 
 
-:x:
+There are some places where getter/setter method actually make sense like before updating the state in current object according to some input, we validate the input. The input validation is additional functionality.
+Purpose of this point to avoid getter/setter methods as much as you can, but if you can think there is no other way, you need to careful while writing your code by keep above points in mind.
 
-```
-q.setQuality(q.getQuality() - 1);
-```
-
-:+1:
-
-```
-q.decrease();
-```
-
-:x:
-
-```
-q.quality = 0;
-```
-
-:+1:
-
-```
-q.dropToZero();
-```
-
-> Rule: Tell don't ask!
 
 ## References
 
 - https://github.com/TheLadders/object-calisthenics
+- https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m
