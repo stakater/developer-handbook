@@ -450,10 +450,16 @@ What’s challenging about creating such small classes is that there are often g
 
 ## 8. Do Not Use Classes With More Than Two Instance Variables 
 
-**TODO**
 
-Object Model decomposition
-Class Cohesion
+I thought people would yell at me while introducing this rule, but it didn’t happen. This rule is probably the hardest one, but it promotes  **high cohesion**, and  **better encapsulation**.
+
+A picture is worth a thousand words, so here is the explanation of this rule in picture. 
+
+![](https://raw.github.com/TheLadders/object-calisthenics/master/assets/2-instance-variables.png)
+
+Source:  [https://github.com/TheLadders/object-calisthenics#rule-8-no-classes-with-more-than-two-instance-variables](https://github.com/TheLadders/object-calisthenics#rule-8-no-classes-with-more-than-two-instance-variables).
+
+The main question was  _Why two attributes?_  My answer was  _Why not?_  Not the best explanation but, in my opinion, the main idea is to distinguish  **two kinds of classes**, those that  **maintain the state of a single instance variable**, and those that  **coordinate two separate variables**.  **Two**  is an arbitrary choice that forces you to decouple your classes a lot.
 
 ## 9. Do not Use Getters and Setters
 
@@ -536,45 +542,38 @@ DebtTracker.lookupDebts(scott).printReport();
 ```
 One way to guard against this is to return a copy instead. Another way is to have an immutable member. The best way, though, is to not expose the member in any way at all and instead bring the behavior that manipulates the member inside the class. This achieves full isolation of the implementation and creates only one place to change.
 
-Let see how we can avoid getter and setter methods: 
+Let see how we can avoid getter/setter methods: 
 
 **Tell, Dont Ask**
 Rule is very simple, classes should not have getter/setter method which simple get/set values, rather there should be method which represent behaviors. Lets explain it with a example.
 We have *BankAccount* class which has amount, in below implementation we have setter method with set amount.
 ```java
-public class BankAccount
-{
+public class BankAccount {
     private final int amount;
 	
-	public BankAccount(int amount)
-	{
+	public BankAccount(int amount) {
 		this.amount = amount;
 	}
 	
-    public void setAmount(int amount)
-    {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 }
 ```
 This is the code we need to avoid, because it exposes implementation level details. Lets apply the rule and add methods which represent behavior.
 ```java
-public class BankAccount
-{
+public class BankAccount {
     private final int amount;
 	
-	public BankAccount(int amount)
-	{
+	public BankAccount(int amount) {
 		this.amount = amount;
 	}
 	
-    public void depositAmount(int amount)
-    {
+    public void depositAmount(int amount) {
         this.amount+=amount;
     }
 	
-	public void withdrawAmount(int amount)
-	{
+	public void withdrawAmount(int amount) {
 		this.amount -= amount;
 	}
 }
@@ -589,3 +588,4 @@ Purpose of this point to avoid getter/setter methods as much as you can, but if 
 
 - https://github.com/TheLadders/object-calisthenics
 - https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m
+- [https://williamdurand.fr/2013/06/03/object-calisthenics](https://williamdurand.fr/2013/06/03/object-calisthenics)
