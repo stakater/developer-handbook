@@ -139,24 +139,123 @@ else
 }
 ```
 
-Object-oriented languages give us a powerful tool, polymorphism, for handling complex conditional cases. Designs that use polymorphism can be easier to read and maintain, and express their intent more clearly. But it’s not always easy to make the transition, especially when we have ELSE in our back pocket. So as part of this exercise, you’re not allowed to use ELSE. Try the [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern); it may help in some situations. 
+**a) Early Return**: If your validating data, than to avoid else you can use early return. E.g You have a  java method which takes list as an argument and returns last index of list. 
+:x: Wrong way:
+```java
+private Integer getFinalIndexOfList(List<String> names)  
+{  
+    if (CollectionUtils.isEmpty(names))  
+    {  
+        return null;  
+    }  
+    else   
+	{  
+        return names.size() - 1;  
+    }  
+}
+```
+:+1: Right way:
+```java
+private Integer getFinalIndexOfList(List<String> names)
+{
+	if (CollectionUtils.isEmpty(names))
+	{
+		return null;
+	}
+	
+	return names.size() - 1;
+}
+```
 
-See also:
+**b) Polymorphism**: 
+Object-oriented languages give us a powerful tool, polymorphism, for handling conditional cases, but on the other hand we should not hate if/else or conditionals more than we should. Introducing polymorphism too soon will complicate your code.
+Lets take a quick example: 
+We have a class that processes order, and discount is deducted from total amount of item based on the type of customer.
+**Solution with conditionals:**  
+Customer.java
+```java
+public class Customer
+{
+	public String type;
+}
+```
+ProcessOrder.java
+```java
+public class ProcessOrder
+{
+	public int getOrderGrandTotal(Customer customer, int subTotal)
+	{
+		if (customer.type.equals("EMPLOYEE"))
+		{
+			return subTotal - 20;
+		}
+		else if (customer.type.equals("NON_EMPLOYEE"))
+		{
+			return subTotal - 10;
+		}
+		return subsTotal;
+	}
+}
+```
+**Solution with polymorphism:**
+Customer.java
+```java
+public abstract class Customer  
+{  
+    public abstract int getDiscount();  
+}
+```
 
-- [Strategy Pattern](https://en.wikipedia.org/wiki/Strategy_pattern)
-- [State Pattern](https://en.wikipedia.org/wiki/State_pattern)
+Employee.java
+```java
+public class Employee extends Customer  
+{  
+    @Override  
+    public int getDiscount()  
+    {  
+        return 20;  
+    }  
+}
+```
 
-**Early Return**: for parameter validation return immediately
+NonEmployee.java
+```java
+public class NonEmployee extends Customer  
+{  
+    @Override  
+    public int getDiscount()  
+    {  
+        return 10;  
+    }  
+}
+```
 
-**Polymorphism**: is an alternative to if/else/switch statements. For instance, it is possible to use Strategy Pattern or inheritence to replace every clause in the control statement.
-
-There are variations to how the "right" strategy is obtained.
-
-- caller provides the strategy (as a method argument)
-- strategy is memorised as member variable
-- strategy is obtained from a map (or any other lookup mechanism)
+ProcessOrder.java
+```java
+public class ProcessOrder  
+{  
+    public int getOrderGrandTotal(Customer customer, int itemAmount)  
+    {  
+        return itemAmount - customer.getDiscount();  
+    }  
+}
+```
 
 **Null Object or Optional or Empty list**: Dramatically reduces the need for null checking.
+Lets take an example of lists, we have a invoice class has list of line items, whenever null list is passed to invoice constructor, set it to empty list to avoid null check wherever invoice class is used. 
+```java
+public class Invoice
+{
+	private final String id;
+	private final List<LineItem> lineItems;
+	
+	public Invoice(String id, List<LineItem> linesItems)
+	{
+		this.id = id;
+		this.lineItems = lineItems == null ? new ArrayList() : lineItems;
+	}
+}
+```
 
 ## 3. Wrap All Primitives And Strings
 
@@ -168,6 +267,111 @@ In the Java language, int is a primitive, not a real object, so it obeys differe
 
 Small objects like Hour or Money also give us an obvious place to put behavior that would otherwise have been littered around other classes. This becomes especially true when you apply Rule 9, and only the small object can access the value. Note that this does not mean using object wrappers that are available in languages like Java. Using an Integer instead of an int confers no additional advantages in terms of expressing intent, whereas using a wrapper that expresses meaning within the problem domain both clarifies its usage and makes intent evident.
 
+Example: 
+You have a SMS subscription which has a quantity and is valid for a month and year, you have to store month a as integer. 1 will represent January and 12 will represent December, quantity of SMS can be minimum 1 and maximum 250 and year cannot be less than 1970.  
+One way of doing it is:
+```java
+public class SMSSubscription
+{
+	private String id;
+	private int quantity;
+	private int month;
+	private int year;
+	
+	public SMSSubscription(String id, int quantity, int month, int year)  
+	{  
+	    this.id = id;  
+	  
+	    if (quantity < 1 || quantity > 250)  
+	    {  
+	        throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250");  
+	    }  
+	    this.quantity = quantity;  
+	  
+	    if (month < 1 || month > 12)  
+	    {  
+	        throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12");  
+	    }  
+	    this.month = month;  
+	  
+	    if (year < 1970)  
+	    {  
+	        throw new IllegalArgumentException("Year cannot be less than 1970");  
+	    }  
+	    this.year = year;  
+	}
+}
+```
+You can clearly see in above code that SMSSubsctiption is doing more then what it is supposed to do. Quantity, month and year has their own specific behaviors, which must be encapsulated. 
+
+Lets do it in a right way, first we will encapsulate quantity, month and year.
+**Quantity.java**
+```java
+public class Quantity  
+{  
+    private int quantity;  
+  
+    public Quantity(int quantity)  
+    {  
+        if (quantity < 1 || quantity > 250)  
+        {  
+            throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250");  
+        }  
+        this.quantity = quantity;  
+    }  
+}
+```
+ **Month.java**
+ ```java
+ public class Month  
+{  
+    private int month;  
+  
+    public Month(int month)  
+    {  
+        if (month < 1 || month > 12)  
+        {  
+            throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12");  
+        }  
+        this.month = month;  
+    }  
+}
+ ```
+ **Year.java**
+ ```java
+ public class Year  
+{  
+    private int year;  
+    
+    public Year(int year)  
+    {  
+        if (year < 1970)  
+        {  
+            throw new IllegalArgumentException("Year cannot be less than 1970");  
+        }  
+        this.year = year;  
+    }  
+}
+ ```
+ and now this this is how SMSSubscription looks like:
+**SMSSubscription.java**
+```java
+public class SMSSubscription  
+{  
+    private String id;  
+    private Quantity quantity;  
+    private Month month;  
+    private Year year;  
+  
+    public SMSSubscription(String id, Quantity quantity, Month month, Year year)  
+    {  
+        this.id = id;  
+        this.quantity = quantity;  
+        this.month = month;  
+        this.year = year;  
+    }  
+}
+```
 See also:
 
 - [Primitive Obsession Anti-Pattern](http://c2.com/cgi/wiki?PrimitiveObsession)
@@ -246,10 +450,16 @@ What’s challenging about creating such small classes is that there are often g
 
 ## 8. Do Not Use Classes With More Than Two Instance Variables 
 
-**TODO**
 
-Object Model decomposition
-Class Cohesion
+I thought people would yell at me while introducing this rule, but it didn’t happen. This rule is probably the hardest one, but it promotes  **high cohesion**, and  **better encapsulation**.
+
+A picture is worth a thousand words, so here is the explanation of this rule in picture. 
+
+![](https://raw.github.com/TheLadders/object-calisthenics/master/assets/2-instance-variables.png)
+
+Source:  [https://github.com/TheLadders/object-calisthenics#rule-8-no-classes-with-more-than-two-instance-variables](https://github.com/TheLadders/object-calisthenics#rule-8-no-classes-with-more-than-two-instance-variables).
+
+The main question was  _Why two attributes?_  My answer was  _Why not?_  Not the best explanation but, in my opinion, the main idea is to distinguish  **two kinds of classes**, those that  **maintain the state of a single instance variable**, and those that  **coordinate two separate variables**.  **Two**  is an arbitrary choice that forces you to decouple your classes a lot.
 
 ## 9. Do not Use Getters and Setters
 
@@ -257,71 +467,125 @@ The simplest way to avoid setters is to hand the values to the constructor metho
 
 DTOs are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have getters.
 
-This rules is partially related to Domain Driven Design.
-
-- Classes should not contain public properties.
-- Method should represent behavior, not set values.
-
-:x:
-
-```php
-class ImmutableBankAccount
-{
-    public $currency = 'USD';
+Lets explain in detail why we should avoid getter and setters methods:
+Lets say we have a class Car1.java
+```java
+public class Car1 {
+  public Engine engine;
+}
 ```
-```php
-    private $amount;
+Now I want to point out that there is not functional difference between a public class with public member and a public class bellow with private member having a getter and setter method. 
+```java
+public class Car2 {
+  private Engine engine;
 
-    public function setAmount(int $amount)
-    {
-        $this->amount = $amount;
+  public Engine getEngine() {
+    return engine;
+  }
+
+  public void setEngine(Engine engine) {
+    this.engine = engine;
+  }
+}
+```
+I can read and write engine of car in both classes in almost the same way:
+```java
+// Car1 member read and write
+Car1 car1 = new Car1();
+logger.debug("Car1's engine is {}.", car1.engine);
+car1.engine = new HemiEngine();
+
+// Car2 member read and write
+Car2 car2 = new Car2();
+logger.debug("Car2's engine is {}.", car2.getEngine());
+car2.setEngine(new HemiEngine();
+```
+Point of this example is to show that, I can anything with Car1, I can do with Car2 and vice versa. Whenever we see a a public member in a class, very first thought that crosses our mind is "its not safe", but on the other side a getter/setter method a sigh of relief. 
+
+**Some major disadvantages:**
+**Getter/Setter expose implementation level details:**
+Lets save we have api of Car
+```
+| Car                             |
+|---------------------------------|
+| + getGasAmount(): Liters        |
+| + setGasAmount(liters: Liters)  |
+|_________________________________|
+```
+If you assume that this is a gas-powered car that internally tracks gasoline in liters, then you are going to be right 99.999% of the time. That's really bad and this is why getters and setters expose implementation / violate encapsulation. Now this code is brittle and hard to change. What if we want a hydrogen-fuelled car? We have to throw out this whole Car class now. It would have been better just to have behavior methods like `fillUp(Fuel fuel)`.
+
+**Getters and setters can actually be dangerous**
+Using getter method blindly can actually cause problems. Lets say we have debt class and there is a list of debts inside. 
+```java
+public class Debts 
+{
+  private List<Debt> debts;
+
+  public List<Debt> getDebts() 
+  {
+    return debts;
+  }
+}
+```
+Class seems pretty reasonable. I can use this class to get debts and create a report. Simple as that. 
+But, Can I add more debts? There is no setter method. How? 
+Because Java returns reference for collections. 
+```java
+Debts scottsDebts = DebtTracker.lookupDebts(scott);
+List<Debt> debts = scottsDebts.getDebts();
+
+// add the debt outside scotts debts, outside the debt tracker even
+debts.add(new Debt(new BigDecimal(1000000))); 
+
+// prints a new entry with one million dollars
+DebtTracker.lookupDebts(scott).printReport();
+```
+One way to guard against this is to return a copy instead. Another way is to have an immutable member. The best way, though, is to not expose the member in any way at all and instead bring the behavior that manipulates the member inside the class. This achieves full isolation of the implementation and creates only one place to change.
+
+Let see how we can avoid getter/setter methods: 
+
+**Tell, Dont Ask**
+Rule is very simple, classes should not have getter/setter method which simple get/set values, rather there should be method which represent behaviors. Lets explain it with a example.
+We have *BankAccount* class which has amount, in below implementation we have setter method with set amount.
+```java
+public class BankAccount {
+    private final int amount;
+	
+	public BankAccount(int amount) {
+		this.amount = amount;
+	}
+	
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }
 ```
-
-:+1:
-
-```php
-class ImmutableBankAccount
-{
-    private $currency = 'USD';
-```
-```php
-    private $amount;
-
-    public function withdrawAmount(int $withdrawnAmount)
-    {
-        $this->amount -= $withdrawnAmount;
+This is the code we need to avoid, because it exposes implementation level details. Lets apply the rule and add methods which represent behavior.
+```java
+public class BankAccount {
+    private final int amount;
+	
+	public BankAccount(int amount) {
+		this.amount = amount;
+	}
+	
+    public void depositAmount(int amount) {
+        this.amount+=amount;
     }
+	
+	public void withdrawAmount(int amount) {
+		this.amount -= amount;
+	}
 }
 ```
+This way, implementation level details are hidden and even if you have have to change the way amount is kept in account, your exposed methods will remain the same, providing the same behavior. 
 
-:x:
+There are some places where getter/setter method actually make sense like before updating the state in current object according to some input, we validate the input. The input validation is additional functionality.
+Purpose of this point to avoid getter/setter methods as much as you can, but if you can think there is no other way, you need to careful while writing your code by keep above points in mind.
 
-```
-q.setQuality(q.getQuality() - 1);
-```
-
-:+1:
-
-```
-q.decrease();
-```
-
-:x:
-
-```
-q.quality = 0;
-```
-
-:+1:
-
-```
-q.dropToZero();
-```
-
-> Rule: Tell don't ask!
 
 ## References
 
 - https://github.com/TheLadders/object-calisthenics
+- https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m
+- [https://williamdurand.fr/2013/06/03/object-calisthenics](https://williamdurand.fr/2013/06/03/object-calisthenics)
