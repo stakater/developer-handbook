@@ -165,6 +165,61 @@ This section defines a staging environment as a test environment that is identic
 
 The staging environment should include any data stores that will be in your production system. The data in this data store will be more complete than at the individual microservice level, as these tests are testing more complicated interactions. Use tools to inject data into tests for you. Tools allow you to have more control over the flow of data around the system
 
+### E2E Automation tools
+
+#### Selenium
+Selenium WebDriver is the open source automation tool we all know and love. With a history starting from the humble beginnings of IDE and transforming into Selenium 2.0 a.k.a. Selenium WebDriver, Selenium has become a foundation of many modern software teams' test automation toolkits.
+
+Most are familiar with Selenium's use — it makes direct calls to the browser using each browser's native support for automation. By writing a script in Selenese using the compatible programming languages, you can run tests that work as if you were driving the browser yourself.
+
+While the learning curve can be steep for Selenium and requires the knowledge of at least one programming language, it has a vast community of active users and even boasts an annual user conference.
+
+##### PROS
+* Support multiple languages such as ruby, java , C#, python,perl, php
+* Crossbrowser & paralell testing through saucelab, browserstack
+* Support multiple automation frameworks such as PageObjectModel, Cucumber, testng etc etc
+
+##### CONS
+* Window based application can't be automated
+* Not suitable for Angular based application
+* Difficult to manage tool dependencies & libraries
+* Selenium doesn't directly talk to browser
+* By default no video capturing, if you are running tests in headless browser
+
+#### Cypress
+So how is Cypress different from Selenium, and how is it the same?
+
+First, Cypress is said to have an easier onboarding than Selenium, where all you need to do is install the .exe to get up and running sine all the drivers and dependencies are automatically installed. With Selenium, on the other hand, you need to spend a little more time getting everything up and running.
+
+Cypress almost acts as a "freemium" model. Similiar to Selenium which is entirely open sourced unless you integrate with a paid tool, you can also add to Cypress's core capabilities by leveraging the paid dashboard which includes a test runner that allows you to easily debug tests with DOM snapshots and includes video storage for private projects.
+
+Selenium and Cypress differ in the way of their architecture, as well. Selenium is made up of bindings, or libraries, and the WebDriver, which controls the browsers. These two components work through the JSON network.
+
+Alternatively, while Cypress is used for UI testing, it uses its own unique DOM manipulation and runs directly in the browser with no network communication. Cypress is often cited as a developer-friendly test automation tool for this reason since this often causes frustrations for them in Selenium.
+
+Having a different architecture on top of an Electron app also allows Cypress to be so close to the web application under test that we can do things that you can't do in Selenium such as stubbing DOM APIs.
+
+##### PROS
+* No need to worry about synchronization issue especially visibility of elements, button or any DOM elements
+* Easy to setup test development environment through just one click
+* Ability to capture video recording of tests and it's very useful when tests would have been running in headless browser
+* Cypress dashboard service
+* Execution of tests is extremely fast because cypress directly talks to browsers
+* Stubbing DOM APIs
+* Most suitable to Reactjs based application
+
+##### CONS
+* Window based application can't be automated
+* Only support chrome browser, so it's crossbrowser compatibility testing is not possible
+* Doesn't work out of the box with OAuth/OpenID
+* Only support javascript language for test development
+* Only support Mocha & Chai framework
+* Cypress doesn't handle redirects within your applications. Such as if you are going to automate google
+  & facebook login scenarios in your application through cypress then you are going have a deep trouble. 
+  You will have to write hooks or stubs to achieve this but it's a daunting task
+
+**If you don't know what you're doing when it comes to building out a test automation framework, Cypress may be a good option**
+
 ## 6. Synthetic Transactions (Tests running production)
 
 Tests carried out on the live production system. They could be set of E2E tests which are continuously running in production and then raise alerts if something fails.
@@ -178,60 +233,6 @@ Gatling is a good tool!
 Tests should be automated as part of the build, release, run (delivery) pipeline.
 
 These three sets of tests, combined, should provide an extremely high level of confidence that any introduced change has not broken existing functionality.
-
-## 8. E2E Automation tools
-### Selenium
-Selenium WebDriver is the open source automation tool we all know and love. With a history starting from the humble beginnings of IDE and transforming into Selenium 2.0 a.k.a. Selenium WebDriver, Selenium has become a foundation of many modern software teams' test automation toolkits.
-
-Most are familiar with Selenium's use — it makes direct calls to the browser using each browser's native support for automation. By writing a script in Selenese using the compatible programming languages, you can run tests that work as if you were driving the browser yourself.
-
-While the learning curve can be steep for Selenium and requires the knowledge of at least one programming language, it has a vast community of active users and even boasts an annual user conference.
-
-#### PROS
-* Support multiple languages such as ruby, java , C#, python,perl, php
-* Crossbrowser & paralell testing through saucelab, browserstack
-* Support multiple automation frameworks such as PageObjectModel, Cucumber, testng etc etc
-
-#### CONS
-* Window based application can't be automated
-* Not suitable for Angular based application
-* Difficult to manage tool dependencies & libraries
-* Selenium doesn't directly talk to browser
-* By default no video capturing, if you are running tests in headless browser
-
-### Cypress
-So how is Cypress different from Selenium, and how is it the same?
-
-First, Cypress is said to have an easier onboarding than Selenium, where all you need to do is install the .exe to get up and running sine all the drivers and dependencies are automatically installed. With Selenium, on the other hand, you need to spend a little more time getting everything up and running.
-
-Cypress almost acts as a "freemium" model. Similiar to Selenium which is entirely open sourced unless you integrate with a paid tool, you can also add to Cypress's core capabilities by leveraging the paid dashboard which includes a test runner that allows you to easily debug tests with DOM snapshots and includes video storage for private projects.
-
-Selenium and Cypress differ in the way of their architecture, as well. Selenium is made up of bindings, or libraries, and the WebDriver, which controls the browsers. These two components work through the JSON network.
-
-Alternatively, while Cypress is used for UI testing, it uses its own unique DOM manipulation and runs directly in the browser with no network communication. Cypress is often cited as a developer-friendly test automation tool for this reason since this often causes frustrations for them in Selenium.
-
-Having a different architecture on top of an Electron app also allows Cypress to be so close to the web application under test that we can do things that you can't do in Selenium such as stubbing DOM APIs.
-
-#### PROS
-* No need to worry about synchronization issue especially visibility of elements, button or any DOM elements
-* Easy to setup test development environment through just one click
-* Ability to capture video recording of tests and it's very useful when tests would have been running in headless browser
-* Cypress dashboard service
-* Execution of tests is extremely fast because cypress directly talks to browsers
-* Stubbing DOM APIs
-* Most suitable to Reactjs based application
-
-#### CONS
-* Window based application can't be automated
-* Only support chrome browser, so it's crossbrowser compatibility testing is not possible
-* Doesn't work out of the box with OAuth/OpenID
-* Only support javascript language for test development
-* Only support Mocha & Chai framework
-* Cypress doesn't handle redirects within your applications. Such as if you are going to automate google
-  & facebook login scenarios in your application through cypress then you are going have a deep trouble. 
-  You will have to write hooks or stubs to achieve this but it's a daunting task
-
- **If you don't know what you're doing when it comes to building out a test automation framework, Cypress may be a good option**
 
 # References
 
