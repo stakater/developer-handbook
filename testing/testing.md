@@ -1,4 +1,4 @@
-# Microservices Testing
+# Backend Testing (Microservice)
 
 how to test microservices based applications?
 
@@ -234,28 +234,29 @@ Tests should be automated as part of the build, release, run (delivery) pipeline
 
 These three sets of tests, combined, should provide an extremely high level of confidence that any introduced change has not broken existing functionality.
 
-## 8. Frontend
+# Frontend Testing (Microfrontends)
 
 Usually question arises how to test frontend?
 
-### 8.1 Unit Tests
+### 1 Unit Tests
 
 - Business logic unit tests
 
-### 8.2 Component Tests
+### 2 Component Tests
 
 - e.g. click on button should open a date picker
 
-### 8.3 Integration Tests
+### 3 Integration Tests
 
 - Most of the tests should be written at this level
-- Test the accepted user scenarios
+- Test/verify the accepted user scenarios
+- CDC from frontend to backend?
 
-### 8.4 E2E Tests
+### 4 E2E Tests
 
 - Recommended to use Cypress
 
-### 8.5 Best Practices
+### 5 Best Practices
 
 - Test as a user; never test underlying implementation details; so, one can easily switch the technology
 - https://testing-library.com/
