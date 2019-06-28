@@ -62,7 +62,8 @@ module.exports = {
             {
                 title: 'Testing',
                 children: [
-                    '/testing/testing'
+                    '/testing/backend',
+                    '/testing/frontend'
                 ]
             },
             {
