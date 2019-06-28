@@ -157,36 +157,36 @@ End-to-end testing should also include the user interface. Tools such as Seleniu
 
 E2E tests are run in mock/stage environment.
 
-### Mock / Stage Environment
+### 5.1 Mock / Stage Environment
 
 This section defines a staging environment as a test environment that is identical (where possible) to the production environment. The build pipeline deploys successfully tested microservices to the staging environment where tests are run to verify the communication across logical boundaries, that is, between microservices. 
 
-#### Test data 
+#### 5.1.1 Test data 
 
 The staging environment should include any data stores that will be in your production system. The data in this data store will be more complete than at the individual microservice level, as these tests are testing more complicated interactions. Use tools to inject data into tests for you. Tools allow you to have more control over the flow of data around the system
 
-### E2E Automation tools
+### 5.2 E2E Automation tools
 
-#### Selenium
+#### 5.2.1 Selenium
 Selenium WebDriver is the open source automation tool we all know and love. With a history starting from the humble beginnings of IDE and transforming into Selenium 2.0 a.k.a. Selenium WebDriver, Selenium has become a foundation of many modern software teams' test automation toolkits.
 
 Most are familiar with Selenium's use — it makes direct calls to the browser using each browser's native support for automation. By writing a script in Selenese using the compatible programming languages, you can run tests that work as if you were driving the browser yourself.
 
 While the learning curve can be steep for Selenium and requires the knowledge of at least one programming language, it has a vast community of active users and even boasts an annual user conference.
 
-##### PROS
+##### 5.2.1.1 PROS
 * Support multiple languages such as ruby, java , C#, python,perl, php
 * Crossbrowser & paralell testing through saucelab, browserstack
 * Support multiple automation frameworks such as PageObjectModel, Cucumber, testng etc etc
 
-##### CONS
+##### 5.2.1.2 CONS
 * Window based application can't be automated
 * Not suitable for Angular based application
 * Difficult to manage tool dependencies & libraries
 * Selenium doesn't directly talk to browser
 * By default no video capturing, if you are running tests in headless browser
 
-#### Cypress
+#### 5.2.2 Cypress
 So how is Cypress different from Selenium, and how is it the same?
 
 First, Cypress is said to have an easier onboarding than Selenium, where all you need to do is install the .exe to get up and running sine all the drivers and dependencies are automatically installed. With Selenium, on the other hand, you need to spend a little more time getting everything up and running.
@@ -199,7 +199,7 @@ Alternatively, while Cypress is used for UI testing, it uses its own unique DOM 
 
 Having a different architecture on top of an Electron app also allows Cypress to be so close to the web application under test that we can do things that you can't do in Selenium such as stubbing DOM APIs.
 
-##### PROS
+##### 5.2.2.1 PROS
 * No need to worry about synchronization issue especially visibility of elements, button or any DOM elements
 * Easy to setup test development environment through just one click
 * Ability to capture video recording of tests and it's very useful when tests would have been running in headless browser
@@ -208,7 +208,7 @@ Having a different architecture on top of an Electron app also allows Cypress to
 * Stubbing DOM APIs
 * Most suitable to Reactjs based application
 
-##### CONS
+##### 5.2.2.2 CONS
 * Window based application can't be automated
 * Only support chrome browser, so it's crossbrowser compatibility testing is not possible
 * Doesn't work out of the box with OAuth/OpenID
@@ -224,7 +224,7 @@ Having a different architecture on top of an Electron app also allows Cypress to
 
 Tests carried out on the live production system. They could be set of E2E tests which are continuously running in production and then raise alerts if something fails.
  
-## 7. Stress/Load testing
+## 7. Stress/Load Testing
    
 Microservices should be able to handle unexpected loads. Stress testing should be used to test the bulk heads in your microservices. If a particular microservice is holding up requests, look at the configured bulk heads.
 
@@ -233,6 +233,32 @@ Gatling is a good tool!
 Tests should be automated as part of the build, release, run (delivery) pipeline.
 
 These three sets of tests, combined, should provide an extremely high level of confidence that any introduced change has not broken existing functionality.
+
+## 8. Frontend
+
+Usually question arises how to test frontend?
+
+### 8.1 Unit Tests
+
+- Business logic unit tests
+
+### 8.2 Component Tests
+
+- e.g. click on button should open a date picker
+
+### 8.3 Integration Tests
+
+- Most of the tests should be written at this level
+- Test the accepted user scenarios
+
+### 8.4 E2E Tests
+
+- Recommended to use Cypress
+
+### 8.5 Best Practices
+
+- Test as a user; never test underlying implementation details; so, one can easily switch the technology
+- https://testing-library.com/
 
 # References
 
