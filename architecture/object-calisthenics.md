@@ -500,7 +500,7 @@ Car2 car2 = new Car2();
 logger.debug("Car2's engine is {}.", car2.getEngine());
 car2.setEngine(new HemiEngine();
 ```
-Point of this example is to show that, I can anything with Car1, I can do with Car2 and vice versa. Whenever we see a a public member in a class, very first thought that crosses our mind is "its not safe", but on the other side a getter/setter method a sigh of relief. 
+Point of this example is to show that, I can anything with Car1, I can do with Car2 and vice versa. Whenever we see a public member in a class, very first thought that crosses our mind is "its not safe", but on the other side a getter/setter method a sigh of relief. 
 
 **Some major disadvantages:**
 **Getter/Setter expose implementation level details:**
