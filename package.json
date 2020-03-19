@@ -2,11 +2,12 @@
   "name": "developer-handbook",
   "version": "0.1.0",
   "dependencies": {
-    "ecstatic": "^3.3.2",
+    "ecstatic": "^4.1.2",
+    "http-server": "^0.12.1",
     "js-yaml": "^3.13.1",
-    "vuepress": "^0.14.2",
-    "http-server": "^0.11.1",
-    "lodash": "^4.17.13"
+    "lodash": "^4.17.15",
+    "minimist": "^1.2.2",
+    "vuepress": "^1.4.0"
   },
   "scripts": {
     "start": "vuepress dev",
