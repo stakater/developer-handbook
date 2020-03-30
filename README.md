@@ -1,7 +1,5 @@
 # developer-handbook
 
-A developer handbook!
-
 Local development
 
 ## MacOS
