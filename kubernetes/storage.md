@@ -34,7 +34,7 @@ For this reason, it is critical that the storage backing the filesystems where t
 
 It should be noted that one need not necessarily implement NVMe drives to get the best performance. Spreading the IOPS across hundreds of spindles on mechanical drives (such as is done with IBM Elastic Storage Servers) can also be very fast.
 
-Additionally, running NVMe drives with a slow virtual storage technology can render them no faster than a mechanical disk. For more information see Appendix A.
+Additionally, running NVMe drives with a slow virtual storage technology can render them no faster than a mechanical disk.
 
 See the On-Premesis Storage Infrastructure below for more infrastruction on recommendations on how to properly configure physical storage infrastructure for maximum performance.
 
