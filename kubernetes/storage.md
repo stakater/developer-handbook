@@ -24,7 +24,7 @@ Another alternative is to have a single k8s cluster which implements an internal
 
 ## Storage Types
 
-### Physical Storage
+### 1 - Physical Storage
 
 The physical storage which is used to back cloud storage technologies is important, especially in a kubernetes environment. kuberetes master nodes utilize an etcd database and in an HA environment, at least three different instances of etcd. etcd is a high IOPS (Input/Output Operations Per Second) application which writes a large volume of data to the disk. The performance of this database is critical to the performance of the cluster and the larger the cluster, the more data gets written
 
@@ -36,7 +36,7 @@ Additionally, running NVMe drives with a slow virtual storage technology can ren
 
 See the On-Premesis Storage Infrastructure below for more infrastruction on recommendations on how to properly configure physical storage infrastructure for maximum performance.
 
-### Block Storage
+### 2 - Block Storage
 
 Block storage technologies provide raw chunks of storage which usually must be formatted before they can be used.
 
@@ -46,7 +46,7 @@ Another example would be a Ceph RBD volume. Once created and mapped to a host, s
 
 In both of these cases the block storage volume must be formatted with a filesystem before it can be used. This detail is hidden in the Ceph kubernetes storage provider because the Ceph storage driver will put a filesystem on the block device prior to mounting to the container. It is still a block device, it has just been formatted prior to use.
 
-### File Storage
+### 3 - File Storage
 
 File storage is a storage device which is provided pre-formatted with a file system prior to making it available to be mounted.
 
@@ -54,7 +54,7 @@ Probaly the best example of this type of storage is NFS (Network File System). N
 
 Another good example of file storage would be CephFS.
 
-### Object Storage
+### 4 - Object Storage
 
 Object storage is simply a database which has some kind of an API which can be used for storing chunks of data, either formatted or unformatted. Object storage need not be mounted to a filesystem to be used, data is normally storage via REST API calls or SQL commands.
 
