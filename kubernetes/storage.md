@@ -14,6 +14,8 @@ Deploying a workload storage solution as a part of a cluster (internal storage) 
 
 storage provided by an external service (external storage).
 
+### Internal or External?
+
 The use case will determine which you choose to deploy.
 
 If your objective is to have a large storage solution which can be consumed by multiple kubernetes clusters or non-kubernetes workloads, then your solution should include an instance of the storage provider which is external to the k8s cluster and then integrate your k8s instance with that storage provider via storage classes.
@@ -65,3 +67,35 @@ In other cases, applications could consume object storage which is hosted somewh
 Examples of object storage technologies would be Redis, CouchDB/Cloudant, minio, mongoDB, mariaDB, etc.
 
 Example of hosted object storage technologies woudl be cloudant.com, redis.com, or an existing DB2 database hosted on legacy infrastructure in the enterprise.
+
+## On-Premises Storage Infrastructure
+
+### SAN (Storage Area Network) vs Converged Networking
+
+There has been a significant amount of discussion around the topic of converged or hyper-converted networks. A converged network is one where data and storage network traffic are combined onto a single infrastructure. The topic is much more broad than this simple statement, but this is the aspect that is of most concern to the cloud storage topic.
+
+Experience shows that a converged or hyper-conconverged infrastructure may or may not provide better performance based on a number of factors. We will not attempt to make a recommendation on whether a company should use SAN or a converged or hyper-converged infrastructure, but one thing that will be clear from doing benchmarking is that what is advertised to be better, faster technology may not be if it is not implemented in the right way.
+
+Prior to choosing a storage technology it is highly recommended that proper performance testing be performed to ensure that the architecture to be implemented provides the performance that is desired and expected.
+
+Experience shows that storage provider technologies which provide block storage over the data network (such as Ceph or Gluster) consume a significant number of CPU cycles serving up disk I/O over a network which is designed for traditional data.
+
+SAN storage technologies are designed for disk I/O traffic and the performance of an 8GB SAN will greatly out-perform a 10GB data network in a converged environment.
+
+### Storage Network Congestion in a kubernetes Environment
+
+Storage traffic patterns in a kubernetes environment is significantly different than in a traditional physical or even virtual environment.
+
+Historically, physical infrastructures were easy enough to understand because each physical machine was an endpoint and occupied one port on a SAN switch. Communication paths over the SAN are well known and constant.
+
+The advent of virtual networks changed things a bit in that in a virtual environment you could now have many more volumes mapped to a single physical host. In an HPC (High Performance Computing) environment, a single physical node could have dozens or more virtual machines, each of which could have a volume served up over the SAN.
+
+Ultimately, however, virtual machines do not move around very much and when they do, they move to other physical machines utilizing the same mount points which were setup ahead of time and do not change.
+
+In the world of kubernetes, however, workloads are moved around in the infrastructure and scale out and back with regularity. As workloads move to different worker nodes these volumes are moved around to various machines. This leads to a situation where storage traffic can become significantly unbalanced on the SAN and a single compute node could potentially have hundreds of endpoints depending on the number of containers running on the node.
+
+SAN networks can become congested not only because of high traffic, but also because of a high number of endpoints behind a single SAN switch port. In an HPC environment where a single physical node could host dozens of virtual machines and each virtual machine could be hosting hundreds or even thousands of endpoints in a dynamically provisoined environment, network congestion can become a significant problem.
+
+When the SAN network becomes congested, it can backup across the SAN infrastructure negatively impacting completely unrelated workloads.
+
+In relatively small kubernetes environments, this type of congestion is normally not a problem, however, large clusters with hundreds or thousands of worker nodes or an environment which is hosting dozens or hundreds of smaller clusters, significant network congestion can be a significant problem, especially when workload storage is being provided inside the cluster itself (vs externally hosted cloud storage).
