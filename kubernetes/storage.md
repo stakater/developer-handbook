@@ -99,3 +99,65 @@ SAN networks can become congested not only because of high traffic, but also bec
 When the SAN network becomes congested, it can backup across the SAN infrastructure negatively impacting completely unrelated workloads.
 
 In relatively small kubernetes environments, this type of congestion is normally not a problem, however, large clusters with hundreds or thousands of worker nodes or an environment which is hosting dozens or hundreds of smaller clusters, significant network congestion can be a significant problem, especially when workload storage is being provided inside the cluster itself (vs externally hosted cloud storage).
+
+## Kubernetes Storage Concepts
+
+### Persistent Volumes and Persistent Volume Claims
+
+In kubernetes, the request for storage by an application is abstracted from the storage source. Other than some of the basic storage attributes discussed below the application does not typically know nor care where the storage comes from. Those details can be exposed to the application if needed for some reason, but typically, an application asks for the storage attributes it needs and the platform decides where it comes from.
+
+The chunk of storage made available for the application to consume is called a Persistent Volume or PV.
+
+When an application needs some persistent storage it creates a request called a Peristent Volume Claim or PVC. When presented with a PVC, the platform will find a PV that meets the need and then bind the PVC to the PV. Once a PV is bound, it is then unavailable to be bound to any other PVC unless it is a ReadWriteMany (discussed below) request which allows a single PV to be bound to many PVCs.
+
+### Dynamic vs Static
+
+A static PV is one which is created ahead of time by a system operator who would typically create a number of different PVs with different types of attributes to account for various types of PVCs that may want to consume them.
+
+A dynamic PV, however, is one which is created on demand. With a dynamic storage provider, when an application creates a PVC request the storage provider will create a PV that meets all of the requirements of the PVC and the platform will bind it to the PVC on the fly. This precludes the need for manually creating a PV for any given storage request.
+
+### Data Retention Modes
+
+One of the requirements of a PV is its Data Retention Mode. This describes what happens to the data when the PVC which is bound to it is deleted - such as when an application is deleted from the cluster.
+
+#### Retain
+
+If the retention mode is set to retain the PV is not deleted and no data on the PV is deleted. This is typically used when an application is uninstalled to be replaced by a newer version and the data should be retained between installations. It could also be used to make sure that the data in the PV is backed up before being removed.
+
+IMPORTANT: A PV with a retention mode set to retain is never removed by the system and must be manually removed when it is no longer needed. If this manual removal never happens and many applications are deployed this way, it could result in significant storage utilization growth over time. As a result, this retention mode should be used with caution.
+
+#### Delete
+
+A PV with a retention mode set to delete will cause the PV to be deleted when the PVC that is bound to it is deleted. This will result in the loss of any data which exists on the PV when it is deleted. This is typically only used with dynamically created PVs.
+
+#### Recycle 
+
+When a PV has a retention mode of recycle the platform will try to remove any data on the PV and put it back into the pool to be bound to another PVC at some future time.
+
+WARNING: When a PV has a recycle retention mode the platform will execute an rm -rf / on the root of the PV. If the PV is an NFS volume and the path of the NFS mount is the root of the NFS server it will effectively wipe the NFS server. If the PV is a hostPath (a path on the local disk) and the path is set to /, the platform will wipe the entire local disk. Usage of this retention mode should be used with extreme caution and it is highly recommended that hostPath storage not be used with a kubernetes cluster.
+
+### Access Modes
+
+Storage Access Modes define how a pod will use the PV. Note that the smallest unit of control in a kubernetes environment is a pod. If a PV is mounted to a pod it is mounted to all containers in the pod.
+
+#### ReadOnlyMany (ROX) 
+
+Analogous to a CD-ROM. PVs with this access mode can be mounted read-only by any number of pods, but none can write to it. It can be useful for providing access to certification keys or common software or document repositories, etc.
+
+#### ReadWriteOnce (RWO) 
+
+Only one pod can mount the PV at a time, but that pod can read from and write to it.
+
+#### ReadWriteMany (RWX) 
+
+Many pods can mount the PV and all can read and write to it. This access mode is not supported by many storage providers because of the requirement to keep all writers in sync to prevent race conditions. Any application that utilizes RWX access mode PVs is responsible for managing coordinated writes to prevent data corruption or loss.
+
+### Storage Classes
+
+All kubernetes storage is made available via storage providers and there are quite a few storage providers available: hostPath, NFS, Ceph, Gluster, vSphere, just to name a very few. Different storage providers will support different attributes for the PVs it controls. Before choosing a storage provider the attributes that are supported should be considered.
+
+The way a storage provider is utilized is through a storage class. A storage class defines all the parameters needed by the storage provider to create a PV. The specific attributes needed for the storage class depends on the storage provider.
+
+It is common for a storage class name to include information about the storage provider and storage other attributes of the storage provider. For instance, a platform could have a storage class named "ceph-fast" indicating that if a PVC requests a PV created by this storage class it will be provided by the ceph storage provider backed by high IOPS storage. An operator may want to be even more descriptive and name the storage class "ceph-tier0" or "ceph-flash".
+
+Operators are advised to be caution using too much detail and creating too many different types of storage classes due to the risk of the developer not knowing what they all mean and chosing the wrong type using expensive storage when they only needed the the less expensive type. T-Shirt sizes (fast, medium, slow) seems to be a good way to label storage classes.
