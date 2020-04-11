@@ -120,17 +120,17 @@ A dynamic PV, however, is one which is created on demand. With a dynamic storage
 
 One of the requirements of a PV is its Data Retention Mode. This describes what happens to the data when the PVC which is bound to it is deleted - such as when an application is deleted from the cluster.
 
-#### Retain
+#### 1 - Retain
 
 If the retention mode is set to retain the PV is not deleted and no data on the PV is deleted. This is typically used when an application is uninstalled to be replaced by a newer version and the data should be retained between installations. It could also be used to make sure that the data in the PV is backed up before being removed.
 
 IMPORTANT: A PV with a retention mode set to retain is never removed by the system and must be manually removed when it is no longer needed. If this manual removal never happens and many applications are deployed this way, it could result in significant storage utilization growth over time. As a result, this retention mode should be used with caution.
 
-#### Delete
+#### 2 - Delete
 
 A PV with a retention mode set to delete will cause the PV to be deleted when the PVC that is bound to it is deleted. This will result in the loss of any data which exists on the PV when it is deleted. This is typically only used with dynamically created PVs.
 
-#### Recycle 
+#### 3 - Recycle 
 
 When a PV has a retention mode of recycle the platform will try to remove any data on the PV and put it back into the pool to be bound to another PVC at some future time.
 
@@ -140,15 +140,15 @@ WARNING: When a PV has a recycle retention mode the platform will execute an rm 
 
 Storage Access Modes define how a pod will use the PV. Note that the smallest unit of control in a kubernetes environment is a pod. If a PV is mounted to a pod it is mounted to all containers in the pod.
 
-#### ReadOnlyMany (ROX) 
+#### 1 - ReadOnlyMany (ROX) 
 
 Analogous to a CD-ROM. PVs with this access mode can be mounted read-only by any number of pods, but none can write to it. It can be useful for providing access to certification keys or common software or document repositories, etc.
 
-#### ReadWriteOnce (RWO) 
+#### 2 - ReadWriteOnce (RWO) 
 
 Only one pod can mount the PV at a time, but that pod can read from and write to it.
 
-#### ReadWriteMany (RWX) 
+#### 3 - ReadWriteMany (RWX) 
 
 Many pods can mount the PV and all can read and write to it. This access mode is not supported by many storage providers because of the requirement to keep all writers in sync to prevent race conditions. Any application that utilizes RWX access mode PVs is responsible for managing coordinated writes to prevent data corruption or loss.
 
