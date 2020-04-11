@@ -161,3 +161,41 @@ The way a storage provider is utilized is through a storage class. A storage cla
 It is common for a storage class name to include information about the storage provider and storage other attributes of the storage provider. For instance, a platform could have a storage class named "ceph-fast" indicating that if a PVC requests a PV created by this storage class it will be provided by the ceph storage provider backed by high IOPS storage. An operator may want to be even more descriptive and name the storage class "ceph-tier0" or "ceph-flash".
 
 Operators are advised to be caution using too much detail and creating too many different types of storage classes due to the risk of the developer not knowing what they all mean and chosing the wrong type using expensive storage when they only needed the the less expensive type. T-Shirt sizes (fast, medium, slow) seems to be a good way to label storage classes.
+
+## Resilience, Performance, and Scalability
+
+### Replication vs Distribution
+
+Data resilience in a legacy environment is normally dependant upon replication. This means using data syncing technologies to replicate data between databases or storage devices.
+
+This kind of resiliency plan, however, can be extremely expensive requiring duplicates of all the physical infrastructure used to keep these replicas.
+
+As a result, many companies are willing to settle for backup technologies to keep offline copies of critical data. These backup storage technologies are typically much less expensive than the online replication technologies, but an outage could result in data loss between the time of the outage an the last time a backup was made.
+
+Cloud Native technologies, however, handle resilience in a different way. Object storage technologies such is IBM's CleverSafe break the data up into chunks and store slices across multiple physical devices or even datacenters. With many nodes running in many environments in different geographys, data is secure and resilient so long as a quorum of nodes is up and available.
+
+So, if the CleverSafe infrastructure is made up of 12 nodes, as many as 5 could faile with no data loss. If nodes are running in separate geographies or at least separate physical locations, the likelihood of losing more than half of the total nodes is extremely low.
+
+It is highly recommended that applications utilize modern cloud native storage technologies to maximize resilience at minimal cost.
+
+It should be noted that, whereas this type of technology provides for extreme availability and resilience, it does not protect against data corruption. If garbage is written to the database the database contains garbage and absent some additional procedures and planning, there is no way to reverse it.
+
+This means that there still is a good use case for making regular backups of data. The important thing here, though, is that in a kubernetes environment, application data can be backed up at the workload storage location vs backing up the entire cluster and everything on it, significantly reducing the amount of space needed for a proper backup.
+
+CAUTION: When providing internal storage technologies within a kubernetes cluster (e.g. Ceph or GlusterFS), the more bricks/OSDs you provide the more resilient your infrastructure is likely to be. Make sure to Use anti-affinity rules to make sure each of the nodes hosting this storage is running on separte physical nodes and each of the bricks/OSDs are backed by separate physical infrastructure.
+
+If all nodes or a majority of nodes are running on a single physical host and that host fails, your storage techonogy will also fail due to a lack of enough backing storage to complete a transaction. This could lead to data loss or corruption.
+
+### IOPS Considerations
+
+As noted above, kubernetes master nodes running etcd require significantly higher IOPS than most other nodes. High IOPS storage is typically also much more expensive than lower IOPS storage. Since only the etcd database needs to be stored on high IOPS storage, that expensive storage utilization can be minimized by mounting only the path on the disk where the etcd database is stored from high IOPS storage and leaving the rest of the master nodes backed by lower and less expensive IOPS storage.
+
+Some time sensitive workloads will also need high IOPS storage. It is recommended to provide multiple storage classes at various tiers so the developer can choose the storage that best supports the requirements of the workload.
+
+### Kubernetes Workload Scalability's affects on Storage
+
+When creating an application architecture, some developers may consider using a ReadWriteMany persistent Volume (see kubenetes Storage Concepts below for more information on persistent volumes) when they need multiple micro services to have access to the same persistent storage data.
+
+Caution should be used, however, because if using appliation auto-scaling in kubernetes, when an application scales out each container in each pod with a ReadWriteMany persistent volume will have that persistent volume mounted. This could lead to storage network congestion negatively impacting not only the entire kubernetes cluster, but also everything else running on the SAN infrastructure (see Storage Network Congestion in a kubernetes Environment above).
+
+A better architecture utilizes a micro service with an API to serve up data from a single ReadWriteOnly persistent volume which is then consumed by all workloads that need access to that data.
