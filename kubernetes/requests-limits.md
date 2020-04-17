@@ -74,6 +74,15 @@ There is no single right or wrong value, you need to calculate this based on you
 
 ## Solution
 
+### Don't overcommit memory
+
+- Implement mutating admission webhook
+- Set Requests = Limits
+
+### Default Namespace Configuration
+
+At the Namespace level, you can set up **ResourceQuotas** and **LimitRanges**. ResourceQuotas are maxed limits for all pods in a namespace while LimitRanges are for individual pods in that resources. If a pod does not explicitly define a specific resource, they will inherit the assigned values. For example, If no default value is assigned, it will inherit the default limits.
+
 ### Development Tier
 
 ### Production Tier
