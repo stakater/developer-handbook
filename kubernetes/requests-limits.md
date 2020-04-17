@@ -56,6 +56,22 @@ This is a bit of a value judgment. Some pods sit idle for a long time and, perha
 
 ## The Tradeoffs
 
+### Requests
+
+![Requests](../img/requests.png)
+
+### Limits
+
+![Limits](../img/limits.png)
+
+## Determining the right values
+
+There is no single right or wrong value, you need to calculate this based on your team's or microservice's usage and need. And this should be monitored explicitly for a period of time by the developers, to come to a final conclusion. For this, there are 2 options:
+
+- Either you can do this manually through Grafana & Prometheus and look for container cpu & memory usage and then update Request & Limit manually.
+
+- Use Vertical Pod Autoscaler(Still in beta as of 17-04-2020)
+
 ## Solution
 
 ### Development Tier
