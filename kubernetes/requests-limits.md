@@ -2,6 +2,8 @@
 
 ## The Basics
 
+![Requests](../img/req-limits.png)
+
 ### Requests
 
 Pods will get the amount of memory/CPU they request. The requests specification is used at pod placement time: Kubernetes will look for a node that has both enough CPU and memory according to the requests configuration. If they exceed their memory request, they could be killed if another pod happens to need this memory. Pods are only ever killed when using less memory than requested if critical system or high priority workloads need the memory.
