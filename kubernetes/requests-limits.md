@@ -26,6 +26,34 @@ There is a subtle change of semantics when we go from requests to limits. For th
 
 In other words: containers can’t rely on being able to grow from their initial requests capacity to the maximum allowance set in limits.
 
+## Quality of Service
+
+QoS value for a pod determines how good the service of that pod will be. QoS can have three values
+
+### 1. BestEffort
+
+The QoS when you set no Requests & Limits on your pods.
+
+When you declare no resources, Kubernetes has no idea where to put the pod. Some nodes are very busy, some nodes are very quiet, but since you’ve not told your cluster how much room your deployment needs, it is forced to guess.
+
+It won’t just starve your other pods, it can also going to escalate and consume the CPU that would otherwise be allocated for really important things, like the kubelet. Your node can go dark and on some platforms, it can be more than 15 minutes before your cluster self-heals.
+
+### 2. Burstable
+
+The QoS when you set Limits is higher than Requests on your pods.
+
+Better than `BestEffort` but if all of your pods have limits higher than your requests, and all/some of them grow simulatenously, they are overcommitting the CPU/Memory from the node. The issue is again all the pods are using more memory and can again commit more memory & CPU from the node, resulting in node failure or OOMKill of your containers. If the upper bound of all of your pods is several times higher than the capacity of the node on which they’re running, you’ve potentially got a problem.
+
+### 3. Guaranteed
+
+The QoS when you set Limits are equal to Requests on your pods.
+
+It is the most expensive way to run your containers, but those containers gain an awful lot of stability. Each pod will schedule on a node that has enough resources and will never throttle the node but if it can be expensive as you would have to set a higher number for requests & limits.
+
+### Conclusion
+
+This is a bit of a value judgment. Some pods sit idle for a long time and, perhaps for an hour, they get busy. It doesn’t make sense to hold onto resources for the other 23 hours as Guaranteed QoS does. So you make the choice. Risk vs. reward. If the pod self-heals quickly and you can tolerate short outages, Burstable might be a good method for you to save some money.
+
 ## The Tradeoffs
 
 ## Solution
