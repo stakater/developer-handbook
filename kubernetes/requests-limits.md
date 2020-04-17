@@ -2,7 +2,7 @@
 
 ## The Basics
 
-![Requests](../img/req-limits.png)
+![Requests](../img/req-limit.png)
 
 ### Requests
 
