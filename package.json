@@ -5,7 +5,7 @@
     "ecstatic": "^4.1.2",
     "http-server": "^0.12.1",
     "js-yaml": "^3.13.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "minimist": "^1.2.2",
     "vuepress": "^1.4.0"
   },
