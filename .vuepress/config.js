@@ -77,6 +77,13 @@ module.exports = {
                 children: [
                     '/iam/basics'
                 ]
+            },
+            {
+                title: 'Kubernetes',
+                children: [
+                    '/kubernetes/requests-limits',
+                    '/kubernetes/storage'
+                ]
             }
         ],
 
