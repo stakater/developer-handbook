@@ -69,7 +69,8 @@ module.exports = {
             {
                 title: 'Git',
                 children: [
-                    '/git/tbd'
+                    '/git/tbd',
+                    '/git/commit-message-guidelines'
                 ]
             },
             {
