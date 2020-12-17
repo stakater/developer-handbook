@@ -12,14 +12,6 @@ on:
 
 env:
   DOCKER_FILE_PATH: Dockerfile
-  # KUBERNETES_VERSION: "1.18.0"
-  # KIND_VERSION: "0.7.0"
-  # KUBERNETES_DIR: deployments/kubernetes
-  # CHARTS_DIR: deployments/kubernetes/chart
-  # MANIFEST_DIR: deployments/kubernetes/manifests
-  # CHART_TEMPLATES_DIR: deployments/kubernetes/templates/chart
-  # KUBERNETES_API_SERVER_URI: '' # picked from secrets
-  # KUBERNETES_SERVICE_ACCOUNT_SECRET: ''  #  picked from secrets
 
 jobs:
   build-push-release:
@@ -39,9 +31,6 @@ jobs:
           sha=${{ github.event.pull_request.head.sha }}
           tag="SNAPSHOT-PR-${{ github.event.pull_request.number }}-${sha:0:8}"
           echo "##[set-output name=GIT_TAG;]$(echo ${tag})"
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -75,49 +64,6 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
 
-      # - uses: azure/k8s-set-context@v1
-      #   id: setcontext
-      #   with:
-      #     method: service-account
-      #     k8s-url: ${{ secrets.KUBERNETES_API_SERVER_URI }}
-      #     k8s-secret: ${{ secrets.KUBERNETES_SERVICE_ACCOUNT_SECRET }}
-
-
-      # - name: Publish Charts & Manifests
-      #   id: publish_charts
-      #   run: |
-      #     chartName=''
-      #     while IFS=';' read -ra ADDR; do
-      #         for i in "${ADDR[@]}"; do
-      #             chartName="$i"
-      #         done
-      #     done <<< "${{ steps.image_repository_op.outputs.image_repository }}"
-      #     export VERSION=${{ steps.generate_tag.outputs.new_tag }}
-      #     export DOCKER_IMAGE=${{ steps.image_repository_op.outputs.image_repository }}
-      #     mkdir -p ${{ env.CHARTS_DIR }}/${chartName}
-      #     for template in ${{ env.CHART_TEMPLATES_DIR }}/*.yaml.tmpl; do 
-      #         # Remove .tmpl suffix
-      #         file=\${template%.tmpl}
-      #         # Remove full path
-      #         file=\${file##*/}
-      #         # Append new path
-      #         file="${{ env.CHARTS_DIR }}/${chartName}/\${file}"
-      #         # Render template
-      #         gotplenv \${template} > \${file}
-      #     done
-
-      #     mkdir -p ${{ env.MANIFEST_DIR }}
-      #     templatesDir="templates"
-      #     for templateName in {{ env.CHARTS_DIR }}/${chartName}/\${templatesDir}/*.yaml; do
-      #         # Remove full path
-      #         templateName=\${templateName##*/}
-      #         helm template --name ${chartName} --namespace default {{ env.CHARTS_DIR }}/${chartName} -x \${templatesDir}/\${templateName} > ${{ env.MANIFEST_DIR }}/\${templateName}
-      #     done
-
-      # - name: Deploy Charts
-      #   id: deploy_charts
-      #   run: make install-chart
-
       - name: Comment on PR
         uses: mshick/add-pr-comment@v1
         env:
@@ -145,8 +91,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
 
-      - name: Generate Operator Tag
-        id: generate_operator_tag
+      - name: Generate Tag
         if: github.event.pull_request.merged == true
         uses: anothrNick/github-tag-action@1.26.0
         env:
