@@ -1,0 +1,155 @@
+name: Docker build and Release
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - 'master'
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+env:
+  DOCKER_FILE_PATH: Dockerfile
+  KUBERNETES_VERSION: "1.18.0"
+  KIND_VERSION: "0.7.0"
+  KUBERNETES_DIR: deployments/kubernetes
+  CHARTS_DIR: deployments/kubernetes/chart
+  MANIFEST_DIR: deployments/kubernetes/manifests
+  CHART_TEMPLATES_DIR: deployments/kubernetes/templates/chart
+  # KUBERNETES_API_SERVER_URI: '' # picked from secrets
+  # KUBERNETES_SERVICE_ACCOUNT_SECRET: ''  #  picked from secrets
+
+jobs:
+  build-push-release:
+    runs-on: ubuntu-latest
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
+
+      - name: Generate Tag
+        id: generate_tag
+        uses: mathieudutour/github-tag-action@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # release_branches: main
+          default_bump: patch # false to disable, this can be override via specific commit message
+          tag_prefix: '' # prefix none
+          dry_run: true
+
+      - name: Login to Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.STAKATER_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.STAKATER_DOCKERHUB_PASSWORD }}
+
+      - name: Generate image repository path
+        id: image_repository_op
+        run: |
+          echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo "::set-output name=image_repository::${IMAGE_REPOSITORY}"
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ${{ env.DOCKER_FILE_PATH }}
+          pull: true
+          push: true
+          # build-args: BUILD_PARAMETERS=${{ env.BUILD_PARAMETERS }}
+          cache-to: type=inline
+          tags: |
+            ${{ steps.image_repository_op.outputs.image_repository }}:${{ steps.generate_tag.outputs.new_tag }}
+          labels: |
+            org.opencontainers.image.source=${{ github.event.repository.clone_url }}
+            org.opencontainers.image.created=${{ steps.prep.outputs.created }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - uses: azure/k8s-set-context@v1
+        id: setcontext
+        with:
+          method: service-account
+          k8s-url: ${{ secrets.KUBERNETES_API_SERVER_URI }}
+          k8s-secret: ${{ secrets.KUBERNETES_SERVICE_ACCOUNT_SECRET }}
+
+
+      - name: Publish Charts & Manifests
+        id: publish_charts
+        run: |
+          chartName=''
+          while IFS=';' read -ra ADDR; do
+              for i in "${ADDR[@]}"; do
+                  chartName="$i"
+              done
+          done <<< "${{ steps.image_repository_op.outputs.image_repository }}"
+          export VERSION=${{ steps.generate_tag.outputs.new_tag }}
+          export DOCKER_IMAGE=${{ steps.image_repository_op.outputs.image_repository }}
+          mkdir -p ${{ env.CHARTS_DIR }}/${chartName}
+          for template in ${{ env.CHART_TEMPLATES_DIR }}/*.yaml.tmpl; do 
+              # Remove .tmpl suffix
+              file=\${template%.tmpl}
+              # Remove full path
+              file=\${file##*/}
+              # Append new path
+              file="${{ env.CHARTS_DIR }}/${chartName}/\${file}"
+              # Render template
+              gotplenv \${template} > \${file}
+          done
+
+          mkdir -p ${{ env.MANIFEST_DIR }}
+          templatesDir="templates"
+          for templateName in {{ env.CHARTS_DIR }}/${chartName}/\${templatesDir}/*.yaml; do
+              # Remove full path
+              templateName=\${templateName##*/}
+              helm template --name ${chartName} --namespace default {{ env.CHARTS_DIR }}/${chartName} -x \${templatesDir}/\${templateName} > ${{ env.MANIFEST_DIR }}/\${templateName}
+          done
+
+      - name: Deploy Charts
+        id: deploy_charts
+        run: make install-chart
+
+      - name: Comment on PR
+        uses: mshick/add-pr-comment@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+        with:
+          message: '@${{ github.actor }} Image is available for testing. `docker pull ${{ github.repository }}:${{ steps.generate_tag.outputs.new_tag }}`'
+          allow-repeats: false
+
+      - name: Notify Failure
+        if: failure()
+        uses: mshick/add-pr-comment@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+        with:
+          message: '@${{ github.actor }} Yikes! You better fix it before anyone else finds out! [Build](https://github.com/${{ github.repository }}/commit/${{ github.event.pull_request.head.sha }}/checks) has Failed!'
+          allow-repeats: false
+
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        if: always() # Pick up events even if the job fails or is canceled.
+        with:
+          status: ${{ job.status }}
+          fields: repo,author,action,eventName,ref,workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
+
+      - name: Generate Tag
+        id: generate_tag
+        if: github.event.pull_request.merged == true
+        uses: mathieudutour/github-tag-action@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # release_branches: main
+          default_bump: patch # false to disable, this can be override via specific commit message
+          tag_prefix: '' # prefix none
