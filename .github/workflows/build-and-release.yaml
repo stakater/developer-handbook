@@ -36,7 +36,7 @@ jobs:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
 
-      - name: Generate Tag
+      - name: Generate Tag Dry Run
         id: generate_tag
         uses: mathieudutour/github-tag-action@v5
         with:
@@ -145,7 +145,6 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
 
       - name: Generate Tag
-        id: generate_tag
         if: github.event.pull_request.merged == true
         uses: mathieudutour/github-tag-action@v5
         with:
