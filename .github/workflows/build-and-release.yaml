@@ -39,7 +39,6 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: docker.io
-          # registry: ${{ secrets.STAKATER_DOCKERHUB_REGISTRY }}
           username: ${{ secrets.STAKATER_DOCKERHUB_USERNAME }}
           password: ${{ secrets.STAKATER_DOCKERHUB_PASSWORD }}
 
