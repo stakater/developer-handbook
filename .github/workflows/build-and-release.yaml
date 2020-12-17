@@ -51,8 +51,8 @@ jobs:
         with:
           registry: docker.io
           # registry: ${{ secrets.STAKATER_DOCKERHUB_REGISTRY }}
-          # username: ${{ secrets.STAKATER_DOCKERHUB_USERNAME }}
-          # password: ${{ secrets.STAKATER_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.STAKATER_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.STAKATER_DOCKERHUB_PASSWORD }}
 
       - name: Generate image repository path
         id: image_repository_op
