@@ -11,6 +11,9 @@ WORKDIR $HOME/application
 # copy the entire application
 COPY . .
 
+# To handle 'not get uid/gid'
+RUN npm config set unsafe-perm true
+
 # install yarn globaly
 RUN npm install -g yarn
 
