@@ -3,6 +3,9 @@
 trunk-based development (TBD) continuous delivery (CD) workflow
 
 ![TBD](../img/tbd.png)
+*By [Paul Hammant](https://devops.paulhammant.com/) (https://trunkbaseddevelopment.com/)*
+
+
 
 > Trunk-Based Development is a source-control branching model, where developers collaborate on code in a single branch called ‘trunk’ *, resist any pressure to create other long-lived development branches by employing documented techniques. They therefore avoid merge hell, do not break the build, and live happily ever after.
 
