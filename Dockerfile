@@ -1,18 +1,9 @@
-FROM stakater/pipeline-tools:1.15.0
-
-LABEL name="Stakater Developer Handbook" \    
-      maintainer="Stakater <stakater@aurorasolutions.io>" \
-      vendor="Stakater" \
-      release="1" \
-      summary="Developer Handbook" 
-
+FROM registry.access.redhat.com/ubi8/nodejs-12
+USER root
 WORKDIR $HOME/application
 
 # copy the entire application
 COPY . .
-
-# To handle 'not get uid/gid'
-RUN npm config set unsafe-perm true
 
 # install yarn globaly
 RUN npm install -g yarn
@@ -20,7 +11,14 @@ RUN npm install -g yarn
 # download the application dependencies
 RUN yarn install
 
+# little fix
+RUN npx browserslist --update-db
+
 # build the application
 RUN yarn run build
+
+RUN chmod -R 755 $HOME/application
+
+USER 1001
 
 ENTRYPOINT ["yarn", "run", "serve"]
