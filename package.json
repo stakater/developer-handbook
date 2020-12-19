@@ -2,6 +2,7 @@
   "name": "developer-handbook",
   "version": "0.1.0",
   "dependencies": {
+    "@babel/compat-data": "^7.9.0",
     "ecstatic": "^4.1.2",
     "http-server": "^0.12.1",
     "js-yaml": "^3.13.1",
