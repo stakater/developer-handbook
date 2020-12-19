@@ -1,11 +1,25 @@
 module.exports = {
     title: 'Developer Handbook',
-
+    description: 'Documentation for developers',
     head: [
         ['link', { rel: 'icon', href: '/favicon.png' }]
     ],
-
+    plugins: [
+        [
+            '@vuepress/active-header-links',
+            '@vuepress/medium-zoom',
+            '@vuepress/back-to-top',
+            'vuepress-plugin-container'
+        ],
+    ],
+    markdown: {
+        lineNumbers: true,
+        anchor: { permalink: false },
+        // options for markdown-it-toc
+        toc: { includeLevel: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
+    },
     themeConfig: {
+        smoothScroll: true,
         sidebar: [
             '/',
             {
@@ -87,8 +101,7 @@ module.exports = {
                 ]
             }
         ],
-
-        repo: 'stakater/developer-handbook',
+        repo: 'https://github.com/stakater/developer-handbook',
         editLinks: true,
         editLinkText: 'Help us improve this page!'
     }
