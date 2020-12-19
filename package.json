@@ -10,11 +10,11 @@
   ],
   "homepage": "https://github.com/stakater/developer-handbook",
   "bugs": {
-    "url": "https://gitlab.com/enento/developers-handbook/issues"
+    "url": "https://github.com/stakater/developer-handbook/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/enento/developer-handbook.git"
+    "url": "git+https://github.com/stakater/developer-handbook.git"
   },
   "author": "stakater",
   "dependencies": {
@@ -57,6 +57,6 @@
     "serve": "http-server .vuepress/dist",
     "lint-md": "yarn lint-md:style && yarn lint-md:wording",
     "lint-md:style": "remark --quiet --frail .",
-    "lint-md:wording": "textlint ./content/**/*.md"
+    "lint-md:wording": "textlint ./**/*.md"
   }
 }

@@ -21,7 +21,6 @@ module.exports = {
     themeConfig: {
         smoothScroll: true,
         sidebar: [
-            '/',
             {
                 title: 'Architecture',
                 children: [

@@ -6,12 +6,12 @@ LABEL name="Stakater Developer Handbook" \
       release="1" \
       summary="Developer Handbook" 
 
-USER root
-
+# set workdir
+RUN mkdir -p $HOME/application
 WORKDIR $HOME/application
 
 # copy the entire application
-COPY . .
+COPY --chown=default:root . .
 
 # install yarn globaly
 RUN npm install -g yarn
@@ -22,8 +22,7 @@ RUN yarn install
 # build the application
 RUN yarn run build
 
-# Switch to non-root user
-RUN chmod -R 755 $HOME/application
+# set non-root user
 USER 1001
 
 ENTRYPOINT ["yarn", "run", "serve"]
