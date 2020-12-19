@@ -1,18 +1,62 @@
 {
   "name": "developer-handbook",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Developer Handbook",
+  "keywords": [
+    "documentation",
+    "developer",
+    "handbook"
+  ],
+  "homepage": "https://github.com/stakater/developer-handbook",
+  "bugs": {
+    "url": "https://gitlab.com/enento/developers-handbook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enento/developer-handbook.git"
+  },
+  "author": "stakater",
   "dependencies": {
-    "@babel/compat-data": "^7.9.0",
-    "ecstatic": "^4.1.2",
-    "http-server": "^0.12.1",
+    "cosmiconfig": "^6.0.0",
+    "ecstatic": "^4.1.4",
+    "gray-matter": "^4.0.2",
+    "http-server": "^0.12.3",
     "js-yaml": "^3.13.1",
-    "lodash": "^4.17.19",
     "minimist": "^1.2.2",
-    "vuepress": "^1.4.0"
+    "lodash": "^4.17.15",
+    "lodash.template": "^4.5.0",
+    "svgo": "^1.3.2",
+    "vuepress": "1.4.1"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-active-header-links": "^1.4.1",
+    "@textlint-rule/textlint-rule-no-unmatched-pair": "^1.0.7",
+    "@vuepress/plugin-back-to-top": "1.4.1",
+    "@vuepress/plugin-medium-zoom": "1.4.1",
+    "@vuepress/theme-vue": "1.4.1",
+    "vuepress-plugin-container": "^2.1.3",
+    "remark-cli": "^8.0.0",
+    "remark-lint": "^7.0.0",
+    "remark-preset-lint-consistent": "^3.0.0",
+    "remark-preset-lint-recommended": "^4.0.0",
+    "textlint": "^11.6.3",
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-rule-apostrophe": "^2.0.0",
+    "textlint-rule-common-misspellings": "^1.0.1",
+    "textlint-rule-diacritics": "^1.0.0",
+    "textlint-rule-en-capitalization": "^2.0.2",
+    "textlint-rule-stop-words": "^2.0.3",
+    "textlint-rule-terminology": "^2.1.4",
+    "textlint-rule-write-good": "^1.6.2",
+    "vue-toasted": "^1.1.28"
   },
   "scripts": {
     "dev": "vuepress dev",
     "build": "vuepress build",
-    "serve": "http-server .vuepress/dist"
+    "serve": "http-server .vuepress/dist",
+    "lint-md": "yarn lint-md:style && yarn lint-md:wording",
+    "lint-md:style": "remark --quiet --frail .",
+    "lint-md:wording": "textlint ./content/**/*.md"
   }
 }
