@@ -1,15 +1,17 @@
-FROM stakater/pipeline-tools:1.15.0
+FROM registry.access.redhat.com/ubi8/nodejs-12
 
 LABEL name="Stakater Developer Handbook" \    
-      maintainer="Stakater <stakater@aurorasolutions.io>" \
+      maintainer="Stakater <hello@stakater.com>" \
       vendor="Stakater" \
       release="1" \
       summary="Developer Handbook" 
 
+# set workdir
+RUN mkdir -p $HOME/application
 WORKDIR $HOME/application
 
 # copy the entire application
-COPY . .
+COPY --chown=default:root . .
 
 # install yarn globaly
 RUN npm install -g yarn
@@ -19,5 +21,8 @@ RUN yarn install
 
 # build the application
 RUN yarn run build
+
+# set non-root user
+USER 1001
 
 ENTRYPOINT ["yarn", "run", "serve"]
