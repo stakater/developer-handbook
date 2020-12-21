@@ -19,9 +19,6 @@ RUN npm install -g yarn
 # download the application dependencies
 RUN yarn install
 
-# little fix
-RUN npx browserslist --update-db
-
 # build the application
 RUN yarn run build
 
