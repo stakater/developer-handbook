@@ -1,9 +1,6 @@
-name: Docker build and Release
+name: Docker build
 
 on:
-  push:
-    branches:
-      - 'master' # given that, no one pushes directly to the master
   pull_request:
     branches:
       - 'master'
@@ -16,7 +13,7 @@ env:
   DOCKER_FILE_PATH: Dockerfile
 
 jobs:
-  build-push-release:
+  build:
     runs-on: ubuntu-latest
     if: "! contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 
@@ -94,12 +91,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
-
-      - name: Generate Tag      
-        if: github.event_name == 'push'
-        uses: anothrNick/github-tag-action@1.26.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
-          WITH_V: false
-          DEFAULT_BUMP: patch
-          DRY_RUN: true
