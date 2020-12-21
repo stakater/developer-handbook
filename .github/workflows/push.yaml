@@ -1,4 +1,4 @@
-name: Docker build and Release
+name: Push and release
 
 on:
   push:
@@ -63,13 +63,6 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
 
-      - name: Push Latest Tag
-        uses: anothrNick/github-tag-action@1.26.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: patch
-
       - name: Comment on PR
         uses: mshick/add-pr-comment@v1
         env:
@@ -77,6 +70,13 @@ jobs:
         with:
           message: '@${{ github.actor }} Image is available for testing. `docker pull ${{ secrets.STAKATER_NEXUS_REGISTRY }}/${{ github.repository }}:${{ steps.generate_tag.outputs.new_tag }}`'
           allow-repeats: false
+
+      - name: Push Latest Tag
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
 
       - name: Notify Failure
         if: failure()
