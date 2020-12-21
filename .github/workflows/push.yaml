@@ -1,4 +1,4 @@
-name: Push and release
+name: Push
 
 on:
   push:
@@ -9,7 +9,7 @@ env:
   DOCKER_FILE_PATH: Dockerfile
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
     if: "! contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 

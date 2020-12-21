@@ -1,4 +1,4 @@
-name: Release Project
+name: Release
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - "v*"
 
 jobs:
-  release-project:
+  release:
     runs-on: ubuntu-latest
 
     steps:
