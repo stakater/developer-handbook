@@ -455,9 +455,9 @@ I thought people would yell at me while introducing this rule, but it didn’t h
 
 A picture is worth a thousand words, so here is the explanation of this rule in picture. 
 
-![](https://raw.github.com/TheLadders/object-calisthenics/master/assets/2-instance-variables.png)
+![RT](../img/2-instance-variables.png)
 
-Source:  [https://github.com/TheLadders/object-calisthenics#rule-8-no-classes-with-more-than-two-instance-variables](https://github.com/TheLadders/object-calisthenics#rule-8-no-classes-with-more-than-two-instance-variables).
+Source: [Object Calisthenics](https://williamdurand.fr/2013/06/03/object-calisthenics/#8-no-classes-with-more-than-two-instance-variables)
 
 The main question was  _Why two attributes?_  My answer was  _Why not?_  Not the best explanation but, in my opinion, the main idea is to distinguish  **two kinds of classes**, those that  **maintain the state of a single instance variable**, and those that  **coordinate two separate variables**.  **Two**  is an arbitrary choice that forces you to decouple your classes a lot.
 
@@ -586,6 +586,5 @@ Purpose of this point to avoid getter/setter methods as much as you can, but if 
 
 ## References
 
-- https://github.com/TheLadders/object-calisthenics
-- https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m
 - [https://williamdurand.fr/2013/06/03/object-calisthenics](https://williamdurand.fr/2013/06/03/object-calisthenics)
+- [https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m](https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m)
