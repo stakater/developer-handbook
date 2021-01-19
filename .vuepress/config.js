@@ -24,79 +24,79 @@ module.exports = {
             {
                 title: 'Architecture',
                 children: [
-                    '/architecture/ddd',
-                    '/architecture/rest',
-                    '/architecture/microservices/',
-                    '/architecture/eda',
-                    '/architecture/architecting-applications-for-kubernetes',
-                    '/architecture/12-factors',
-                    '/architecture/object-calisthenics'
+                    '/content/architecture/ddd',
+                    '/content/architecture/rest',
+                    '/content/architecture/microservices/',
+                    '/content/architecture/eda',
+                    '/content/architecture/architecting-applications-for-kubernetes',
+                    '/content/architecture/12-factors',
+                    '/content/architecture/object-calisthenics'
                 ]
             },
             {
                 title: 'Java Backend',
                 children: [
-                    '/java-backend/',
-                    '/java-backend/datetime',
-                    '/java-backend/logging',
-                    '/java-backend/dto',
-                    '/java-backend/force-not-null',
-                    '/java-backend/wf-engine'
+                    '/content/java-backend/',
+                    '/content/java-backend/datetime',
+                    '/content/java-backend/logging',
+                    '/content/java-backend/dto',
+                    '/content/java-backend/force-not-null',
+                    '/content/java-backend/wf-engine'
                 ]
             },
             {
                 title: 'Frontend',
                 children: [
-                    '/frontend/js-frameworks/javascript-frameworks-seo-challenges',
-                    '/frontend/css/css-best-practices',
-                    '/frontend/js-frameworks/angular-code-guidelines',
-                    '/frontend/architecture/spa-applications-architecture',
-                    '/frontend/architecture/micro-frontends'
+                    '/content/frontend/js-frameworks/javascript-frameworks-seo-challenges',
+                    '/content/frontend/css/css-best-practices',
+                    '/content/frontend/js-frameworks/angular-code-guidelines',
+                    '/content/frontend/architecture/spa-applications-architecture',
+                    '/content/frontend/architecture/micro-frontends'
                 ]
             },
             {
                 title: 'Database',
                 children: [
-                    '/database/',
+                    '/content/database/',
                 ]
             },
             {
                 title: 'API',
                 children: [
-                    '/api/general-guidelines',
-                    '/api/naming',
-                    '/api/resources',
-                    '/api/request-response',
-                    '/api/http',
-                    '/api/json-guidelines',
-                    '/api/foundations',
+                    '/content/api/general-guidelines',
+                    '/content/api/naming',
+                    '/content/api/resources',
+                    '/content/api/request-response',
+                    '/content/api/http',
+                    '/content/api/json-guidelines',
+                    '/content/api/foundations',
                 ]
             },
             {
                 title: 'Testing',
                 children: [
-                    '/testing/backend',
-                    '/testing/frontend'
+                    '/content/testing/backend',
+                    '/content/testing/frontend'
                 ]
             },
             {
                 title: 'Git',
                 children: [
-                    '/git/tbd',
-                    '/git/commit-message-guidelines'
+                    '/content/git/tbd',
+                    '/content/git/commit-message-guidelines'
                 ]
             },
             {
                 title: 'IAM',
                 children: [
-                    '/iam/basics'
+                    '/content/iam/basics'
                 ]
             },
             {
                 title: 'Kubernetes',
                 children: [
-                    '/kubernetes/requests-limits',
-                    '/kubernetes/storage'
+                    '/content/kubernetes/requests-limits',
+                    '/content/kubernetes/storage'
                 ]
             }
         ],
