@@ -22,8 +22,9 @@ RUN yarn install
 # build the application
 RUN yarn run build
 
-# Change permissions
-RUN chmod -R 755 $HOME
+# Change ownership of config and cache
+RUN chown -R 1001 ~/.config  
+RUN chown -R 1001 ~/.cache
 
 # set non-root user
 USER 1001
