@@ -1,0 +1,8 @@
+### Git ###
+.git*
+
+# Dependency directories
+node_modules
+
+# Optional NPM cache directory
+.npm
