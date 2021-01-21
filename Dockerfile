@@ -25,7 +25,7 @@ RUN yarn run build
 # Change ownership of cache to make it writable
 RUN chown -R 1001 ~/.cache
 
-# Change permissions to fix EACCESS error
+# Change permissions to fix EACCESS permission error
 RUN chmod -R 755 $HOME
 
 # set non-root user
