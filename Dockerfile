@@ -22,6 +22,9 @@ RUN yarn install
 # build the application
 RUN yarn run build
 
+# Change permissions
+RUN chmod -R 755 $HOME
+
 # set non-root user
 USER 1001
 
