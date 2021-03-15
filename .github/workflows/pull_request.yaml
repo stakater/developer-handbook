@@ -4,10 +4,6 @@ on:
   pull_request:
     branches:
       - 'master'
-    types:
-      - opened
-      - reopened
-      - synchronize
 
 env:
   DOCKER_FILE_PATH: Dockerfile
@@ -24,7 +20,8 @@ jobs:
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
-
+          ref: ${{github.event.pull_request.head.ref}}
+          
       - name: Generate Tag
         id: generate_tag
         run: |
