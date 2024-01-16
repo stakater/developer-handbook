@@ -7,6 +7,9 @@ on:
 
 env:
   DOCKER_FILE_PATH: Dockerfile
+  CONTAINER_REGISTRY_URL: ghcr.io/stakater
+  CONTAINER_REGISTRY_USERNAME: stakater-user
+  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.STAKATER_GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -38,14 +41,14 @@ jobs:
       - name: Login to Registry
         uses: docker/login-action@v1
         with:
-          registry: ${{ secrets.STAKATER_NEXUS_PROD_REGISTRY }}
-          username: ${{ secrets.STAKATER_NEXUS_PROD_USERNAME }}
-          password: ${{ secrets.STAKATER_NEXUS_PROD_PASSWORD }}
+          registry: ${{ env.CONTAINER_REGISTRY_URL }}
+          username: ${{ env.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
 
       - name: Generate image repository path
         id: image_repository_op
         run: |
-          echo IMAGE_REPOSITORY=$(echo ${{ secrets.STAKATER_NEXUS_PROD_REGISTRY }}/${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo IMAGE_REPOSITORY=$(echo ${{ env.CONTAINER_REGISTRY_URL }}/${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -66,16 +69,16 @@ jobs:
       - name: Comment on PR
         uses: mshick/add-pr-comment@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
         with:
-          message: '@${{ github.actor }} Image is available for testing. `docker pull ${{ secrets.STAKATER_NEXUS_PROD_REGISTRY }}/${{ github.repository }}:${{ steps.generate_tag.outputs.GIT_TAG }}`'
+          message: '@${{ github.actor }} Image is available for testing. `docker pull ${{ env.CONTAINER_REGISTRY_URL }}/${{ github.repository }}:${{ steps.generate_tag.outputs.GIT_TAG }}`'
           allow-repeats: false
 
       - name: Notify Failure
         if: failure()
         uses: mshick/add-pr-comment@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
         with:
           message: '@${{ github.actor }} Yikes! You better fix it before anyone else finds out! [Build](https://github.com/${{ github.repository }}/commit/${{ github.event.pull_request.head.sha }}/checks) has Failed!'
           allow-repeats: false
@@ -87,5 +90,5 @@ jobs:
           status: ${{ job.status }}
           fields: repo,author,action,eventName,ref,workflow
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
           SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
