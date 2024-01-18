@@ -7,6 +7,9 @@ on:
 
 env:
   DOCKER_FILE_PATH: Dockerfile
+  CONTAINER_REGISTRY_URL: ghcr.io/stakater
+  CONTAINER_REGISTRY_USERNAME: stakater-user
+  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.STAKATER_GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -15,7 +18,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
@@ -24,31 +27,31 @@ jobs:
         id: generate_tag
         uses: anothrNick/github-tag-action@1.36.0
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
           WITH_V: true
           DEFAULT_BUMP: patch
           DRY_RUN: true
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
         
       - name: Login to Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
-          registry: ${{ secrets.STAKATER_NEXUS_PROD_REGISTRY }}
-          username: ${{ secrets.STAKATER_NEXUS_PROD_USERNAME }}
-          password: ${{ secrets.STAKATER_NEXUS_PROD_PASSWORD }}
+          registry: ${{ env.CONTAINER_REGISTRY_URL }}
+          username: ${{ env.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
 
       - name: Generate image repository path
         id: image_repository_op
         run: |
-          echo IMAGE_REPOSITORY=$(echo ${{ secrets.STAKATER_NEXUS_PROD_REGISTRY }}/${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo IMAGE_REPOSITORY=$(echo ${{ env.CONTAINER_REGISTRY_URL }}/${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
 
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ${{ env.DOCKER_FILE_PATH }}
@@ -64,25 +67,25 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
 
       - name: Comment on PR
-        uses: mshick/add-pr-comment@v1
+        uses: mshick/add-pr-comment@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
         with:
-          message: '@${{ github.actor }} Image is available for testing. `docker pull ${{ secrets.STAKATER_NEXUS_PROD_REGISTRY }}/${{ github.repository }}:${{ steps.generate_tag.outputs.new_tag }}`'
+          message: '@${{ github.actor }} Image is available for testing. `docker pull ${{ env.CONTAINER_REGISTRY_URL }}/${{ github.repository }}:${{ steps.generate_tag.outputs.new_tag }}`'
           allow-repeats: false
 
       - name: Push Latest Tag
         uses: anothrNick/github-tag-action@1.36.0
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
           WITH_V: true
           DEFAULT_BUMP: patch
 
       - name: Notify Failure
         if: failure()
-        uses: mshick/add-pr-comment@v1
+        uses: mshick/add-pr-comment@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
         with:
           message: '@${{ github.actor }} Yikes! You better fix it before anyone else finds out! [Build](https://github.com/${{ github.repository }}/commit/${{ github.event.pull_request.head.sha }}/checks) has Failed!'
           allow-repeats: false
@@ -94,5 +97,5 @@ jobs:
           status: ${{ job.status }}
           fields: repo,author,action,eventName,ref,workflow
         env:
-          GITHUB_TOKEN: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
           SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
