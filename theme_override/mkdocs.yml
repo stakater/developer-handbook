@@ -1,0 +1,52 @@
+site_name: Developer Handbook
+docs_dir: content
+site_url: https://developerhandbook.stakater.com/
+repo_url: https://github.com/stakater/developer-handbook
+edit_uri: blob/master/content/
+theme:
+  favicon: assets/images/favicon.png
+
+nav:
+  - index.md
+  - Architecture:
+      - /content/architecture/ddd.md
+      - architecture/rest.md
+      - architecture/microservices/.md
+      - architecture/eda.md
+      - architecture/architecting-applications-for-kubernetes.md
+      - architecture/12-factors.md
+      - architecture/object-calisthenics.md
+  - Java Backend:
+      - java-backend/.md
+      - java-backend/datetime.md
+      - java-backend/logging.md
+      - java-backend/dto.md
+      - java-backend/force-not-null.md
+      - java-backend/wf-engine.md
+  - Frontend:
+      - frontend/js-frameworks/javascript-frameworks-seo-challenges.md
+      - frontend/css/css-best-practices.md
+      - frontend/js-frameworks/angular-code-guidelines.md
+      - frontend/architecture/spa-applications-architecture.md
+      - frontend/architecture/micro-frontends.md
+  - Database:
+      - database/.md
+  - API:
+      - api/general-guidelines.md
+      - api/naming.md
+      - api/resources.md
+      - api/request-response.md
+      - api/http.md
+      - api/json-guidelines.md
+      - api/foundations.md
+  - Testing:
+      - testing/backend.md
+      - testing/frontend.md
+  - Git:
+      - git/tbd.md
+      - git/commit-message-guidelines.md
+  - IAM:
+      - iam/basics.md
+  - Kubernetes:
+      - kubernetes/requests-limits.md
+      - kubernetes/storage.md
