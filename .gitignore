@@ -7,5 +7,4 @@ node_modules/
 dist/
 site/
 styles/
-mkdocs.yml
-
+/mkdocs.yml
