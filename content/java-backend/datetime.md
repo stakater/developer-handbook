@@ -1,9 +1,9 @@
-# DateTime
+# `DateTime`
 
 Let’s say you’re building your first API. Be it public, private, or some hybrid thereof, don’t be surprised if your first defect is date/time-related. Do not underestimate how much trouble you can get into when it comes to handling date and times. Here are some tips which might keep you out of this potential future.
 
 - Always use `java.util.Date`! Domain shouldn’t need to care about timezone! `java.util.date` is the safest and best way to store stuff in data stores.
-- TimeZone is a presentation concern; and presentation should bother about it and take care of it. Backend should be free of timezone and should only contain datetime in UTC format.
+- TimeZone is a presentation concern; and presentation should bother about it and take care of it. Backend should be free of timezone and should only contain `datetime` in UTC format.
 - Always use `UTC` timezone
 - Always use `ISO-8601` for your dates and set this property: `spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS = false`
 - Accept any timezone

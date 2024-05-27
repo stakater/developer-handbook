@@ -44,7 +44,7 @@ Though it may seem strange, exposing internal controls as resources can prove us
 
 The kinds of internal resources that are typically exposed include logs, feature flags, database commands and system metrics. Many microservices also include health check resources which provide information about the health of the service and its dependencies, timings for key transactions and details of configuration parameters. A simple ping resource can also be useful to aid in load balancing.
 
-Since these resources are more privileged in terms of the control they have or the information they expose, they often require their own authentication or to be locked down at the network level. By namespacing those parts of the API that form the internal controls using URL naming conventions or by exposing those resources on a different network port, access can be restricted at the firewall level.
+Since these resources are more privileged in terms of the control they have or the information they expose, they often require their own authentication or to be locked down at the network level. By separating those parts of the API into namespaces that form the internal controls using URL naming conventions or by exposing those resources on a different network port, access can be restricted at the firewall level.
 
 ## Testing Strategies for Microservices
 
@@ -169,17 +169,17 @@ The staging environment should include any data stores that will be in your prod
 
 #### Selenium
 
-Selenium WebDriver is the open source automation tool we all know and love. With a history starting from the humble beginnings of IDE and transforming into Selenium 2.0 a.k.a. Selenium WebDriver, Selenium has become a foundation of many modern software teams' test automation toolkits.
+Selenium WebDriver is the open source automation tool we all know and love. With a history starting from the humble beginnings of IDE and transforming into Selenium 2.0 a.k.a. Selenium WebDriver, Selenium has become a foundation of many modern software teams' test automation tool-kits.
 
-Most are familiar with Selenium's use — it makes direct calls to the browser using each browser's native support for automation. By writing a script in Selenese using the compatible programming languages, you can run tests that work as if you were driving the browser yourself.
+Most are familiar with Selenium's use — it makes direct calls to the browser using each browser's native support for automation. By writing a script in Selenium using the compatible programming languages, you can run tests that work as if you were driving the browser yourself.
 
 While the learning curve can be steep for Selenium and requires the knowledge of at least one programming language, it has a vast community of active users and even boasts an annual user conference.
 
 ##### PROS
 
-* Support multiple languages such as ruby, java , C#, python,perl, php
-* Crossbrowser & paralell testing through saucelab, browserstack
-* Support multiple automation frameworks such as PageObjectModel, Cucumber, testng
+* Support multiple languages such as Ruby, Java, C#, Python, Perl, PHP
+* Crossbrowser and parallel testing through `saucelab`, `browserstack`
+* Support multiple automation frameworks such as PageObjectModel, Cucumber, `testng`
 
 ##### CONS
 
@@ -195,7 +195,7 @@ So how is Cypress different from Selenium, and how is it the same?
 
 First, Cypress is said to have an easier onboarding than Selenium, where all you need to do is install the .exe to get up and running sine all the drivers and dependencies are automatically installed. With Selenium, on the other hand, you need to spend a little more time getting everything up and running.
 
-Cypress almost acts as a "freemium" model. Similiar to Selenium which is entirely open sourced unless you integrate with a paid tool, you can also add to Cypress's core capabilities by leveraging the paid dashboard which includes a test runner that allows you to easily debug tests with DOM snapshots and includes video storage for private projects.
+Cypress almost acts as a `freemium` model. Similar to Selenium which is entirely open sourced unless you integrate with a paid tool, you can also add to Cypress's core capabilities by leveraging the paid dashboard which includes a test runner that allows you to easily debug tests with DOM snapshots and includes video storage for private projects.
 
 Selenium and Cypress differ in the way of their architecture, as well. Selenium is made up of bindings, or libraries, and the WebDriver, which controls the browsers. These two components work through the JSON network.
 
@@ -211,15 +211,15 @@ Having a different architecture on top of an Electron app also allows Cypress to
 * Cypress dashboard service
 * Execution of tests is extremely fast because cypress directly talks to browsers
 * Stubbing DOM APIs
-* Most suitable to Reactjs based application
+* Most suitable to ReactJS based application
 
 ##### CONS
 
 * Window based application can't be automated
 * Only support chrome browser, so it's crossbrowser compatibility testing is not possible
-* Doesn't work out of the box with OAuth/OpenID
-* Only support javascript language for test development
-* Only support Mocha & Chai framework
+* Doesn't work out of the box with `OAuth` or `OpenID`
+* Only support JavaScript language for test development
+* Only support `Mocha` and `Chai` framework
 * Cypress doesn't handle redirects within your applications. Such as if you are going to automate google
   & facebook login scenarios in your application through cypress then you are going have a deep trouble.
   You will have to write hooks or stubs to achieve this but it's a daunting task
@@ -243,6 +243,6 @@ These three sets of tests, combined, should provide an extremely high level of c
 ## References
 
 * [Testing Strategies in a Microservice Architecture](https://martinfowler.com/articles/microservice-testing/)
-* [Architecting for Continuous Delivery](https://www.thoughtworks.com/insights/blog/architecting-continuous-delivery)
+* [`Architecting for Continuous Delivery`](https://www.thoughtworks.com/insights/blog/architecting-continuous-delivery)
 * [Cypress.io Keycloak Integration
 ](https://vrockai.github.io/blog/2017/10/28/cypress-keycloak-intregration/)

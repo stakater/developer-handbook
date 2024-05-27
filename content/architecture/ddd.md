@@ -11,7 +11,7 @@ Read following:
 - [DDD - Clear Your Concepts Before You Start](http://www.codeproject.com/Articles/339725/Domain-Driven-Design-Clear-Your-Concepts-Before-Yo)
 - [Services in DDD](http://gorodinski.com/blog/2012/04/14/services-in-domain-driven-design-ddd/)
 - [DDD Architecture](http://dddsample.sourceforge.net/architecture.html)
-- [Aurora Basecamp DDD & Patterns Collection](https://aurorasolutionspvtltd.basecamphq.com/projects/7791653-aurora-team-room/cat/118172150/posts/archive)
+- [`Aurora Basecamp DDD & Patterns Collection`](https://aurorasolutionspvtltd.basecamphq.com/projects/7791653-aurora-team-room/cat/118172150/posts/archive)
 
 ## Subdomains & Bounded Contexts
 
@@ -50,9 +50,11 @@ entity could look like in each one. Perhaps it's split into three different enti
 
 The effort to instantiate a user in each context is considerably different. Perhaps it's something like this:
 
+```java
 new Employee(ssn, name, joindate, dateofbirth, gender)
 new Developer(Employee, workstation, credentials)
 new Payee(Employee, role)
+```
 
 If you used a naive implementation and used a single user entity, it would end up being an anaemic data model full of
 get and set methods, because you couldn't fully represent the user all over the place.
@@ -119,11 +121,9 @@ rules or invariants are held consistent. It follows the Ubiquitous Language from
 where Bounded Context comes in.
 
 A Domain Model operates in a BoundedContext and reflects the Ubiquitous Language within that context. So, if your Domain
-is simple, you may only have one Bounded Context. This is great! It means you get to finish the job early! :)
+is simple, you may only have one Bounded Context. This is great! It means you get to finish the job early!
 
-However, DO KNOW that this is an entirely iterative process driven by interaction with your domain experts (the business)
-and a sound BDD/TDD workflow. This is where the "don't go on a witchhunt" comment came from. Start simple and build
-complexity "just-in-time" and when it makes sense!
+However, DO KNOW that this is an entirely iterative process driven by interaction with your domain experts (the business) and a sound BDD/TDD workflow. Start simple and build complexity "just-in-time" and when it makes sense!
 
 ## Services in DDD
 
@@ -172,14 +172,14 @@ So a better approach would be to generate the ID before creating the new entity,
 
 ### The ID generation process itself should happen outside of the entity
 
-Besides, even though it's technically possible to generate a UUID inside an entity, it's something that conceptually
+Besides, even though it's technically possible to generate a uuid inside an entity, it's something that conceptually
 isn't right. The idea behind an ID is that it's unique for the kind of thing it identifies. The entity is only aware of
 itself, and can never reach across its own object boundaries to find out if an ID it has generated is actually unique.
 That's why, at least conceptually, generating an identity should not happen inside the entity, only outside of it.
 
 ### Let the repository generate the next identity
 
-However, at this point we still have the issue of generating the UUID being an infrastructure concern. It should move
+However, at this point we still have the issue of generating the uuid being an infrastructure concern. It should move
 out of the application layer too. This is where you can use a handy suggestion I learned from Vaughn Vernon's book
 "Implementing Domain-Driven Design": let the repository "hand out" a new identity whenever you need it.
 
@@ -199,6 +199,6 @@ The advantages of letting the repository generate the next identity are:
 
 - There's a natural, conceptual relation: repositories manage the entities and their identities.
 - You can easily change the way an ID is being generated because the process is now properly encapsulated. No scattered
-calls to Uuid::uuid4(), but only calls to Repository::nextIdentity().
+calls to `Uuid::uuid4()`, but only calls to `Repository::nextIdentity()`.
 - You can in fact still use an incremental ID if you like. You can use the database after all if it natively supports
 sequences. Or you can implement your own sequence.

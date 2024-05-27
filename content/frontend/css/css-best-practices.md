@@ -6,7 +6,7 @@ There are no hard and fast rules on how to write your CSS but there are some poi
 
 ## CSS Reset
 
-Browsers have different built-in styles and they effect HTML elements differently including heights, margin, padding. That brings inconsistency within your app across different browsers. To address this issue we use CSS Reset.
+Browsers have different built-in styles and they effect html elements differently including heights, margin, padding. That brings inconsistency within your app across different browsers. To address this issue we use CSS Reset.
 You either write your own CSS Reset or use the one that everyone else is using. The most popular styles reset is probably [Eric Meyer's](https://meyerweb.com/eric/tools/css/reset/index.html) CSS Reset.
 
 ## Combining CSS Rules
@@ -24,15 +24,15 @@ And you can always add distinctive styles to these elements separately as well.
 
 ## Write your Markup first
 
-Writing your Markup first will actually save you time, writing CSS along with your HTML seems to be more appropriate but this way you might end up having duplicate properties.
+Writing your Markup first will actually save you time, writing CSS along with your html seems to be more appropriate but this way you might end up having duplicate properties.
 
-But with Markup first approach you know how HTML is structured and what styles do you need to make it look good with maximum re-usability.
+But with Markup first approach you know how html is structured and what styles do you need to make it look good with maximum re-usability.
 
 ## Readability
 
 Most important aspect of your CSS is it's readability. And good readability means better maintainability.
 
-1. One liner
+1. One liner:
 
     ```css
     .heading {
@@ -40,7 +40,7 @@ Most important aspect of your CSS is it's readability. And good readability mean
     }
     ```
 
-1. Multiliner
+1. Multi-liner:
 
     ```css
     .heading {
@@ -62,7 +62,7 @@ Go ahead make your own sub language that helps you name classes easily and makes
 
 What are CSS Frameworks? How do they help us?
 
-CSS Frameworks gives you most of the features out of the box so that you don't have to write them from scratch everytime you work on a new project.
+CSS Frameworks gives you most of the features out of the box so that you don't have to write them from scratch every time you work on a new project.
 
 One of the best features of CSS Frameworks is that almost all of these frameworks have CSS defined for the layout that helps you align and structure your pages easily. Apart from the layout they have dedicated buttons, typography, lists, colors, utility classes etc.
 
@@ -71,11 +71,11 @@ Some of these frameworks are full blow while some are used to help write the web
 Some popular CSS Frameworks include:
 
 - [Bootstrap](https://getbootstrap.com/)
-- [Bulma](http://bulma.io/)
+- [`Bulma`](http://bulma.io/)
 - [Foundation](http://foundation.zurb.com/)
 - [Material Design Lite - MDL](http://www.getmdl.io/index.html)
 - [Tailwind](https://tailwindcss.com/)
-- [Basscss](http://basscss.com/)
+- [`Basscss`](http://basscss.com/)
 - [Skeleton](http://getskeleton.com/)
 
 ## Multiple Classes
@@ -110,7 +110,7 @@ Multiple Classes will handle this situation elegantly all you need to do is righ
 
 ## Use shorthand
 
-Shorthand properties let you set multiple CSS values simoultaneously. It makes your CSS concise and payload over the network is reduced.
+Shorthand properties let you set multiple CSS values simultaneously. It makes your CSS concise and payload over the network is reduced.
 
 ### Values shorthand
 
@@ -148,7 +148,7 @@ Single Line
 /* Using `rems` instead of `px` for cross device compatibility */
 ```
 
-Multiline
+Multi-line
 
 ```css
 /**
@@ -224,7 +224,7 @@ To make your styles self explanatory, naming of CSS styles i.e. classes, IDs is 
 
 ## Too many CSS selectors
 
-Use of too many selectors is not advisable as it makes styling unwantedly complex. And any changes in the future will be hard to incorporate
+Use of too many selectors is not advisable as it makes styling complex. And any changes in the future will be hard to incorporate
 
 ```css
 /* BAD */
@@ -237,7 +237,7 @@ Use of too many selectors is not advisable as it makes styling unwantedly comple
 
 ## Utility Classes
 
-Using of utility classes helps write styles that generally used app wide like adding round border, padding, margins, making an img tag responsive for multiple layouts or floating an element right or left.
+Using of utility classes helps write styles that generally used app wide like adding round border, padding, margins, making an `img` tag responsive for multiple layouts or floating an element right or left.
 
 There are even frameworks built on the top utility based styles like [Tailwind CSS](https://tailwindcss.com/).
 
@@ -273,7 +273,7 @@ Utility class adds more re-usability to the styles you've written.
 <div class="box-two rounded text-primary">Box 2</div>
 ```
 
-## Unnecessary DIVs and SPANs
+## Unnecessary DIV and SPAN elements
 
 Don't wrap your content in `DIV`s & `SPAN`s for the sake of it. The more simple your markup is, the better readability it has and more manageable it becomes.
 

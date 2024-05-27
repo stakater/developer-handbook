@@ -495,7 +495,7 @@ The main question was  _Why two attributes?_  My answer was  _Why not?_  Not the
 
 The simplest way to avoid setters is to hand the values to the constructor method when you new up the object. This is also the usual pattern when you want to make an object immutable.
 
-DTOs are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have get methods.
+DTO are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have get methods.
 
 Lets explain in detail why we should avoid getter and setters methods:
 
@@ -590,7 +590,7 @@ One way to guard against this is to return a copy instead. Another way is to hav
 
 Let see how we can avoid getter/setter methods.
 
-### Tell, Dont Ask
+### Tell, Don't Ask
 
 Rule is very simple, classes should not have getter/setter method which simple get/set values, rather there should be method which represent behaviors. Lets explain it with a example.
 

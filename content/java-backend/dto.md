@@ -34,7 +34,7 @@ public class ApiCreateReviewItem {
 }
 ```
 
-The lombok will generate a class like this:
+The `lombok` will generate a class like this:
 
 ```java
 //

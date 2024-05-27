@@ -4,9 +4,9 @@ This particular guide focus on what to keep in mind while designing the architec
 
 ## Use of LIFT pattern
 
-This pattern is listed on Angular's Official [Guide](https://angular.io/guide/styleguide#lift)
+This pattern is listed on [`Angular's Official Guide`](https://angular.io/guide/styleguide#lift).
 
-LIFT is an acronym for **L**ocate, **I**dentify, **F**lat, **T**-DRY.
+LIFT is an acronym for Locate, Identify, Flat, T-DRY.
 
 **Locate**: should be able to locate files quickly. Keep relative files near each other. For example `PassengerDetails` component should be placed near `PassengerList`.
 
@@ -18,7 +18,7 @@ LIFT is an acronym for **L**ocate, **I**dentify, **F**lat, **T**-DRY.
 
 ## File Imports
 
-Sort imports alphabetically (destructered imports as well), leave a space between imports so that you might able to distinguish between 3rd Party and Application imports. Increases readability when imports become large in number.
+Sort imports alphabetically (de-structered imports as well), leave a space between imports so that you might able to distinguish between 3rd Party and Application imports. Increases readability when imports become large in number.
 
 Not Recommended:
 
@@ -51,18 +51,18 @@ Off course, it will boost your applications performance like crazy. Imagine have
 
 ## Maintainable CSS
 
-SPA frameworks enable you to write CSS that can be scoped only to the component it is associated with. It makes the component fully independent and can be exported as a plugin easily which makes it re-usable. The idea of using scoped CSS looks amazing for creating external plugins but there are some pitfalls of using this approach thoughout the application. Designers should be responsible for writing CSS, and not developers.
+SPA frameworks enable you to write CSS that can be scoped only to the component it is associated with. It makes the component fully independent and can be exported as a plugin easily which makes it re-usable. The idea of using scoped CSS looks amazing for creating external plugins but there are some pitfalls of using this approach throughout the application. Designers should be responsible for writing CSS, and not developers.
 
 If there are new changes in a page, to incorporate those changes designer will either have to understand the underlying framework used or have to constantly interact with developer to incorporate the new styles into that page/component. Since both approaches might not be feasible in every case it's better to keep your application level CSS apart from the underlying framework. And a designer should have full control over styling of the application.
 
 ## Multiple entities/components in a single file
 
-Having components separated out in their own files is the recommended approach. It helps you follow the Single Responsibility Priciple easily, code is manageble and maintenance becomes easier. However there might be case where you want to keep similar looking components in a single file or any other reason of the sort, like in alert-component file you may want to export info, danger and warning component etc.
+Having components separated out in their own files is the recommended approach. It helps you follow the Single Responsibility Priciple easily, code is manageable and maintenance becomes easier. However there might be case where you want to keep similar looking components in a single file or any other reason of the sort, like in alert-component file you may want to export info, danger and warning component etc.
 
 ## API Calls & Response
 
-- When using `Observables` it's easier lose hold of the subsriber which might lead to redundent calls if not handled properly. So make sure to open your network tab in browser and check if there are any redundent/duplicate call being made without any reason.
-- Coordinate with Backend developers for the response being sent, if you are receiving redundent data, report it to the Backend team and get it trimmed, it will help in reducing the payload and in result quicker response from the APIs.
+- When using `Observables` it's easier lose hold of the subscriber which might lead to redundant calls if not handled properly. So make sure to open your network tab in browser and check if there are any redundant/duplicate call being made without any reason.
+- Coordinate with Backend developers for the response being sent, if you are receiving redundant data, report it to the Backend team and get it trimmed, it will help in reducing the payload and in result quicker response from the APIs.
 - Request body should not contain any empty string. Javascript treats empty string as false value but JAVA does not.
 
 ## State Management
@@ -87,4 +87,4 @@ Universal or Server Side Rendered solutions for most popular frameworks are list
 
 - Angular :point_right: [Angular Universal](https://angular.io/guide/universal)
 - ReactJS :point_right: [Next JS](https://nextjs.org/)
-- VueJS :point_right: [Nuxt JS](https://nuxtjs.org/)
+- VueJS :point_right: [`Nuxt JS`](https://nuxtjs.org/)

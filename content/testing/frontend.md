@@ -28,6 +28,6 @@ Usually question arises how to test frontend?
 ## References
 
 - [Testing Strategies in a Microservice Architecture](https://martinfowler.com/articles/microservice-testing/)
-- [Architecting for Continuous Delivery](https://www.thoughtworks.com/insights/blog/architecting-continuous-delivery)
+- [`Architecting for Continuous Delivery`](https://www.thoughtworks.com/insights/blog/architecting-continuous-delivery)
 - [Cypress.io Keycloak Integration
 ](https://vrockai.github.io/blog/2017/10/28/cypress-keycloak-intregration/)

@@ -1,6 +1,6 @@
 # Logging
 
-Annotate any class with a `@Slf4j` annotation to let lombok generate a logger field. The logger is named `log`.
+Annotate any class with a `@Slf4j` annotation to let `lombok` generate a logger field. The logger is named `log`.
 
 `@Slf4j`
 
