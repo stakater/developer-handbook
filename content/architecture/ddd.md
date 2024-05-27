@@ -11,7 +11,6 @@ Read following:
 - [DDD - Clear Your Concepts Before You Start](http://www.codeproject.com/Articles/339725/Domain-Driven-Design-Clear-Your-Concepts-Before-Yo)
 - [Services in DDD](http://gorodinski.com/blog/2012/04/14/services-in-domain-driven-design-ddd/)
 - [DDD Architecture](http://dddsample.sourceforge.net/architecture.html)
-- [`Aurora Basecamp DDD & Patterns Collection`](https://aurorasolutionspvtltd.basecamphq.com/projects/7791653-aurora-team-room/cat/118172150/posts/archive)
 
 ## Subdomains & Bounded Contexts
 
