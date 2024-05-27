@@ -23,7 +23,7 @@
     "ecstatic": "^4.1.4",
     "gray-matter": "^4.0.2",
     "http-server": "^0.12.3",
-    "js-yaml": "^3.14.1",
+    "js-yaml": "^4.0.0",
     "minimist": "^1.2.5",
     "lodash": "^4.17.21",
     "lodash.template": "^4.5.0",
