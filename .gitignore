@@ -4,6 +4,8 @@ node_modules/
 .vscode
 .idea
 
+dist/
 site/
 styles/
 mkdocs.yml
+
