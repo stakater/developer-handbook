@@ -1,0 +1,167 @@
+{% set class = "md-header" %}
+{% if "navigation.tabs.sticky" in features %}
+{% set class = class ~ " md-header--shadow md-header--lifted" %}
+{% elif "navigation.tabs" not in features %}
+{% set class = class ~ " md-header--shadow" %}
+{% endif %}
+
+<style>
+  .md-header {
+    background-color: transparent;
+  }
+
+  .md-header--shadow {
+    box-shadow: none;
+  }
+
+  .md-header--scroll .md-search {
+    display: none;
+  }
+
+  .md-header--scroll .md-search__form {
+    border: none;
+  }
+</style>
+
+<!-- Header -->
+<header class="{{ class }} md-header--scroll" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header') }}">
+
+    <!-- Link to home -->
+    <a href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}" title="{{ config.site_name | e }}"
+      class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
+      <!-- {% include "partials/logo.html" %} -->
+    </a>
+
+    <!-- Button to open drawer -->
+    <label class="md-header__button md-icon" for="__drawer">
+      {% set icon = config.theme.icon.menu or "material/menu" %}
+      <!-- {% include ".icons/" ~ icon ~ ".svg" %} -->
+    </label>
+
+    <!-- Header title -->
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <!-- Logo -->
+        <div class="md-header__topic">
+          {% if config.theme.logo_light %}
+          <img class="md-header__logo_light" src="{{ config.theme.logo_light | url }}#only-light" alt="logo" />
+          {% endif %}
+          {% if config.theme.logo_dark %}
+          <img class="md-header__logo_dark" src="{{ config.theme.logo_dark | url }}#only-dark" alt="logo" />
+          {% endif %}
+          {% if config.site_name %}
+          <div class="header-site-name">
+            <h5 class="site-name-text">{{ config.site_name }}</h5>
+          </div>
+          {% endif %}
+        </div>
+        <!-- Topic -->
+      </div>
+    </div>
+
+    <!-- Nav links -->
+    {% include "partials/nav-links.html" %}
+
+    <!-- Color palette toggle -->
+    {% if config.theme.palette %}
+    {% if not config.theme.palette is mapping %}
+    {% include "partials/palette.html" %}
+    {% endif %}
+    {% endif %}
+
+    <!-- User preference: color palette -->
+    {% if not config.theme.palette is mapping %}
+    {% include "partials/javascripts/palette.html" %}
+    {% endif %}
+
+    <!-- Button to open search modal -->
+    {% if "material/search" in config.plugins %}
+    <label class="md-header__button md-icon" for="__search">
+      {% set icon = config.theme.icon.search or "material/magnify" %}
+      {% include ".icons/" ~ icon ~ ".svg" %}
+    </label>
+    <!-- Search interface -->
+    {% include "partials/search.html" %}
+    {% endif %}
+  </nav>
+
+  <!-- Navigation tabs (sticky) -->
+  {% if "navigation.tabs.sticky" in features %}
+  {% if "navigation.tabs" in features %}
+  <!-- {% include "partials/tabs.html" %} -->
+  {% endif %}
+  {% endif %}
+</header>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var header = document.querySelector('.md-header');
+    var search = document.querySelector('.md-search');
+    var navLinks = document.querySelector('.md-header__nav-links');
+    var searchResults = document.querySelector('.md-search-result');
+    var colorPaletteToggle = document.querySelector('.md-header__option');
+    var searchResultsMeta = document.querySelector('.md-search-result__meta');
+
+    var scrollThreshold = 50;
+
+    var isSearchOpen = false;
+
+    function handleScroll() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollTop > scrollThreshold) {
+        header.classList.add('md-header--scroll');
+        header.style.borderBottom = 'none';
+        search.style.display = 'none';
+        searchResults.style.display = 'none';
+        if (colorPaletteToggle) {
+          colorPaletteToggle.style.display = 'none';
+        }
+        if (navLinks) {
+          navLinks.style.display = 'none';
+        }
+      } else {
+        header.classList.remove('md-header--scroll');
+        header.style.borderBottom = '';
+        search.style.display = '';
+        searchResults.style.display = '';
+        if (colorPaletteToggle) {
+          colorPaletteToggle.style.display = '';
+        }
+        if (navLinks) {
+          navLinks.style.display = isSearchOpen ? 'none' : '';
+        }
+      }
+    }
+
+    function handleNavLinksToggle(isSearchOpen) {
+      navLinks.style.display = isSearchOpen ? 'none' : '';
+    }
+
+    function handleSearchClick(event) {
+      var target = event.target;
+      isSearchOpen = target.classList.contains('focus-visible');
+      handleNavLinksToggle(isSearchOpen);
+
+    }
+
+    function handleSearchResultsMetaClick() {
+      event.stopPropagation();
+      isSearchOpen = false;
+      navLinks.style.display = 'none';
+    }
+
+    handleScroll();
+
+    // Event listener for searchResults click
+    searchResultsMeta.addEventListener("click", handleSearchResultsMetaClick);
+
+
+    search.addEventListener("click", handleSearchClick);
+
+
+    window.addEventListener("scroll", handleScroll);
+  });
+</script>

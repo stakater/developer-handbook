@@ -1,0 +1,345 @@
+<style>
+    .svg-container {
+        display: flex;
+    }
+
+    .svg-container:hover {
+        cursor: pointer;
+    }
+
+    .display-block {
+        display: block;
+    }
+
+    .display-flex {
+        display: flex;
+    }
+
+    .jscfs {
+        justify-content: flex-start;
+    }
+
+    .jscc {
+        justify-content: center;
+    }
+
+    .jscsb {
+        justify-content: space-between;
+    }
+
+    .jscsa {
+        justify-content: space-around;
+    }
+
+    .items-center {
+        align-items: center;
+    }
+
+    .mlr-auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .flex-1 {
+        flex: 1;
+    }
+
+    .flex-2 {
+        flex: 2;
+    }
+
+    .flex-3 {
+        flex: 3;
+    }
+
+    .flex-0-8 {
+        flex: 0.8;
+    }
+
+    .margin-left-1 {
+        margin-left: 1rem;
+    }
+
+    .margin-bottom-16 {
+        margin-bottom: 1rem;
+    }
+
+    .footer-content-container {
+        width: 100%;
+        margin: 0 14%;
+    }
+</style>
+
+<footer class="md-footer">
+    <div class="md-footer__inner mlr-auto" aria-label="{{ lang.t('footer') }}" {{ hidden }}>
+        <!-- Footer content container-->
+        <div class="footer-content-container">
+            <!-- Flex-container with columns -->
+            <div class="display-flex jscc">
+                <!-- Column 1 -->
+                <div class="flex-2">
+                    <div>
+                        {% if config.theme.footer_logo_light %}
+                        <img class="md-header__logo_light" src="{{ config.theme.footer_logo_light | url }}#only-light"
+                            alt="logo" />
+                        {% endif %}
+                        {% if config.theme.footer_logo_dark %}
+                        <img src="{{ config.theme.footer_logo_dark | url }}#only-dark" alt="logo" />
+                        {% endif %}
+                    </div>
+
+                    <div class="display-flex">
+                        {% if config.theme.cloud_security_alliance_logo_dark %}
+                        <img src="{{ config.theme.cloud_security_alliance_logo_dark | url }}#only-dark" alt="CSA" />
+                        {% endif %}
+                        {% if config.theme.cloud_security_alliance_logo_light %}
+                        <img src="{{ config.theme.cloud_security_alliance_logo_light | url }}#only-light" alt="CSA" />
+                        {% endif %}
+
+                        {% if config.theme.hippa_compliant_logo_dark %}
+                        <img src="{{ config.theme.hippa_compliant_logo_dark | url }}#only-dark" alt="HC" />
+                        {% endif %}
+                        {% if config.theme.hippa_compliant_logo_light %}
+                        <img src="{{ config.theme.hippa_compliant_logo_light | url }}#only-light" alt="HC" />
+                        {% endif %}
+                    </div>
+
+                    <div class="display-block">
+                        <p class="md-footer-col-title"><b>
+                                Org#
+                            </b>
+                        </p>
+                        <p class="md-footer-org-details-md">
+
+                            559066-6870
+
+                        </p>
+                    </div>
+
+                    <div class="display-block">
+                        <p class="md-footer-col-title"><b>
+
+                                Address
+                            </b>
+                        </p>
+                        <p class="md-footer-org-details-md">
+
+                            David Bagaers gata 26A, <br>
+                            111 38 Stockholm, <br>
+                            Sweden
+
+                        </p>
+                    </div>
+                </div>
+                <!-- Column 2 -->
+                <div class="flex-2">
+                    <p class="md-footer-col-title"><b>
+                            Offerings
+                        </b>
+                    </p>
+
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/saap-kubernetes-openshift" class="md-footer-col-link">
+
+                            Stakater App Agility <br>
+                            Platform (SAAP)
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/mto" class="md-footer-col-link">
+
+                            Multi Tenant Operator
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/kubernetes-platform-assessment" class="md-footer-col-link">
+
+                            Platform Assessments
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/kubernetes-consultancy" class="md-footer-col-link">
+
+                            Consultancy
+
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 3 -->
+                <div class="flex-2">
+                    <p class="md-footer-col-title">
+                        <b>
+
+                            Kubernetes Add-ons
+                        </b>
+                    </p>
+
+                    <div class="margin-bottom-16">
+                        <a href="https://github.com/stakater" class="md-footer-col-link">
+
+                            Open Source Controllers
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://github.com/stakater/Reloader" class="md-footer-col-link">
+
+                            Reloader
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://github.com/stakater/Forecastle" class="md-footer-col-link">
+
+                            Forecastle
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://github.com/stakater/IngressMonitorController" class="md-footer-col-link">
+
+                            Ingress Monitor <br>
+                            Controller
+
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 4 -->
+                <div class="flex-2">
+                    <p class="md-footer-col-title">
+                        <b>
+                            Learning
+                        </b>
+                    </p>
+
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/events" class="md-footer-col-link">
+
+                            Events and Recordings
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://docs.stakater.com/" class="md-footer-col-link">
+
+                            Documentation
+
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 5 -->
+                <div class="flex-1">
+                    <p class="md-footer-col-title"><b>
+                            Company
+                        </b>
+                    </p>
+
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/faqs" class="md-footer-col-link">
+
+                            FAQs
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/careers-and-jobs" class="md-footer-col-link">
+
+                            Careers
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://www.stakater.com/contact-us" class="md-footer-col-link">
+
+                            Contact Us
+
+                        </a>
+                    </div>
+                    <div class="margin-bottom-16">
+                        <a href="https://support.stakater.com/index.html" class="md-footer-col-link">
+
+                            Support
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copy Rights and Social Media Links -->
+            <div class="display-flex jscsb">
+                <!-- Column 1 -->
+                <div class="flex-3">
+                    <div class="display-flex jscfs items-center">
+                        <div>
+                            <p class="md-footer-base-content">
+                                <b>
+                                    © 2023 Stakater.com
+                                </b>
+                            </p>
+                        </div>
+                        <div class="display-flex margin-left-1">
+                            <a href="https://www.stakater.com/privacy-policy" class="md-footer-base-content">
+                                <b>
+                                    Privacy Policy
+                                </b>
+                            </a>
+                            <p class="vertical-divider">
+                                |
+                            </p>
+                            <a href="https://www.stakater.com/terms-of-use" class="md-footer-base-content">
+                                <b>
+                                    Terms of Use
+                                </b>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="display-flex flex-1">
+                    <div class="display-flex jscc items-center">
+                        <a href="https://www.stakater.com/privacy-policy" class="md-footer-base-content">
+                            <b>
+                                Privacy Policy
+                            </b>
+                        </a>
+                        <p class="vertical-divider">
+                            |
+                        </p>
+                        <a href="https://www.stakater.com/terms-of-use" class="md-footer-base-content">
+                            <b>
+                                Terms of Use
+                            </b>
+                        </a>
+                    </div>
+                </div> -->
+                <!-- <div class="flex-1"></div>
+                <div class="flex-1"></div> -->
+                <div class="flex-1">
+                    <!-- Social Links -->
+                    <div class="display-flex jscsa">
+                        <a href="https://github.com/stakater" class="svg-container" title="Github">
+                            {% include "assets/svg/social/github.svg" %}
+                        </a>
+                        <a href="https://www.linkedin.com/company/stakater/" class="svg-container" title="Linkedin">
+                            {% include "assets/svg/social/linkedin.svg" %}
+                        </a>
+                        <a href="https://x.com/stakater" class="svg-container" title="X">
+                            {% include "assets/svg/social/x-twitter.svg" %}
+                        </a>
+                        <a href="https://www.facebook.com/stakater" class="svg-container" title="Facebook">
+                            {% include "assets/svg/social/facebook.svg" %}
+                        </a>
+                        <a href="https://www.instagram.com/stakater.se/" class="svg-container" title="Instagram">
+                            {% include "assets/svg/social/instagram.svg" %}
+                        </a>
+                        <a href="https://www.reddit.com/user/stakater/" class="svg-container" title="Reddit">
+                            {% include "assets/svg/social/reddit.svg" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

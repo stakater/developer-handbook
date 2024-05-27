@@ -1,0 +1,18 @@
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<defs>
+<style>
+    .cls-1{
+        fill:#eaeaea;
+    }
+    .cls-2{
+        fill:#ea7845;
+    }
+</style>
+</defs>
+<g id="Layer_2" data-name="Layer 2">
+<g id="Layer_1-2" data-name="Layer 1">
+<path opacity="0.1" fill-rule="evenodd" clip-rule="evenodd" d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="#282626"/>
+<path class="cls-2" d="M20.28,9.28h2.28l-5,5.69,5.86,7.75H18.85L15.25,18l-4.11,4.7H8.86l5.33-6.09L8.56,9.28h4.71l3.25,4.29Zm-.8,12.08h1.26L12.58,10.57H11.23l8.25,10.79Z"/>
+</g>
+</g>
+</svg>

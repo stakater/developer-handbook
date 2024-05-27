@@ -1,0 +1,225 @@
+<style>
+    .md-header__nav-links {
+        display: flex;
+        align-items: center;
+    }
+
+    .md-header-ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    .md-header-ul-li {
+        margin-right: 20px;
+    }
+
+    .custom-anchor {
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+    }
+
+    .dropdown {
+        position: relative;
+        margin-right: 20px;
+    }
+
+    .offerings-dropdown {
+        width: max-content;
+        height: max-content;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 4px;
+        margin: 12px 0px;
+        padding: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .more-dropdown {
+        width: 6rem;
+        height: 4rem;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 4px;
+        margin: 12px 0px;
+        padding: 14px;
+    }
+
+    .dropdown-content-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .dropdown-content-column {
+        flex: 1;
+        float: left;
+        width: 25%;
+        padding: 10px;
+    }
+
+    .dropdown-content-column-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #EA7845;
+    }
+
+    .dropdown-content-anchor-container {
+        margin: 1rem 0;
+    }
+
+    .disabled-anchor {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .dropdown-content-dev-links {
+        flex: 1;
+        float: left;
+        width: 25%;
+        padding: 10px;
+        margin: 1rem 0;
+    }
+
+    .dropdown-content-dev-links-anchor-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem 0;
+    }
+
+    .dropdown-content-dev-links-anchor {
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: #EA7845;
+    }
+</style>
+
+
+<nav class="md-header__nav-links">
+    <ul class="md-header-ul">
+        <li class="md-header-ul-li"><a class="custom-anchor" href="#">Documentation</a></li>
+        <li class="md-header-ul-li"><a class="custom-anchor" href="https://www.stakater.com/">Stakater Home</a></li>
+
+        <li class="dropdown">
+            <a class="custom-anchor" href="#">Offerings
+                &nbsp;<span>
+                    {% include "assets/svg/down-arrow.svg" %}
+                </span></a>
+            <div class="dropdown-menu dropdown-content offerings-dropdown">
+                <div class="dropdown-content-container">
+                    <!-- Column 1 -->
+                    <div class="dropdown-content-column">
+                        <h3 class="dropdown-content-column-title">Products</h3>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://www.stakater.com/saap-kubernetes-openshift"
+                                class="dropdown-item-link-text hover-underline">Stakater
+                                App
+                                Agility
+                                Platform (SAAP)</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://www.stakater.com/mto" class="dropdown-item-link-text hover-underline">Multi
+                                Tenant
+                                Operator</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://docs.stakater.com/tronador"
+                                class="dropdown-item-link-text hover-underline">Tornador
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Column 2 -->
+                    <div class="dropdown-content-column">
+                        <h3 class="dropdown-content-column-title">Services</h3>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://www.stakater.com/kubernetes-consultancy"
+                                class="dropdown-item-link-text hover-underline">Kubernetes
+                                Consultancy</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://www.stakater.com/kubernetes-platform-assessment"
+                                class="dropdown-item-link-text hover-underline">Platform
+                                Assessment</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://www.stakater.com/openshift-as-a-service"
+                                class="dropdown-item-link-text hover-underline">Openshift
+                                Consultancy</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://www.stakater.com/secure-your-kubernetes-infrastructure"
+                                class="dropdown-item-link-text hover-underline">Secret
+                                Managment Service</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://www.stakater.com/kubernetes-consultancy"
+                                class="dropdown-item-link-text hover-underline">Platform
+                                Engineering</a>
+                        </div>
+                    </div>
+                    <!-- Column 3 -->
+                    <div class="dropdown-content-column">
+                        <h3 class="dropdown-content-column-title">Open Source</h3>
+
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://github.com/stakater/Reloader"
+                                class="dropdown-item-link-text hover-underline">Reloader</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://github.com/stakater/IngressMonitorController"
+                                class="dropdown-item-link-text hover-underline">IMC</a>
+                        </div>
+                        <div class="dropdown-content-anchor-container">
+                            <a href="https://github.com/stakater/forecastle"
+                                class="dropdown-item-link-text hover-underline">Forecastle</a>
+                        </div>
+                    </div>
+                    <!-- Column 4 -->
+                    <div class="dropdown-content-dev-links">
+                        <div class="dropdown-content-dev-links-anchor-container">
+                            <a href="https://github.com/stakater/" class="dropdown-content-dev-links-anchor">Github</a>
+                        </div>
+                        <div class="dropdown-content-dev-links-anchor-container">
+                            <a href="https://docs.stakater.com/"
+                                class="dropdown-content-dev-links-anchor">Documentation</a>
+                        </div>
+                        <div class="dropdown-content-dev-links-anchor-container">
+                            <a href="https://employee.stakater.com/" class="dropdown-content-dev-links-anchor">Employee
+                                Handbook</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li class="md-header-ul-li"><a class="custom-anchor" href="https://www.stakater.com/blog">Blog</a></li>
+        <li class="md-header-ul-li"><a class="custom-anchor" href="https://www.stakater.com/white-papers">White
+                Papers</a></li>
+
+        <!-- <li class="dropdown">
+            <a class="custom-anchor" href="#">More
+                &nbsp;<span> -->
+        <!-- {% include "assets/svg/down-arrow.svg" %} -->
+        <!-- </span></a>
+            <div class="dropdown-menu dropdown-content more-dropdown">
+                <a class="custom-anchor" href="#">Item 1</a>
+                <a class="custom-anchor" href="#">Item 2</a>
+            </div>
+        </li> -->
+    </ul>
+</nav>
+
+{% include "partials/javascripts/nav-links.html" %}

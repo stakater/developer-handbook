@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block header %}
+{% include "partials/header.html" %}
+{% endblock %}
+
+{% block footer %}
+{% include "partials/footer.html" %}
+{% endblock %}
+
+{% block outdated %}
+You're not viewing the latest version.
+<a href="{{ '../' ~ base_url }}">
+  <strong>Click here to go to latest.</strong>
+</a>
+{% endblock %}
