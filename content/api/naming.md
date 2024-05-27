@@ -13,7 +13,7 @@ Example:
 This applies to concrete path segments and not the names of path parameters. For example `{purchase_order_id}` would be ok
 as a path parameter.
 
-## MUST: Use snake_case (never camelCase) for Query Parameters
+## MUST: Use `snake_case` (never `camelCase`) for Query Parameters
 
 Examples:
 
@@ -36,17 +36,17 @@ The trailing slash must not have specific semantics. Resource paths must deliver
 
 If you provide query support for sorting, pagination, filtering functions or other actions, use the following standardized naming conventions:
 
-- `q` — default query parameter (e.g. used by browser tab completion); should have an entity specific alias, like sku
+- `q` — default query parameter (e.g. used by browser tab completion); should have an entity specific alias, like `sku`
 - `limit` — to restrict the number of entries. See Pagination section below. Hint: You can use size as an alternate query string.
 - `cursor` — key-based page start. See Pagination section below.
 - `offset` — numeric offset page start. See Pagination section below. Hint: In combination with limit, you can use page as an alternative to offset.
 - `sort` — comma-separated list of fields to sort. To indicate sorting direction, fields my prefixed with + (ascending) or - (descending, default), e.g. /sales-orders?sort=+id
 - `fields` — to retrieve a subset of fields.
-- `embed` — to expand embedded entities (ie.: inside of an article entity, expand silhouette code into the silhouette object). Implementing “expand” correctly is difficult, so do it with care.
+- `embed` — to expand embedded entities (inside of an article entity, expand silhouette code into the silhouette object). Implementing “expand” correctly is difficult, so do it with care.
 
 ## SHOULD: Prefer Hyphenated-Pascal-Case for HTTP header Fields
 
-This is for consistency in your documentation (most other headers follow this convention). Avoid camelCase (without hyphens). Exceptions are common abbreviations like “ID.”
+This is for consistency in your documentation (most other headers follow this convention). Avoid `camelCase` (without hyphens). Exceptions are common abbreviations like “ID.”
 
 Examples:
 

@@ -6,10 +6,10 @@ cases to allow JSON data to have an idiomatic form across teams and services.
 
 ## Must: Use Consistent Property Names
 
-## Must: Property names must be snake_case (and never camelCase)
+## Must: Property names must be snake case (and never `camelCase`)
 
-No established industry standard exists, but many popular Internet companies prefer snake_case: e.g. GitHub, Stack Exchange,
-Twitter. Others, like Google and Amazon, use both - but not only camelCase. It’s essential to establish a consistent look and
+No established industry standard exists, but many popular Internet companies prefer snake case: e.g. GitHub, Stack Exchange,
+Twitter. Others, like Google and Amazon, use both - but not only `camelCase`. It’s essential to establish a consistent look and
 feel such that JSON looks as if it came from the same hand.
 
 ## Must: Property names must be an ASCII subset
@@ -19,12 +19,12 @@ and subsequent characters can be a letter, an underscore, a dollar sign, or a nu
 
 ## Must: Use Consistent Property Values
 
-## Must: Boolean property values must not be null
+## Must: boolean property values must not be null
 
 Schema based JSON properties that are by design booleans must not be presented as nulls. A boolean is essentially a closed
 enumeration of two values, true and false. If the content has a meaningful null value, strongly prefer to replace the boolean
-with enumeration of named values or statuses - for example accepted_terms_and_conditions with true or false can be replaced
-with terms_and_conditions with values yes, no and unknown.
+with enumeration of named values or statuses - for example `accepted_terms_and_conditions` with true or false can be replaced
+with `terms_and_conditions` with values yes, no and unknown.
 
 ## Must: Date property values should conform to RFC 3399
 
@@ -68,7 +68,7 @@ To indicate they contain multiple values prefer to pluralize array names. This i
 
 ## Should: Empty array values should not be null
 
-Empty array values can unambiguously be represented as the the empty list, [].
+Empty array values can unambiguously be represented as the empty list: `[]`
 
 ## Should: Enumerations should be represented as Strings
 

@@ -36,7 +36,7 @@ It should be noted that one need not necessarily implement NVMe drives to get th
 
 Additionally, running NVMe drives with a slow virtual storage technology can render them no faster than a mechanical disk.
 
-See the On-Premesis Storage Infrastructure below for more infrastruction on recommendations on how to properly configure physical storage infrastructure for maximum performance.
+See the On-Premesis Storage Infrastructure below for more infrastructure on recommendations on how to properly configure physical storage infrastructure for maximum performance.
 
 ### 2 - Block Storage
 
@@ -52,21 +52,21 @@ In both of these cases the block storage volume must be formatted with a filesys
 
 File storage is a storage device which is provided pre-formatted with a file system prior to making it available to be mounted.
 
-Probaly the best example of this type of storage is NFS (Network File System). NFS filesytems are exported by an NFS server and have already been formatted before they are exported. Clients that mount these filesystems do not have to format the device prior to use.
+Probably the best example of this type of storage is NFS (Network File System). NFS filesystems are exported by an NFS server and have already been formatted before they are exported. Clients that mount these filesystems do not have to format the device prior to use.
 
 Another good example of file storage would be CephFS.
 
 ### 4 - Object Storage
 
-Object storage is simply a database which has some kind of an API which can be used for storing chunks of data, either formatted or unformatted. Object storage need not be mounted to a filesystem to be used, data is normally storage via REST API calls or SQL commands.
+Object storage is simply a database which has some kind of an API which can be used for storing chunks of data, either formatted or un-formatted. Object storage need not be mounted to a filesystem to be used, data is normally storage via REST API calls or SQL commands.
 
-In cloud native applications, it is very common to deploy a separate module/pod/container which contains a database which can then be exposed to the application for object storage. In this case, the container hosting the object database will likely need file or block storage to hold the database files, but the application itself will consume the objec storage provided by the database.
+In cloud native applications, it is very common to deploy a separate module/pod/container which contains a database which can then be exposed to the application for object storage. In this case, the container hosting the object database will likely need file or block storage to hold the database files, but the application itself will consume the object storage provided by the database.
 
 In other cases, applications could consume object storage which is hosted somewhere out on the internet or on some legacy physical infrastructure.
 
-Examples of object storage technologies would be Redis, CouchDB/Cloudant, minio, mongoDB, mariaDB, etc.
+Examples of object storage technologies would be Redis, CouchDB/Cloudant, `minio`, MongoDB, mariaDB, etc.
 
-Example of hosted object storage technologies woudl be cloudant.com, redis.com, or an existing DB2 database hosted on legacy infrastructure in the enterprise.
+Example of hosted object storage technologies would be cloudant.com, redis.com, or an existing DB2 database hosted on legacy infrastructure in the enterprise.
 
 ## On-Premises Storage Infrastructure
 
@@ -78,7 +78,7 @@ Experience shows that a converged or hyper-conconverged infrastructure may or ma
 
 Prior to choosing a storage technology it is highly recommended that proper performance testing be performed to ensure that the architecture to be implemented provides the performance that is desired and expected.
 
-Experience shows that storage provider technologies which provide block storage over the data network (such as Ceph or Gluster) consume a significant number of CPU cycles serving up disk I/O over a network which is designed for traditional data.
+Experience shows that storage provider technologies which provide block storage over the data network (such as Ceph or `Gluster`) consume a significant number of CPU cycles serving up disk I/O over a network which is designed for traditional data.
 
 SAN storage technologies are designed for disk I/O traffic and the performance of an 8GB SAN will greatly out-perform a 10GB data network in a converged environment.
 
@@ -94,7 +94,7 @@ Ultimately, however, virtual machines do not move around very much and when they
 
 In the world of Kubernetes, however, workloads are moved around in the infrastructure and scale out and back with regularity. As workloads move to different worker nodes these volumes are moved around to various machines. This leads to a situation where storage traffic can become significantly unbalanced on the SAN and a single compute node could potentially have hundreds of endpoints depending on the number of containers running on the node.
 
-SAN networks can become congested not only because of high traffic, but also because of a high number of endpoints behind a single SAN switch port. In an HPC environment where a single physical node could host dozens of virtual machines and each virtual machine could be hosting hundreds or even thousands of endpoints in a dynamically provisoined environment, network congestion can become a significant problem.
+SAN networks can become congested not only because of high traffic, but also because of a high number of endpoints behind a single SAN switch port. In an HPC environment where a single physical node could host dozens of virtual machines and each virtual machine could be hosting hundreds or even thousands of endpoints in a dynamically provisioned environment, network congestion can become a significant problem.
 
 When the SAN network becomes congested, it can backup across the SAN infrastructure negatively impacting completely unrelated workloads.
 
@@ -108,7 +108,7 @@ In Kubernetes, the request for storage by an application is abstracted from the 
 
 The chunk of storage made available for the application to consume is called a Persistent Volume or PV.
 
-When an application needs some persistent storage it creates a request called a Peristent Volume Claim or PVC. When presented with a PVC, the platform will find a PV that meets the need and then bind the PVC to the PV. Once a PV is bound, it is then unavailable to be bound to any other PVC unless it is a ReadWriteMany (discussed below) request which allows a single PV to be bound to many PVCs.
+When an application needs some persistent storage it creates a request called a Persistent Volume Claim or PVC. When presented with a PVC, the platform will find a PV that meets the need and then bind the PVC to the PV. Once a PV is bound, it is then unavailable to be bound to any other PVC unless it is a ReadWriteMany (discussed below) request which allows a single PV to be bound to many PVCs.
 
 ### Dynamic vs Static
 
@@ -134,7 +134,7 @@ A PV with a retention mode set to delete will cause the PV to be deleted when th
 
 When a PV has a retention mode of recycle the platform will try to remove any data on the PV and put it back into the pool to be bound to another PVC at some future time.
 
-WARNING: When a PV has a recycle retention mode the platform will execute an rm -rf / on the root of the PV. If the PV is an NFS volume and the path of the NFS mount is the root of the NFS server it will effectively wipe the NFS server. If the PV is a hostPath (a path on the local disk) and the path is set to /, the platform will wipe the entire local disk. Usage of this retention mode should be used with extreme caution and it is highly recommended that hostPath storage not be used with a Kubernetes cluster.
+WARNING: When a PV has a recycle retention mode the platform will execute an rm -rf / on the root of the PV. If the PV is an NFS volume and the path of the NFS mount is the root of the NFS server it will effectively wipe the NFS server. If the PV is a `hostPath` (a path on the local disk) and the path is set to `/`, the platform will wipe the entire local disk. Usage of this retention mode should be used with extreme caution and it is highly recommended that `hostPath` storage not be used with a Kubernetes cluster.
 
 ### Access Modes
 
@@ -154,13 +154,13 @@ Many pods can mount the PV and all can read and write to it. This access mode is
 
 ### Storage Classes
 
-All Kubernetes storage is made available via storage providers and there are quite a few storage providers available: hostPath, NFS, Ceph, Gluster, vSphere, just to name a very few. Different storage providers will support different attributes for the PVs it controls. Before choosing a storage provider the attributes that are supported should be considered.
+All Kubernetes storage is made available via storage providers and there are quite a few storage providers available: `hostPath`, NFS, Ceph, `Gluster`, `vSphere`, just to name a very few. Different storage providers will support different attributes for the PVs it controls. Before choosing a storage provider the attributes that are supported should be considered.
 
 The way a storage provider is utilized is through a storage class. A storage class defines all the parameters needed by the storage provider to create a PV. The specific attributes needed for the storage class depends on the storage provider.
 
-It is common for a storage class name to include information about the storage provider and storage other attributes of the storage provider. For instance, a platform could have a storage class named "ceph-fast" indicating that if a PVC requests a PV created by this storage class it will be provided by the ceph storage provider backed by high IOPS storage. An operator may want to be even more descriptive and name the storage class "ceph-tier0" or "ceph-flash".
+It is common for a storage class name to include information about the storage provider and storage other attributes of the storage provider. For instance, a platform could have a storage class named `ceph-fast` indicating that if a PVC requests a PV created by this storage class it will be provided by the Ceph storage provider backed by high IOPS storage. An operator may want to be even more descriptive and name the storage class `ceph-tier0` or `ceph-flash`.
 
-Operators are advised to be caution using too much detail and creating too many different types of storage classes due to the risk of the developer not knowing what they all mean and chosing the wrong type using expensive storage when they only needed the the less expensive type. T-Shirt sizes (fast, medium, slow) seems to be a good way to label storage classes.
+Operators are advised to be caution using too much detail and creating too many different types of storage classes due to the risk of the developer not knowing what they all mean and chose the wrong type using expensive storage when they only needed the less expensive type. T-Shirt sizes (fast, medium, slow) seems to be a good way to label storage classes.
 
 ## Resilience, Performance, and Scalability
 
@@ -172,9 +172,9 @@ This kind of resiliency plan, however, can be extremely expensive requiring dupl
 
 As a result, many companies are willing to settle for backup technologies to keep offline copies of critical data. These backup storage technologies are typically much less expensive than the online replication technologies, but an outage could result in data loss between the time of the outage an the last time a backup was made.
 
-Cloud Native technologies, however, handle resilience in a different way. Object storage technologies such is IBM's CleverSafe break the data up into chunks and store slices across multiple physical devices or even datacenters. With many nodes running in many environments in different geographys, data is secure and resilient so long as a quorum of nodes is up and available.
+Cloud Native technologies, however, handle resilience in a different way. Object storage technologies such is IBM's CleverSafe break the data up into chunks and store slices across multiple physical devices or even data-centers. With many nodes running in many environments in different geographies, data is secure and resilient so long as a quorum of nodes is up and available.
 
-So, if the CleverSafe infrastructure is made up of 12 nodes, as many as 5 could faile with no data loss. If nodes are running in separate geographies or at least separate physical locations, the likelihood of losing more than half of the total nodes is extremely low.
+So, if the CleverSafe infrastructure is made up of 12 nodes, as many as 5 could fail with no data loss. If nodes are running in separate geographies or at least separate physical locations, the likelihood of losing more than half of the total nodes is extremely low.
 
 It is highly recommended that applications utilize modern cloud native storage technologies to maximize resilience at minimal cost.
 
@@ -182,9 +182,9 @@ It should be noted that, whereas this type of technology provides for extreme av
 
 This means that there still is a good use case for making regular backups of data. The important thing here, though, is that in a Kubernetes environment, application data can be backed up at the workload storage location vs backing up the entire cluster and everything on it, significantly reducing the amount of space needed for a proper backup.
 
-CAUTION: When providing internal storage technologies within a Kubernetes cluster (e.g. Ceph or GlusterFS), the more bricks/OSDs you provide the more resilient your infrastructure is likely to be. Make sure to Use anti-affinity rules to make sure each of the nodes hosting this storage is running on separte physical nodes and each of the bricks/OSDs are backed by separate physical infrastructure.
+CAUTION: When providing internal storage technologies within a Kubernetes cluster (e.g. Ceph or GlusterFS), the more bricks/OSDs you provide the more resilient your infrastructure is likely to be. Make sure to Use anti-affinity rules to make sure each of the nodes hosting this storage is running on separate physical nodes and each of the bricks/OSDs are backed by separate physical infrastructure.
 
-If all nodes or a majority of nodes are running on a single physical host and that host fails, your storage techonogy will also fail due to a lack of enough backing storage to complete a transaction. This could lead to data loss or corruption.
+If all nodes or a majority of nodes are running on a single physical host and that host fails, your storage technology will also fail due to a lack of enough backing storage to complete a transaction. This could lead to data loss or corruption.
 
 ### IOPS Considerations
 
@@ -192,11 +192,11 @@ As noted above, Kubernetes primary branch nodes running etcd require significant
 
 Some time sensitive workloads will also need high IOPS storage. It is recommended to provide multiple storage classes at various tiers so the developer can choose the storage that best supports the requirements of the workload.
 
-### Kubernetes Workload Scalability's affects on Storage
+### Kubernetes Workload Scalability effects on Storage
 
 When creating an application architecture, some developers may consider using a ReadWriteMany persistent Volume (see kubenetes Storage Concepts below for more information on persistent volumes) when they need multiple micro services to have access to the same persistent storage data.
 
-Caution should be used, however, because if using appliation auto-scaling in Kubernetes, when an application scales out each container in each pod with a ReadWriteMany persistent volume will have that persistent volume mounted. This could lead to storage network congestion negatively impacting not only the entire Kubernetes cluster, but also everything else running on the SAN infrastructure (see Storage Network Congestion in a Kubernetes Environment above).
+Caution should be used, however, because if using application auto-scaling in Kubernetes, when an application scales out each container in each pod with a ReadWriteMany persistent volume will have that persistent volume mounted. This could lead to storage network congestion negatively impacting not only the entire Kubernetes cluster, but also everything else running on the SAN infrastructure (see Storage Network Congestion in a Kubernetes Environment above).
 
 A better architecture utilizes a micro service with an API to serve up data from a single ReadWriteOnly persistent volume which is then consumed by all workloads that need access to that data.
 
@@ -206,19 +206,19 @@ The migration has to take into consideration of both the Kubernetes Storage Prov
 
 ### Storage Provider
 
-In general, Kubernetes supports quite a few storage providers including hostPath, NFS, Ceph, Gluster, vSphere, minio, Cloud-based storage (S3 etc.). And these providers can be deployed either as a part of a Kubernetes cluster (internal storage) or storage provided by an external service (external storage). For the migration, we’ll focus on the internal storage or in-cluster storage provider.
+In general, Kubernetes supports quite a few storage providers including `hostPath`, NFS, Ceph, `Gluster`, `vSphere`, `minio`, Cloud-based storage (S3 etc.). And these providers can be deployed either as a part of a Kubernetes cluster (internal storage) or storage provided by an external service (external storage). For the migration, we’ll focus on the internal storage or in-cluster storage provider.
 
 If you are using external storage provider, you just need to migrate the storage consumer and leave the external storage provider as-is.
 
-If you are using internal storage provider, you need to setup the Openshift Storage nodes, either GlusterFS or Ceph, using the same/similar spec as in other cluster in terms of disk size, storage type, number of nodes. Then, proceed to storage consumer migration.
+If you are using internal storage provider, you need to setup the OpenShift Storage nodes, either GlusterFS or Ceph, using the same/similar spec as in other cluster in terms of disk size, storage type, number of nodes. Then, proceed to storage consumer migration.
 
 ### Storage Consumer
 
 Each client might have different storage consumption pattern, we’ll try to categorize them into the following:
 
 - Container applications requires persistent Storage
-- Kubernetes Statefulset application
-- Databases running on Kubernetes such as MongoDB, MySQL, Cloudant etc.
+- Kubernetes `Statefulset` application
+- Databases running on Kubernetes such as MongoDB, MySQL
 
 We’ll assume that all these storage needs are implemented as Kubernetes recommended Persistent Volume (PV) and Persistent Volume Claims (PVC).
 

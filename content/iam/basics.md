@@ -118,13 +118,13 @@ The important part is twofold:
 - First, by the time the user sees the authorization code, it’s already been consumed and therefore can’t be used again.
 - Second, the Access Token is kept by the application in the backend. Assuming the application is built securely, a malicious user has to find another way to attack it.
 
-Unfortunately, this doesn’t work for client side applications such as many Javascript apps or most mobile apps as the application itself can be attacked or decompiled for sensitive information. Therefore, we need a different approach.
+Unfortunately, this doesn’t work for client side applications such as many Javascript apps or most mobile apps as the application itself can be attacked or de-compiled for sensitive information. Therefore, we need a different approach.
 
 #### Implicit
 
 The Implicit flow is designed specifically for mobile apps or client side Javascript apps where embedded credentials could be compromised. The mechanics are simple in that the application redirects the user to the Identity Provider to authenticate, the IdP passes back token(s), and the application uses it according to the scopes it has.
 
-Since it’s quite likely that the user could interact with the token(s), it’s important that our use cases reflect that. If we have a banking app, allowing the send_wire_transfers_to_russia scope may be a bad idea unless we have additional factors baked into our authentication process to validate that the right user is using it. The next time you lose your phone, you’ll appreciate that.
+Since it’s quite likely that the user could interact with the token(s), it’s important that our use cases reflect that. If we have a banking app, allowing the `send_wire_transfers_to_russia` scope may be a bad idea unless we have additional factors baked into our authentication process to validate that the right user is using it. The next time you lose your phone, you’ll appreciate that.
 
 As a result, this is often used for OpenID Connect scenarios where a user wants to provide trusted profile information to a third party but not necessarily access or permissions to other systems. Since the underlying concepts are the same and the implementation looks very similar, it’s most of the benefit for the same effort.
 
@@ -138,7 +138,7 @@ But remember: Fundamentally, you’re training users to put their credentials in
 
 #### Client Credential
 
-The Client Credential grant type is designed exclusively for backend server to server operations. Think of it as a server’s username and password. Conceptually, it’s not far from how your application connects to other backend systems such as your database or Twilio. The benefit is that your OAuth provider can return configuration information or other details within the token itself.
+The Client Credential grant type is designed exclusively for backend server to server operations. Think of it as a server’s username and password. Conceptually, it’s not far from how your application connects to other backend systems such as your database or `Twilio`. The benefit is that your OAuth provider can return configuration information or other details within the token itself.
 
 Finally, since there’s not a user involved, it doesn’t support OpenID Connect.
 
@@ -156,7 +156,7 @@ We’ve been talking about delegated authorization this whole time. **It’s not
 
 ## OpenID Connect
 
-To solve the pseudo authentication problem, the best parts of OAuth 2.0, Facebook Connect, and SAML 2.0 were combined to create OpenID Connect. OpenID Connect (OIDC) extends OAuth 2.0 with a **new signed id_token** for the client and a UserInfo endpoint to fetch user attributes. Unlike SAML, OIDC provides a standard set of scopes and claims for identities. Examples include: profile, email, address, and phone.
+To solve the pseudo authentication problem, the best parts of OAuth 2.0, Facebook Connect, and SAML 2.0 were combined to create OpenID Connect. OpenID Connect (OIDC) extends OAuth 2.0 with a **new signed `id_token`** for the client and a UserInfo endpoint to fetch user attributes. Unlike SAML, OIDC provides a standard set of scopes and claims for identities. Examples include: profile, email, address, and phone.
 
 Request:
 
@@ -239,12 +239,12 @@ The primary extension that OpenID Connect makes to OAuth 2.0 to enable End-Users
 
 The above is default JWT claims, in addition to that, if you requested claims from service provider then you will get those as well.
 
-An id_token is a JWT, per the OIDC Specification. This means that:
+An `id_token` is a JWT, per the OIDC Specification. This means that:
 
 - identity information about the user is encoded right into the token and
 - the token can be definitively verified to prove that it hasn’t been tampered with.
 
-There’s a set of [rules](http://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation) in the specification for validating an id_token. Among the claims encoded in the id_token is an expiration (exp), which must be honored as part of the validation process. Additionally, the signature section of JWT is used in concert with a key to validate that the entire JWT has not been tampered with in any way.
+There’s a set of [rules](http://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation) in the specification for validating an `id_token`. Among the claims encoded in the `id_token` is an expiration (exp), which must be honored as part of the validation process. Additionally, the signature section of JWT is used in concert with a key to validate that the entire JWT has not been tampered with in any way.
 
 ## JWT
 
@@ -382,7 +382,7 @@ The biggest complaint about OAuth in general comes from Security people. It’s 
 
 Each microservice should not have to do its own authentication, but it does need to do its own authorization.
 
-Each API should keep track of its own object-level permissions, and it can do so without anything more than a pre-validated userid or groupid. Simply record an object or row that has the id of the object, the id of the user or group, and a set of flags for which permissions they have on that object. That way, when a user tries to do an action on an object, we can join to the appropriate permissions object if it exists, and determine what the user can and can't do to that object. The point is, object-level-permissions exists in the microservice database store without extra user context.
+Each API should keep track of its own object-level permissions, and it can do so without anything more than a pre-validated `userid` or `groupid`. Simply record an object or row that has the id of the object, the id of the user or group, and a set of flags for which permissions they have on that object. That way, when a user tries to do an action on an object, we can join to the appropriate permissions object if it exists, and determine what the user can and can't do to that object. The point is, object-level-permissions exists in the microservice database store without extra user context.
 
 Using this approach we do not require extra user information for authorization such as the username and/or email address - that information is stored elsewhere and only required for authentication.
 
@@ -423,7 +423,7 @@ You can also configure a default broker. In this case the user will not be given
 1. Once the user is locally authenticated, KeyCloak redirects the user to the service provider by sending the token previously issued during the local authentication.
 1. The service provider receives the token from KeyCloak and allows access to the protected resource.
 
-As you may notice, at the end of the authentication process KeyCloak will always issue its own token to client applications. What this means is that client applications are completely decoupled from external identity providers. They don’t need to know which protocol (eg.: SAML, OpenID Connect, OAuth, etc) was used or how the user’s identity was validated. They only need to know about KeyCloak.
+As you may notice, at the end of the authentication process KeyCloak will always issue its own token to client applications. What this means is that client applications are completely decoupled from external identity providers. They don’t need to know which protocol (SAML, OpenID Connect, OAuth, etc) was used or how the user’s identity was validated. They only need to know about KeyCloak.
 
 ## Threat Model Mitigation
 
@@ -438,7 +438,7 @@ OAuth2 had these two tokens:
 
 (1). Access Token
 
-Access tokens are used as bearer tokens. A bearer token means that the bearer (who hold the access token) can access authorized resources without further identification. Because of this, it’s important that bearer tokens are protected. If I can somehow get ahold of and “bear” your access token, I can pretend as you.
+Access tokens are used as bearer tokens. A bearer token means that the bearer (who hold the access token) can access authorized resources without further identification. Because of this, it’s important that bearer tokens are protected. If I can somehow gets hold of and “bear” your access token, I can pretend as you.
 
 These tokens usually have a short lifespan (dictated by its expiration) for improved security. That is, when the access token expires, the user must authenticate again to get a new access token limiting the exposure of the fact that it’s a bearer token.
 
@@ -485,7 +485,7 @@ The trick to revocation is to use a refresh token. The refresh token is supplied
 
 ### What is purpose of Redirect URI?
 
-A redirect URI helps to detect malicious clients and prevents phishing attacks from clients attempting to trick the user into believing the phisher is the client. The value of the actual redirect URI used in the authorization request has to be presented and is verified when an authorization "code" is exchanged for tokens. This helps to prevent attacks where the authorization "code" is revealed through redirectors and counterfeit web application clients. The authorization server should require public clients and confidential clients using the implicit grant type to pre-register their redirect URIs and validate against the registered redirect URI in the authorization request.
+A redirect URI helps to detect malicious clients and prevents phishing attacks from clients attempting to trick the user into believing the phisher is the client. The value of the actual redirect URI used in the authorization request has to be presented and is verified when an authorization "code" is exchanged for tokens. This helps to prevent attacks where the authorization "code" is revealed through redirect and counterfeit web application clients. The authorization server should require public clients and confidential clients using the implicit grant type to pre-register their redirect URIs and validate against the registered redirect URI in the authorization request.
 
 ### What is bearer token?
 
@@ -504,7 +504,7 @@ The process is following:
 1. Both tokens are saved by the client app for the next usage.
 1. Now the client application can access to the API by filling the Authorization http header with the access token. The access token is short-lived and must be refreshed before its expiration date. So the client app should verify each time that the access token is not about to expire. In this case, the client app shall use the refresh token to claim a new access token to Keycloak.
 1. Kong validates the access token. It verify the signature, the issuer and the expiration time of the token.
-1. If everything is ok, Kong transfers the request to the backend service. The access token is still carried by the the Authorization header and can be decoded by the backend services to gather information required by the fine grained authorization layer (subject id, group, roles). Note than Kong add the client app ID into the header. This can be useful to the backend service in order to identify where the user comes from.
+1. If everything is ok, Kong transfers the request to the backend service. The access token is still carried by the Authorization header and can be decoded by the backend services to gather information required by the fine grained authorization layer (subject id, group, roles). Note than Kong add the client app ID into the header. This can be useful to the backend service in order to identify where the user comes from.
 1. And the service response is transmitted to the client app through all layers.
 
 ## References

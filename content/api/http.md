@@ -105,7 +105,7 @@ OPTIONS are used to inspect the available operations (HTTP methods) of a given e
 
 Note: OPTIONS is rarely implemented, though it could be used to self-describe the full functionality of a resource.
 
-## Must: Fulfill Safeness and Idempotency Properties
+## Must: Fulfill Safeness and Idempotent Properties
 
 An operation can be:
 

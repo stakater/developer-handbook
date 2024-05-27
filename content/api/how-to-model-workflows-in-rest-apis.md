@@ -6,7 +6,7 @@ There are three options:
 
 1. Use an Attribute for the Workflow’s State
 1. Use Hyperlinks for Workflow Transitions
-1. Use a Subresource for Workflow Transitions
+1. Use a `Subresource` for Workflow Transitions
 
 ## So which one should I pick?
 
@@ -18,7 +18,7 @@ As always, it depends on the context, but here are some quick guidelines:
 | --- | --- |
 | State Attribute | When there are no restrictions on the transitions. You can go from any state to any state at any time. The states are basically nothing more than a list of values. |
 | Transition Links | There are limits to which states you can go to depending on the current state. |
-| Transition Subresource | The workflow is configurable by users, so states and transitions among them are not fixed, but can be changed at runtime. |
+| Transition `Subresource` | The workflow is configurable by users, so states and transitions among them are not fixed, but can be changed at runtime. |
 
 ## Reference
 

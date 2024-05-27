@@ -18,13 +18,13 @@ CPU is considered a “compressible” resource while memory is “non-compressi
 
 Compressible means we can squeeze more out of it. Pods can work with less of the resource although they would like to use more of it. For example, if you deploy a pod with a request of 1 CPU and no limit, it can use more than that if available. But when other pods on the same node get busy, they will have to share the available CPUs and might get throttled back to their request. However, they won’t be evicted and can still do their job.
 
-For memory on the other hand, when a pod has a resource request for memory but no limit, it also might use more RAM than requested. However, when resources get low, it can’t be throttled back to use only the requested amount of memory and free up the rest. There is a possiblity that Kubernetes will evict such pods. Therefore it is crucial to always set a memory resource limit and take care that your microservice will never exceed that limit.
+For memory on the other hand, when a pod has a resource request for memory but no limit, it also might use more RAM than requested. However, when resources get low, it can’t be throttled back to use only the requested amount of memory and free up the rest. There is a possibility that Kubernetes will evict such pods. Therefore it is crucial to always set a memory resource limit and take care that your microservice will never exceed that limit.
 
 Similarly, even if you set limits CPU & memory on a pod, and pod reaches the limit CPU, the container will not get killed, rather it will be CPU throttled causing slowness. But if it reaches the memory limit, kubelet will kill the container stating OOMKilled(Out of memory killed)
 
 ### Requests is a guarantee, Limits is an obligation
 
-There is a subtle change of semantics when we go from requests to limits. For the application developer, requests is a guarantee offered by Kubernetes that any pod scheduled will have at least the minumum amount of memory. limits is an obligation to stay under the maximum amount of memory, which will be enforced by the kernel.
+There is a subtle change of semantics when we go from requests to limits. For the application developer, requests is a guarantee offered by Kubernetes that any pod scheduled will have at least the minimum amount of memory. limits is an obligation to stay under the maximum amount of memory, which will be enforced by the kernel.
 
 In other words: containers can’t rely on being able to grow from their initial requests capacity to the maximum allowance set in limits.
 
@@ -40,11 +40,11 @@ When you declare no resources, Kubernetes has no idea where to put the pod. Some
 
 It won’t just starve your other pods, it can also going to escalate and consume the CPU that would otherwise be allocated for really important things, like the kubelet. Your node can go dark and on some platforms, it can be more than 15 minutes before your cluster self-heals.
 
-### 2. Burstable
+### 2. `Burstable`
 
 The QoS when you set Limits is higher than Requests on your pods.
 
-Better than `BestEffort` but if all of your pods have limits higher than your requests, and all/some of them grow simulatenously, they are overcommitting the CPU/Memory from the node. The issue is again all the pods are using more memory and can again commit more memory & CPU from the node, resulting in node failure or OOMKill of your containers. If the upper bound of all of your pods is several times higher than the capacity of the node on which they’re running, you’ve potentially got a problem.
+Better than `BestEffort` but if all of your pods have limits higher than your requests, and all/some of them grow simultaneously, they are over-committing the CPU/Memory from the node. The issue is again all the pods are using more memory and can again commit more memory & CPU from the node, resulting in node failure or `OOMKill` of your containers. If the upper bound of all of your pods is several times higher than the capacity of the node on which they’re running, you’ve potentially got a problem.
 
 ### 3. Guaranteed
 
@@ -54,7 +54,7 @@ It is the most expensive way to run your containers, but those containers gain a
 
 ### Conclusion
 
-This is a bit of a value judgment. Some pods sit idle for a long time and, perhaps for an hour, they get busy. It doesn’t make sense to hold onto resources for the other 23 hours as Guaranteed QoS does. So you make the choice. Risk vs. reward. If the pod self-heals quickly and you can tolerate short outages, Burstable might be a good method for you to save some money.
+This is a bit of a value judgment. Some pods sit idle for a long time and, perhaps for an hour, they get busy. It doesn’t make sense to hold onto resources for the other 23 hours as Guaranteed QoS does. So you make the choice. Risk vs. reward. If the pod self-heals quickly and you can tolerate short outages, `Burstable` might be a good method for you to save some money.
 
 ## The Tradeoffs
 
@@ -70,13 +70,13 @@ This is a bit of a value judgment. Some pods sit idle for a long time and, perha
 
 There is no single right or wrong value, you need to calculate this based on your team's or microservice's usage and need. And this should be monitored explicitly for a period of time by the developers, to come to a final conclusion. For this, there are 2 options:
 
-- Either you can do this manually through Grafana & Prometheus and look for container cpu & memory usage and then update Request & Limit manually.
+- Either you can do this manually through Grafana & Prometheus and look for container CPU and memory usage and then update Request and Limit manually.
 
-- Use Vertical Pod Autoscaler(Still in beta as of 17-04-2020)
+- Use Vertical Pod Autoscaler
 
 ## Solution
 
-### Don't overcommit memory
+### Don't over-commit memory
 
 - Implement mutating admission webhook
 - Set Requests = Limits

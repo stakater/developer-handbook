@@ -1,4 +1,4 @@
-# Architecting Applications for Kubernetes
+# Application Architecture for Kubernetes
 
 ## Introduction
 
@@ -12,7 +12,7 @@ In this guide, we will discuss some of the principles and patterns you may wish 
 
 When producing software, many requirements affect the patterns and architecture you choose to employ. With Kubernetes, one of the most important factors is the ability to scale horizontally, adjusting the number of identical copies of your application to distribute load and increase availability. This is an alternative to vertical scaling, which attempts to manipulate the same factors by deploying on machines with greater or fewer resources.
 
-In particular, microservices is a software design pattern that works well for scalable deployments on clusters. Developers create small, composable applications that communicate over the network through well-defined REST APIs instead of larger compound programs that communicate through through internal programming mechanisms. Decomposing monolithic applications into discrete single-purpose components makes it possible to scale each function independently. Much of the complexity and composition that would normally exist at the application level is transferred to the operational realm where it can be managed by platforms like Kubernetes.
+In particular, microservices is a software design pattern that works well for scalable deployments on clusters. Developers create small applications that communicate over the network through well-defined REST APIs instead of larger compound programs that communicate through internal programming mechanisms. Decomposing monolithic applications into discrete single-purpose components makes it possible to scale each function independently. Much of the complexity and composition that would normally exist at the application level is transferred to the operational realm where it can be managed by platforms like Kubernetes.
 
 Beyond specific software patterns, cloud native applications are designed with a few additional considerations in mind. Cloud native applications are programs that follow a microservices architecture pattern with built-in resiliency, observability, and administrative features to adapt to the environment provided by clustered platforms in the cloud.
 
@@ -49,11 +49,11 @@ For instance, containers provide isolation between the application environment a
 
 The flexibility of container technology allows many different ways of encapsulating an application. However, some methods work better in a Kubernetes environment than others.
 
-Most best practices on containerizing your applications have to do with image building, where you define how your software will be set up and run from within a container. In general, keeping image sizes small and composable provides a number of benefits. Size-optimized images can reduce the time and resources required to start up a new container on a cluster by keeping footprint manageable and reusing existing layers between image updates.
+Most best practices on containerizing your applications have to do with image building, where you define how your software will be set up and run from within a container. In general, keeping image sizes small provides a number of benefits. Size-optimized images can reduce the time and resources required to start up a new container on a cluster by keeping footprint manageable and reusing existing layers between image updates.
 
 A good first step when creating container images is to do your best to separate your build steps from the final image that will be run in production. Building software generally requires extra tooling, takes additional time, and produces artifacts that might be inconsistent from container to container or unnecessary to the final runtime environment depending on the environment. One way to cleanly separate the build process from the runtime environment is to use Docker multi-stage builds. Multi-stage build configurations allow you to specify one base image to use during your build process and define another to use at runtime. This makes it possible to build software using an image with all of the build tools installed and copy the resulting artifacts to a slim, streamlined image that will be used each time afterwards.
 
-With this type of functionality available, it is usually a good idea to build production images on top of a minimal parent image. If you wish to completely avoid the bloat found in "distro"-style parent layers like ubuntu:16.04 (which includes a rather complete Ubuntu 16.04 environment), you could build your images with scratch — Docker's most minimal base image — as the parent. However, the scratch base layer doesn't provide access to many core tools and will often break assumptions about the environment that some software holds. As an alternative, the Alpine Linux alpine image has gained popularity by being a solid, minimal base environment that provides a tiny, but fully featured Linux distribution.
+With this type of functionality available, it is usually a good idea to build production images on top of a minimal parent image. If you wish to completely avoid the bloat found in "distro"-style parent layers like `ubuntu:16.04` (which includes a rather complete `Ubuntu` 16.04 environment), you could build your images with scratch — Docker's most minimal base image — as the parent. However, the scratch base layer doesn't provide access to many core tools and will often break assumptions about the environment that some software holds. As an alternative, the Alpine Linux alpine image has gained popularity by being a solid, minimal base environment that provides a tiny, but fully featured Linux distribution.
 
 For interpreted languages like Python or Ruby, the paradigm shifts slightly since there is no compilation stage and the interpreter must be available to run the code in production. However, since slim images are still ideal, many language-specific, optimized images built on top of Alpine Linux are available on Docker Hub. The benefits of using a smaller image for interpreted languages are similar to those for compiled languages: Kubernetes will be able to quickly pull all of the necessary container images onto new nodes to begin doing meaningful work.
 
@@ -73,7 +73,7 @@ Because many of Kubernetes' features and abstractions deal with pods directly, i
 
 With this in mind, what types of containers should be bundled in a single pod? Generally, a primary container is responsible for fulfilling the core functions of the pod, but additional containers may be defined that modify or extend the primary container or help it connect to a unique deployment environment.
 
-For instance, in a web server pod, an Nginx container might listen for requests and serve content while an associated container updates static files when a repository changes. It may be tempting to package both of these components within a single container, but there are significant benefits to implementing them as separate containers. Both the web server container and the repository puller can be used independently in different contexts. They can be maintained by different teams and can each be developed to generalize their behavior to work with different companion containers.
+For instance, in a web server pod, an `Nginx` container might listen for requests and serve content while an associated container updates static files when a repository changes. It may be tempting to package both of these components within a single container, but there are significant benefits to implementing them as separate containers. Both the web server container and the repository puller can be used independently in different contexts. They can be maintained by different teams and can each be developed to generalize their behavior to work with different companion containers.
 
 Brendan Burns and David Oppenheimer identified three primary patterns for bundling supporting containers in their paper on design patterns for container-based distributed systems. These represent some of the most common use cases for packaging containers together in a pod:
 
@@ -105,7 +105,7 @@ By combining liveness and readiness probes, you can instruct Kubernetes to autom
 
 Earlier, when discussing some pod design fundamentals, we also mentioned that other Kubernetes objects build on these primitives to provide more advanced functionality. A deployment, one such compound object, is probably the most commonly defined and manipulated Kubernetes object.
 
-Deployments are compound objects that build on other Kubernetes primatives to add additional capabilities. They add life cycle management capabilities to intermediary objects called replicasets, like the ability to perform rolling updates, rollback to earlier versions, and transition between states. These replicasets allow you to define pod templates to spin up and manage multiple copies of a single pod design. This helps you easily scale out your infrastructure, manage availability requirements, and automatically restart pods in the event of failure.
+Deployments are compound objects that build on other Kubernetes primitives to add additional capabilities. They add life cycle management capabilities to intermediary objects called `replicasets`, like the ability to perform rolling updates, rollback to earlier versions, and transition between states. These `replicasets` allow you to define pod templates to spin up and manage multiple copies of a single pod design. This helps you easily scale out your infrastructure, manage availability requirements, and automatically restart pods in the event of failure.
 
 These additional features provide an administrative framework and self-healing capabilities to the relatively simple pod abstraction. While pods are the units that ultimately run the workloads you define, they are not the units that you should usually be provisioning and managing. Instead, think of pods as a building block that can run applications robustly when provisioned through higher-level objects like deployments.
 
@@ -117,7 +117,7 @@ In Kubernetes, services are specific mechanisms that control how traffic gets ro
 
 ### Accessing Services Internally
 
-To effectively use services, you first must determine the intended consumers for each group of pods. If your service will only be used by other applications deployed within your Kubernetes cluster, the clusterIP service type allows you to connect to a set of pods using a stable IP address that is only routable from within the cluster. Any object deployed on the cluster can communicate with the group of replicated pods by sending traffic directly to the service's IP address. This is the simplest service type, which works well for internal application layers.
+To effectively use services, you first must determine the intended consumers for each group of pods. If your service will only be used by other applications deployed within your Kubernetes cluster, the clusterIP service type allows you to connect to a set of pods using a stable IP address that is only possible to route from within the cluster. Any object deployed on the cluster can communicate with the group of replicated pods by sending traffic directly to the service's IP address. This is the simplest service type, which works well for internal application layers.
 
 An optional DNS addon enables Kubernetes to provide DNS names for services. This allows pods and other objects to communicate with services by name instead of by IP address. This mechanism does not change service usage significantly, but name-based identifiers can make it simpler to hook up components or define interactions without knowing the service IP address ahead of time.
 
@@ -127,7 +127,7 @@ If the interface should be publicly accessible, your best option is usually the 
 
 Since the load balancer service type creates a load balancer for every service, it can potentially become expensive to expose Kubernetes services publicly using this method. To help alleviate this, Kubernetes ingress objects can be used to describe how to route different types of requests to different services based on a predetermined set of rules. For instance, requests for "example.com" might go to service A, while requests for "sammytheshark.com" might be routed to service B. Ingress objects provide a way of describing how to logically route a mixed stream of requests to their target services based on predefined patterns.
 
-Ingress rules must be interpreted by an ingress controller — typically some sort of load balance, like Nginx — deployed within the cluster as a pod, which implements the ingress rules and forwards traffic to Kubernetes services accordingly. Currently, the ingress object type is in beta, but there are several working implementations that can be used to minimize the number of external load balancers that cluster owners are required to run.
+Ingress rules must be interpreted by an ingress controller — typically some sort of load balance, like `Nginx` — deployed within the cluster as a pod, which implements the ingress rules and forwards traffic to Kubernetes services accordingly. Currently, the ingress object type is in beta, but there are several working implementations that can be used to minimize the number of external load balancers that cluster owners are required to run.
 
 ## Using Declarative Syntax to Manage Kubernetes State
 
@@ -139,8 +139,8 @@ Fortunately, Kubernetes provides an alternative declarative syntax that allows y
 
 ## Conclusion
 
-Managing the infrastructure that will run your applications and learning how to best leverage the features offered by modern orchestrations environments can be daunting. However, many of the benefits offered by systems like Kubernetes and technologies like containers become more clear when your development and operations practices align with the concepts the tooling is built around. Architecting your systems using the patterns Kubernetes excels at and understanding how certain features can alleviate some of the challenges associated with highly complex deployments can help improve your experience running on the platform.
+Managing the infrastructure that will run your applications and learning how to best leverage the features offered by modern orchestrations environments can be daunting. However, many of the benefits offered by systems like Kubernetes and technologies like containers become more clear when your development and operations practices align with the concepts the tooling is built around. System architecture using the patterns Kubernetes excels at and understanding how certain features can alleviate some of the challenges associated with highly complex deployments can help improve your experience running on the platform.
 
 ## References
 
-- [Architecting Applications for Kubernetes](https://www.digitalocean.com/community/tutorials/architecting-applications-for-kubernetes)
+- [`Architecting Applications for Kubernetes`](https://www.digitalocean.com/community/tutorials/architecting-applications-for-kubernetes)

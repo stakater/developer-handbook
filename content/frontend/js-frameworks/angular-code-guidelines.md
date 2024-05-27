@@ -71,7 +71,7 @@ Makes your code easier to read and manage and more convenient to test. Consider 
 
 One of the benefits of using Typescript is Enums. Prefer use of enums instead of string literals to ensure consisty throughout the application. Constants may solve the problem with string literals but enums also offers intellisense of what type of values it holds inside.
 
-**NOTE:** Never ever user enums as getters in a smart component, NEVER!
+**NOTE:** Never ever user enums as get method in a smart component, NEVER!
 
 ## @Inputs & @Outputs
 

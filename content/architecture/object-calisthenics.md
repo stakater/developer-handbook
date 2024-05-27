@@ -2,7 +2,7 @@
 
 Object Calisthenics has been introduced the first time by Jeff Bay. Object Calisthenics outlines 9 basic rules to apply when writing code.
 
-Object Calisthenics are programming exercises, formalized as a set of 9 rules invented by Jeff Bay in his book The ThoughtWorks Anthology. The word Object is related to Object Oriented Programming. The word Calisthenics is derived from greek, and means exercises under the context of gymnastics. By trying to follow these rules as much as possible, you will naturally change how you write code. It doesn’t mean you have to follow all these rules, all the time. Find your balance with these rules, use some of them only if you feel comfortable with them.
+Object Calisthenics are programming exercises, formalized as a set of 9 rules invented by Jeff Bay in his book The ThoughtWorks Anthology. The word Object is related to Object Oriented Programming. The word Calisthenics is derived from Greek, and means exercises under the context of gymnastics. By trying to follow these rules as much as possible, you will naturally change how you write code. It doesn’t mean you have to follow all these rules, all the time. Find your balance with these rules, use some of them only if you feel comfortable with them.
 
 The idea of Object Calisthenics is that the high-level concepts and principles of good object-oriented programming can be distilled into low-level rules to follow.
 
@@ -381,7 +381,7 @@ public class Month
 }
 ```
 
-and now this this is how SMSSubscription looks like:
+and now this is how SMSSubscription looks like:
 
 `SMSSubscription.java`:
 
@@ -491,11 +491,11 @@ Source: [Object Calisthenics](https://williamdurand.fr/2013/06/03/object-calisth
 
 The main question was  _Why two attributes?_  My answer was  _Why not?_  Not the best explanation but, in my opinion, the main idea is to distinguish  **two kinds of classes**, those that  **maintain the state of a single instance variable**, and those that  **coordinate two separate variables**. **Two** is an arbitrary choice that forces you to decouple your classes a lot.
 
-## Do not Use Getters and Setters
+## Do not Use Get and Set methods
 
 The simplest way to avoid setters is to hand the values to the constructor method when you new up the object. This is also the usual pattern when you want to make an object immutable.
 
-DTOs are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have getters.
+DTOs are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have get methods.
 
 Lets explain in detail why we should avoid getter and setters methods:
 
@@ -553,9 +553,9 @@ Lets save we have api of Car:
 |_________________________________|
 ```
 
-If you assume that this is a gas-powered car that internally tracks gasoline in liters, then you are going to be right 99.999% of the time. That's really bad and this is why getters and setters expose implementation / violate encapsulation. Now this code is brittle and hard to change. What if we want a hydrogen-fuelled car? We have to throw out this whole Car class now. It would have been better just to have behavior methods like `fillUp(Fuel fuel)`.
+If you assume that this is a gas-powered car that internally tracks gasoline in liters, then you are going to be right 99.999% of the time. That's really bad and this is why get methods and set methods expose implementation / violate encapsulation. Now this code is brittle and hard to change. What if we want a hydrogen-fuelled car? We have to throw out this whole Car class now. It would have been better just to have behavior methods like `fillUp(Fuel fuel)`.
 
-### Getters and setters can actually be dangerous
+### Get and set methods can actually be dangerous
 
 Using getter method blindly can actually cause problems. Lets say we have debt class and there is a list of debts inside.
 
@@ -630,7 +630,7 @@ public class BankAccount {
 }
 ```
 
-This way, implementation level details are hidden and even if you have have to change the way amount is kept in account, your exposed methods will remain the same, providing the same behavior.
+This way, implementation level details are hidden and even if you have to change the way amount is kept in account, your exposed methods will remain the same, providing the same behavior.
 
 There are some places where getter/setter method actually make sense like before updating the state in current object according to some input, we validate the input. The input validation is additional functionality.
 Purpose of this point to avoid getter/setter methods as much as you can, but if you can think there is no other way, you need to careful while writing your code by keep above points in mind.
@@ -638,4 +638,4 @@ Purpose of this point to avoid getter/setter methods as much as you can, but if 
 ## References
 
 - [https://williamdurand.fr/2013/06/03/object-calisthenics](https://williamdurand.fr/2013/06/03/object-calisthenics)
-- [https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m](https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m)
+- [`Avoid getters and setters whenever possible`](https://dev.to/scottshipp/avoid-getters-and-setters-whenever-possible-c8m)

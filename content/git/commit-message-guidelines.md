@@ -12,7 +12,7 @@ For files that didn't change from one commit to another, git stores just a link 
 
 The image below shows how git stores data over time, in which each "Version" is a commit:
 
-![checkins over time](https://i.stack.imgur.com/AQ5TG.png)
+![check-ins over time](https://i.stack.imgur.com/AQ5TG.png)
 
 ## Why are commit messages important?
 
@@ -60,13 +60,13 @@ Capitalized or not, an important point is to stick to a single standard and foll
 
 ### Try to communicate what the change does without having to look at the source code
 
-Good: Add `use` method to Credit model
+Good: `Add "use" method to Credit model`
 
-Bad: Add `use` method
+Bad: `Add "use" method`
 
-Good: Increase left padding between textbox and layout frame
+Good: `Increase left padding between text-box and layout frame`
 
-Bad: Adjust css
+Bad: `Adjust css`
 
 It is useful in many scenarios (e.g. multiple commits, several changes and refactors) to help reviewers understand what the committer was thinking.
 
@@ -194,8 +194,7 @@ Resolves: #123
 See also: #456, #789
 ```
 
-## Credits
+## References
 
-- Author: [Romulo Oliveira](https://github.com/RomuloOliveira)
-
-- Article: [https://github.com/RomuloOliveira/commit-messages-guide/blob/master/README.md](https://github.com/RomuloOliveira/commit-messages-guide/blob/master/README.md)
+- [`Romulo Oliveira`](https://github.com/RomuloOliveira)
+- [Commit messages guide](https://github.com/RomuloOliveira/commit-messages-guide/blob/master/README.md)

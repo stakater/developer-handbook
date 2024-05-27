@@ -34,7 +34,7 @@ A common problem is that teams conflate the concepts of end-to-end tests, UI tes
 
 * Connections out to external services require special attention since they cross network boundaries. The system should be resilient to outages of remote components. Gateways contain logic to handle such error cases. Typically, communications with external services are more coarse grained than the equivalent in process communications to prevent API chattiness and latency.
 
-* Similarly, communications with external datastores have different design considerations. Whilst a service is often more logically coupled to its datastore than to an external service, the datastore still exists over a network boundary incurring latency and risk of outage.
+* Similarly, communications with external data-stores have different design considerations. Whilst a service is often more logically coupled to its data-store than to an external service, the data-store still exists over a network boundary incurring latency and risk of outage.
 
 * The presence of network partitions affects the style of testing employed. Tests of these modules can have longer execution times and may fail for reasons outside of the team's control.
 
@@ -179,7 +179,7 @@ While the learning curve can be steep for Selenium and requires the knowledge of
 
 * Support multiple languages such as ruby, java , C#, python,perl, php
 * Crossbrowser & paralell testing through saucelab, browserstack
-* Support multiple automation frameworks such as PageObjectModel, Cucumber, testng etc etc
+* Support multiple automation frameworks such as PageObjectModel, Cucumber, testng
 
 ##### CONS
 

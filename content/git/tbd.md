@@ -149,7 +149,7 @@ Feature toggles are a powerful technique, allowing teams to modify system behavi
 
 "Feature Toggling" is a set of patterns which can help a team to deliver new functionality to users rapidly but safely.
 
-Feature toggles used to hide partly built features are called **release toggles**. Hodgson also identifies **experiment toggles** for A/B testing, **ops toggles** to provide controls for operations staff, and **permissioning toggles** to control access of features for different subsets of users
+Feature toggles used to hide partly built features are called **release toggles**. `Hodgson` also identifies **experiment toggles** for A/B testing, **ops toggles** to provide controls for operations staff, and **permission toggles** to control access of features for different subsets of users
 
 It's very important to retire **release toggles** once the pending features have bedded down in production. This involves removing the definitions on the configuration file and all the code that uses them. Otherwise you will get a pile of toggles that nobody can remember how to use.
 
@@ -159,7 +159,7 @@ Feature toggles can be categorized across two major dimensions: how long the fea
 
 #### Release Toggles
 
-These are toggles used to enable trunk-based development for teams practicing Continuous Delivery. They allow in-progress features to be checked into a shared integration branch (e.g. primary branch or trunk) while still allowing that branch to be deployed to production at any time. Release Toggles allow incomplete and un-tested codepaths to be shipped to production as latent code which may never be turned on.
+These are toggles used to enable trunk-based development for teams practicing Continuous Delivery. They allow in-progress features to be checked into a shared integration branch (e.g. primary branch or trunk) while still allowing that branch to be deployed to production at any time. Release Toggles allow incomplete and un-tested code paths to be shipped to production as latent code which may never be turned on.
 
 ![RT](../img/chart-1.png)
 
@@ -167,7 +167,7 @@ Release Toggles are transitionary by nature. They should generally not stick aro
 
 #### Experiment Toggles
 
-Experiment Toggles are used to perform multivariate or A/B testing. Each user of the system is placed into a cohort and at runtime the Toggle Router will consistently send a given user down one codepath or the other, based upon which cohort they are in. By tracking the aggregate behavior of different cohorts we can compare the effect of different codepaths.
+Experiment Toggles are used to perform multivariate or A/B testing. Each user of the system is placed into a cohort and at runtime the Toggle Router will consistently send a given user down one code path or the other, based upon which cohort they are in. By tracking the aggregate behavior of different cohorts we can compare the effect of different code paths.
 
 ![ET](../img/chart-2.png)
 
@@ -211,7 +211,7 @@ While it is true that TBD expects a certain discipline from the developer, with 
 
 One of the key technical practices that underpin this method of development, is working in "Small, incremental changes over big bang changes". Once your team embraces this practice, and the mindset behind it, you will find that your code reviews are rarely delayed more than a couple of hours. Because pull requests are very small, code reviews are very easy, so they happen more often.
 
-You can also work with your team to prioritise continuous flow throughput. That means, if a pull request is up for review, it is effectively a blocker for someone else's progress; so everyone prioritises dropping what they are doing to do the code review as fast as they can to unblock any work clogging up.
+You can also work with your team to prioritise continuous flow throughput. That means, if a pull request is up for review, it is effectively a blocker for someone else progress; so everyone prioritises dropping what they are doing to do the code review as fast as they can to unblock any work clogging up.
 
 Continuous deployment is a similar example: If you release a small amount of code to production, you have less to test, less to break and less to go wrong. And if something does go wrong, you are way more likely to understand what caused it because the changes to that environment were smaller and happened closer to the time of release, so they're easier to remember and resolve.
 
@@ -221,7 +221,7 @@ No branches, runtime switches, tons of automated testing, relentless refactoring
 
 **Q 1:** So, question: how do you manage to carry out refactoring and particularly the “major modularization” without using long-lived branches, and while everything is changing so fast?
 
-**A 1:** The answer is that refactorings must be broken up into changes which incrementally move toward the desired end-state without breaking anything in the meantime. It’s a skill, but it can be done!
+**A 1:** The answer is that refactoring must be broken up into changes which incrementally move toward the desired end-state without breaking anything in the meantime. It’s a skill, but it can be done!
 
 **Q 2:** I’ve seen many teams losing time every day trying to fix flaky integration tests?
 

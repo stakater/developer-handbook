@@ -55,7 +55,7 @@ new Developer(Employee, workstation, credentials)
 new Payee(Employee, role)
 
 If you used a naive implementation and used a single user entity, it would end up being an anaemic data model full of
-getters and setters, because you couldn't fully represent the user all over the place.
+get and set methods, because you couldn't fully represent the user all over the place.
 
 There are clear boundaries in the business, so it's useful to model them that way. A user logging in versus a user in a
 payroll system versus a user playing a game are all very different, even if they are part of the same grand system.

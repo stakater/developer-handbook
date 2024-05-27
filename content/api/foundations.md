@@ -4,7 +4,7 @@ The Foundations section outlines the design principles upon which the rest of th
 
 ## Provide Request-Ids for Introspection
 
-Include a `Request-Id` header in each API response, populated with a UUID value. By logging these values on the client, server and any backing services, it provides a mechanism to trace, diagnose and debug requests.
+Include a `Request-Id` header in each API response, populated with a uuid value. By logging these values on the client, server and any backing services, it provides a mechanism to trace, diagnose and debug requests.
 
 ## Divide Large Responses Across Requests with Ranges
 
@@ -37,11 +37,11 @@ allows for greater focus on larger and harder problems.
 
 Requests and responses will be made to address a particular resource or
 collection. Use the path to indicate identity, the body to transfer the
-contents and headers to communicate metadata. Query params may be used as a
+contents and headers to communicate metadata. Query parameters may be used as a
 means to pass header information also in edge cases, but headers are preferred
 as they are more flexible and can convey more diverse information.
 
-## Support ETags for Caching
+## Support `ETags` for Caching
 
 Include an `ETag` header in all responses, identifying the specific
 version of the returned resource. This allows users to cache resources
