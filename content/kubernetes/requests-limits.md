@@ -91,10 +91,10 @@ At the Namespace level, you can set up **ResourceQuotas** and **LimitRanges**. R
 
 ## References
 
-- https://sysdig.com/blog/kubernetes-limits-requests/
+- [Understanding Kubernetes Limits and Requests](https://sysdig.com/blog/kubernetes-limits-requests/)
 
 CPU limit directly affects startup times.
 
-- https://medium.com/better-programming/the-kubernetes-quality-of-service-conundrum-eebbbb5f89cf
-- http://blog.kubecost.com/blog/requests-and-limits/
-- https://gravitational.com/blog/kubernetes-resource-planning/
+- [The Kubernetes Quality of Service Conundrum](https://medium.com/better-programming/the-kubernetes-quality-of-service-conundrum-eebbbb5f89cf)
+- [Kubernetes Requests and Limits: A Practical Guide and Solutions](http://blog.kubecost.com/blog/requests-and-limits/)
+- [Stop Downtime with Kubernetes Resource Planning](https://gravitational.com/blog/kubernetes-resource-planning/)

@@ -18,13 +18,14 @@ Task Management, Workflow Engine, etc.
 
 Lightweight state machines or workflow engines are not evil! They help you solve some coding problems well.
 
-Use BPMN models to speak with your business stakeholders, make exactly these models executable and get the granularity right. Therefor also move aspects in code, which don’t belong in the graphical model. Speak with each other, and respect each other’s roles. 
+Use BPMN models to speak with your business stakeholders, make exactly these models executable and get the granularity right. Therefor also move aspects in code, which don’t belong in the graphical model. Speak with each other, and respect each other’s roles.
 
 ## Do I really need a BPM / Workflow Engine?
 
 Now the reason you use such a tool, instead of creating your own finite state machine, is accommodating changes without altering persistence and supporting edge cases of workflow processes as I'll explain.
 
 ### Accommodating Changes Without Altering Persistence
+
 Your typical, or perhaps better to call it "naive", finite state machine implementation features a set of database tables tightly coupled to the data managed and the process it flows through. There might be a way to keep past versions and track who took what action during the process as well. Where this runs into problems changes to data and process structure. Then those tightly coupled tables need to be altered to reflect the new structure and may not be backwardly compatible with the old.
 
 A workflow engine overcomes this challenge in two ways, by using serialization to represent the data and process, and abstracting integration points, in particular security. The serialization aspect means data and process can move together through the system. This allows data instances of the same type to follow completely different processes to the point the process can altered at runtime, by adding a new state for instance. And none of this requires changing the underlying storage.
@@ -34,6 +35,7 @@ Integration points are means of injecting algorithms into the process and ties t
 Now the tradeoff is difficult search. For instance, because data is serialized, it's usually not possible to query historical information - other than retrieve the records, deserialize and analyze using code.
 
 ### Edge Cases
+
 The other aspect of a workflow tool is the experience embedded into its design and functionality that you will likely not consider rolling your own and may live to regret when you do need it. The two cases the come to my mind are timed tasks and parallel execution paths.
 
 **Timed tasks** are assigning an actor responsibility for data after a certain duration has passed. For instance, say a press release is writ and submitted for approval, and then sits for a week without review. What you probably want your system to do is identify that lingering document and draw attention of the appropriate parties.
@@ -41,10 +43,11 @@ The other aspect of a workflow tool is the experience embedded into its design a
 **Parallel execution paths** are uncommon in my experience (Content Management Systems), but are still a situation that arises often enough. It's the idea that a given piece of data is sent down two different paths of review or processing, only to be recombined at some later point. This type of problem requires having useful merging algorithms and the ability to represent the data multiply simultaneously. Weaving that into a homespun solution after the fact is much trickier than it may seem, especially if you want to keep track of historical data.
 
 ### Conclusion
+
 If your system is not likely to change, rolling your own may be an easier solution, particularly if changes can break old information. But if you suspect you have a need for that type of durability or will experience some of these uncommon but thorny scenarios, a workflow tool provides a lot more flexibility and insurance that you won't paint yourself into a corner as the data and business processes change.
- 
+
 [Source](https://stackoverflow.com/a/4953433)
- 
+
 ## When and why to use a workflow engine?
 
 Requirements which are typically catered for by workflow engines, such as following some process, task allocation, escalations and notifications.
@@ -102,7 +105,7 @@ Any workflow engine is actually compose of following components:
 
 ## References
 
-- https://stackoverflow.com/questions/2353564/use-cases-of-the-workflow-engine
+- [Use cases of the Workflow Engine](https://stackoverflow.com/questions/2353564/use-cases-of-the-workflow-engine)
 - [“The flow” is for BPM what microservices are for SOA](https://blog.bernd-ruecker.com/the-flow-is-for-bpm-what-microservices-are-for-soa-5225c7908bae)
 - [Avoiding the “BPM monolith” when using bounded contexts](https://blog.bernd-ruecker.com/avoiding-the-bpm-monolith-when-using-bounded-contexts-d86be6308d8)
 - [The 7 sins of workflow](https://blog.bernd-ruecker.com/the-7-sins-of-workflow-b3641736bf5c)

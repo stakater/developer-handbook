@@ -20,7 +20,7 @@ LIFT is an acronym for **L**ocate, **I**dentify, **F**lat, **T**-DRY.
 
 Sort imports alphabetically (destructered imports as well), leave a space between imports so that you might able to distinguish between 3rd Party and Application imports. Increases readability when imports become large in number.
 
-**Not Recommended**
+Not Recommended:
 
 ```js
 import React from 'react';
@@ -29,7 +29,7 @@ import { registerSuccess, loginSuccess } from '../redux/actions';
 import BookingDetails from '../components/bookingDetails';
 ```
 
-**Recommended**
+Recommended:
 
 ```js
 import App, { Container } from 'next/app';
@@ -59,7 +59,7 @@ If there are new changes in a page, to incorporate those changes designer will e
 
 Having components separated out in their own files is the recommended approach. It helps you follow the Single Responsibility Priciple easily, code is manageble and maintenance becomes easier. However there might be case where you want to keep similar looking components in a single file or any other reason of the sort, like in alert-component file you may want to export info, danger and warning component etc.
 
-## API Calls & Response 
+## API Calls & Response
 
 - When using `Observables` it's easier lose hold of the subsriber which might lead to redundent calls if not handled properly. So make sure to open your network tab in browser and check if there are any redundent/duplicate call being made without any reason.
 - Coordinate with Backend developers for the response being sent, if you are receiving redundent data, report it to the Backend team and get it trimmed, it will help in reducing the payload and in result quicker response from the APIs.
@@ -77,11 +77,11 @@ There are number for solutions for every SPA framework out there but one of the 
 
 SEO in Single Page Applications comes as an afterthought. A frontend architecture should it make SEO easier rather than hinder it. The developer should not go for third party solutions or create a completely separate application in order to handle SEO. Server Side Rendered application is often referred to as `Isomorphic` or `Universal` application. SPA frameworks in 2019 are evolving very fast and support SSR.
 
-There are three main reasons to create a Universal version of your app.
+There are three main reasons to create a Universal version of your app:
 
 1. Facilitate web crawlers (SEO)
-2. Improve performance on mobile and low-powered devices
-3. Show the first page quickly
+1. Improve performance on mobile and low-powered devices
+1. Show the first page quickly
 
 Universal or Server Side Rendered solutions for most popular frameworks are listed below:
 

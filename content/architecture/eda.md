@@ -11,19 +11,22 @@ One recommendation is to start with a single event per action (e.g. created, upd
 ### Principle #2: Group Related Event Data
 
 During the initial design of an event, it may seem appropriate to flatten out the schema for your event payload, e.g.:
-    
+
+```txt
     firstName
     lastName
     email
     billingAddressLine1
     billingAddressLine2
     billingCity
-    …
+    ...
+```
 
 Over time, events may require additional details to be included, resulting in a very large structure that may confuse or overwhelm subscribers. In our example above, what if we need to add a mailing address alongside the billing address?
 
-Instead of adding new fields with a mailingAddress prefix (e.g. mailingAddressLine1, mailingAddressLIne2,…), consider grouping related data together at the initial design phase to offer more evolvability. For example:
-    
+Instead of adding new fields with a mailingAddress prefix (e.g. `mailingAddressLine1`, `mailingAddressLIne2`), consider grouping related data together at the initial design phase to offer more evolvability. For example:
+
+```txt
     contactDetails:
           firstName
           lastName
@@ -32,12 +35,13 @@ Instead of adding new fields with a mailingAddress prefix (e.g. mailingAddressLi
           addressLine1
           addressLine2
           city
-          …
+          ...
     mailingAddress:
           addressLine1
           addressLine2
           city
-          …
+          ...
+```
 
 We can now add shippingAddress as a new grouping within our event payload, while allowing subscribers to easily process the address(es) they are interested in. As a bonus, the subscriber can optimize their code by defining an address data structure or object that can be used to process billing and mailing addresses, along with any additional addresses necessary in the future.
 
@@ -46,15 +50,15 @@ We can now add shippingAddress as a new grouping within our event payload, while
 Like APIs, events are contracts between an event producer and its subscribers. The needs of your subscribers will likely change over time, requiring modifications to your event payload schema. Apply the following rules to help ensure you don’t break your event subscribers:
 
 1. It is acceptable to add new fields to a payload without breaking subscribers. Use the Principle #2 (above) to group related data.
-2. Do not rename existing field names. Instead, add the new field alongside the previous one to correct any naming errors to provide better clarity to subscribers.
-3. Do not delete fields, as your subscribers may be dependent on their existence.
+1. Do not rename existing field names. Instead, add the new field alongside the previous one to correct any naming errors to provide better clarity to subscribers.
+1. Do not delete fields, as your subscribers may be dependent on their existence.
 
 If you cannot apply the rules above, then you likely need to define a new event on a new topic to address the need. Over time, you can attempt to guide subscribers to move to the new topic and remove the deprecated one. This, however, can be a big challenge so be prepared to support both for some time.
 
 For this to work we have to add two rules;
 
-- we are not allowed to rename anything, and 
-- we may not change the semantic meaning of a property. 
+- we are not allowed to rename anything, and
+- we may not change the semantic meaning of a property.
 
 ### Principle #4: Manage Your Event Dependencies
 
@@ -90,7 +94,7 @@ Another option, related to a weak schema, is a hybrid schema where things an eve
 
 Other more complex kinds of problems include events that shouldn’t have been published and situations when you find out that the aggregate boundaries are wrong. Updating an existing event can cause large problems and Young strongly argues against this. Instead, he prefers using streams for manipulation, one example being transform streams. During the release process, you can make any transformation that is needed by reading from one stream, make a transformation and write to a new stream. The old stream can afterwards be deleted. Other examples include joining and splitting streams.
 
-## References / Acknowledgements
+## References
 
-- https://medium.com/capital-one-tech/5-principles-for-designing-evolvable-event-streams-f32e90dcbb79
-- https://www.infoq.com/news/2017/07/versioning-event-sourcing
+- [5 Principles for Designing Evolvable Event Streams](https://medium.com/capital-one-tech/5-principles-for-designing-evolvable-event-streams-f32e90dcbb79)
+- [Versioning of Events in Event Sourced Systems](https://www.infoq.com/news/2017/07/versioning-event-sourcing)

@@ -6,7 +6,7 @@ Kubernetes can consume storage solutions deployed either as:
 
 ### 1 - Internal Storage
 
-a part of a cluster (internal storage) or 
+a part of a cluster (internal storage) or
 
 Deploying a workload storage solution as a part of a cluster (internal storage) will limit access to the storage to workloads running inside the cluster. This will be more secure than deploying an external instance of the storage provider, but also limits who can consume the storage unless steps are taken to expose the storage outside the cluster.
 
@@ -130,7 +130,7 @@ IMPORTANT: A PV with a retention mode set to retain is never removed by the syst
 
 A PV with a retention mode set to delete will cause the PV to be deleted when the PVC that is bound to it is deleted. This will result in the loss of any data which exists on the PV when it is deleted. This is typically only used with dynamically created PVs.
 
-#### 3 - Recycle 
+#### 3 - Recycle
 
 When a PV has a retention mode of recycle the platform will try to remove any data on the PV and put it back into the pool to be bound to another PVC at some future time.
 
@@ -140,15 +140,15 @@ WARNING: When a PV has a recycle retention mode the platform will execute an rm 
 
 Storage Access Modes define how a pod will use the PV. Note that the smallest unit of control in a Kubernetes environment is a pod. If a PV is mounted to a pod it is mounted to all containers in the pod.
 
-#### 1 - ReadOnlyMany (ROX) 
+#### 1 - ReadOnlyMany (ROX)
 
 Analogous to a CD-ROM. PVs with this access mode can be mounted read-only by any number of pods, but none can write to it. It can be useful for providing access to certification keys or common software or document repositories, etc.
 
-#### 2 - ReadWriteOnce (RWO) 
+#### 2 - ReadWriteOnce (RWO)
 
 Only one pod can mount the PV at a time, but that pod can read from and write to it.
 
-#### 3 - ReadWriteMany (RWX) 
+#### 3 - ReadWriteMany (RWX)
 
 Many pods can mount the PV and all can read and write to it. This access mode is not supported by many storage providers because of the requirement to keep all writers in sync to prevent race conditions. Any application that utilizes RWX access mode PVs is responsible for managing coordinated writes to prevent data corruption or loss.
 

@@ -16,7 +16,7 @@ Following the rules given here with discipline will force you to come up with th
 
 We should also point out that the more you practice applying the rules, the more the advantages come to fruition. Your first attempts to decompose problems in the style presented here will feel awkward and likely lead to little gain you can perceive. There is a skill to the application of the rules – this is the art of the programmer raised to another level.
 
-## 1. Only one level of indentation per method
+## Only one level of indentation per method
 
 This rule is simple, and applied, greatly reduces complexity.
 
@@ -24,7 +24,7 @@ Just try to keep your method as simple and understandable as you can.
 
 The primary motivation of this rule is that one is not dealing with multiple levels — both indentation and abstraction — at once.
 
-```
+```java
 class InsertionSort {
     public function sort(array $array) {
         // 1 level
@@ -48,7 +48,7 @@ That’s a common example when you can easily spot multiple indentation levels i
 
 You can fix this most of the time, using the Extract Method pattern or in others, composing your objects in order to don’t aggregate all logic in one method. This is also somehow related with Single Responsibility Principle and High Cohesion which are valid as well for methods. If your method has multiple indentation levels, then maybe is not doing only one thing
 
-```
+```java
 class InsertionSort {
     public function sort(array $array) {
         for ($i = 0; $i < count($array); $i++) {
@@ -77,11 +77,11 @@ The bottom line: it works. I’ve written much more straightforward code this wa
 
 Ever stare at a big old method wondering where to start? A giant method lacks cohesiveness. One guideline is to limit method length to 5 lines, but that kind of transition can be daunting if your code is littered with 500-line monsters. Instead, try to ensure that each method does exactly one thing – one control structure, or one block of statements, per method. If you’ve got nested control structures in a method, you’re working at multiple levels of abstraction, and that means you’re doing more than one thing.
 
-As you work with methods that do exactly one thing, expressed within classes doing exactly one thing, your code begins to change. As each unit in your application becomes smaller, your level of re-use will start to rise exponentially. It can be difficult to spot opportunities for reuse within a method that has five responsibilities and is implemented in 100 lines. A three-line method that manages the state of a single object in a given context is usable in many different contexts. 
+As you work with methods that do exactly one thing, expressed within classes doing exactly one thing, your code begins to change. As each unit in your application becomes smaller, your level of re-use will start to rise exponentially. It can be difficult to spot opportunities for reuse within a method that has five responsibilities and is implemented in 100 lines. A three-line method that manages the state of a single object in a given context is usable in many different contexts.
 
 Use the Extract Method feature of your IDE to pull out behaviors until your methods only have one level of indentation, like this:
 
-```
+```java
 class Board {
 ...
     String board() {
@@ -96,7 +96,7 @@ class Board {
 }
 ```
 
-```
+```java
 class Board {
 ...
     String board() {
@@ -122,142 +122,159 @@ Notice that another effect has occurred with this refactoring. Each individual m
 
 Here at the end of the first rule, we should also point out that the more you practice applying the rules, the more the advantages come to fruition. Your first attempts to decompose problems in the style presented here will feel awkward and likely lead to little gain you can perceive. There is a skill to the application of the rules – this is the art of the programmer raised to another level.
 
-## 2. Don’t use the “else” keyword
+## Don’t use the “else” keyword
 
 The argument is to reduce the number of branches, keeping long conditional blocks out of the code.
 
 Every programmer understands the if/else construct. It’s built into nearly every programming language, and simple conditional logic is easy for anyone to understand. Nearly every programmer has seen a nasty nested conditional that’s impossible to follow, or a case statement that goes on for pages. Even worse, it is all too easy to simply add another branch to an existing conditional rather than factoring to a better solution. Conditionals are also a frequent source of duplication. Status flags and state of residence are two examples which frequently lead to this kind of trouble:
 
-```
-if (status == DONE) 
-{ 
-    doSomething(); 
-} 
-else 
+```java
+if (status == DONE)
+{
+    doSomething();
+}
+else
 {
     ...
 }
 ```
 
-**a) Early Return**: If your validating data, than to avoid else you can use early return. E.g You have a  java method which takes list as an argument and returns last index of list. 
+**a) Early Return**: If your validating data, than to avoid else you can use early return. E.g You have a java method which takes list as an argument and returns last index of list.
+
 :x: Wrong way:
+
 ```java
-private Integer getFinalIndexOfList(List<String> names)  
-{  
-    if (CollectionUtils.isEmpty(names))  
-    {  
-        return null;  
-    }  
-    else   
-	{  
-        return names.size() - 1;  
-    }  
+private Integer getFinalIndexOfList(List<String> names) 
+{ 
+    if (CollectionUtils.isEmpty(names)) 
+    { 
+        return null; 
+    } 
+    else  
+  { 
+        return names.size() - 1; 
+    } 
 }
 ```
+
 :+1: Right way:
+
 ```java
 private Integer getFinalIndexOfList(List<String> names)
 {
-	if (CollectionUtils.isEmpty(names))
-	{
-		return null;
-	}
-	
-	return names.size() - 1;
+  if (CollectionUtils.isEmpty(names))
+  {
+    return null;
+  }
+ 
+  return names.size() - 1;
 }
 ```
 
-**b) Polymorphism**: 
+**b) Polymorphism**:
 Object-oriented languages give us a powerful tool, polymorphism, for handling conditional cases, but on the other hand we should not hate if/else or conditionals more than we should. Introducing polymorphism too soon will complicate your code.
-Lets take a quick example: 
+Lets take a quick example:
 We have a class that processes order, and discount is deducted from total amount of item based on the type of customer.
-**Solution with conditionals:**  
-Customer.java
+
+Solution with conditionals:
+
+`Customer.java`:
+
 ```java
 public class Customer
 {
-	public String type;
+  public String type;
 }
 ```
-ProcessOrder.java
+
+`ProcessOrder.java`:
+
 ```java
 public class ProcessOrder
 {
-	public int getOrderGrandTotal(Customer customer, int subTotal)
-	{
-		if (customer.type.equals("EMPLOYEE"))
-		{
-			return subTotal - 20;
-		}
-		else if (customer.type.equals("NON_EMPLOYEE"))
-		{
-			return subTotal - 10;
-		}
-		return subsTotal;
-	}
+  public int getOrderGrandTotal(Customer customer, int subTotal)
+  {
+    if (customer.type.equals("EMPLOYEE"))
+    {
+      return subTotal - 20;
+    }
+    else if (customer.type.equals("NON_EMPLOYEE"))
+    {
+      return subTotal - 10;
+    }
+    return subsTotal;
+  }
 }
 ```
+
 **Solution with polymorphism:**
-Customer.java
+
+`Customer.java`:
+
 ```java
-public abstract class Customer  
-{  
-    public abstract int getDiscount();  
+public abstract class Customer 
+{ 
+    public abstract int getDiscount(); 
 }
 ```
 
-Employee.java
+`Employee.java`:
+
 ```java
-public class Employee extends Customer  
-{  
-    @Override  
-    public int getDiscount()  
-    {  
-        return 20;  
-    }  
+public class Employee extends Customer 
+{ 
+    @Override 
+    public int getDiscount() 
+    { 
+        return 20; 
+    } 
 }
 ```
 
-NonEmployee.java
+`NonEmployee.java`:
+
 ```java
-public class NonEmployee extends Customer  
-{  
-    @Override  
-    public int getDiscount()  
-    {  
-        return 10;  
-    }  
+public class NonEmployee extends Customer 
+{ 
+    @Override 
+    public int getDiscount() 
+    { 
+        return 10; 
+    } 
 }
 ```
 
-ProcessOrder.java
+`ProcessOrder.java`:
+
 ```java
-public class ProcessOrder  
-{  
-    public int getOrderGrandTotal(Customer customer, int itemAmount)  
-    {  
-        return itemAmount - customer.getDiscount();  
-    }  
+public class ProcessOrder 
+{ 
+    public int getOrderGrandTotal(Customer customer, int itemAmount) 
+    { 
+        return itemAmount - customer.getDiscount(); 
+    } 
 }
 ```
 
 **Null Object or Optional or Empty list**: Dramatically reduces the need for null checking.
-Lets take an example of lists, we have a invoice class has list of line items, whenever null list is passed to invoice constructor, set it to empty list to avoid null check wherever invoice class is used. 
+
+Lets take an example of lists, we have a invoice class has list of line items, whenever null list is passed to invoice constructor, set it to empty list to avoid null check wherever invoice class is used.
+
 ```java
 public class Invoice
 {
-	private final String id;
-	private final List<LineItem> lineItems;
-	
-	public Invoice(String id, List<LineItem> linesItems)
-	{
-		this.id = id;
-		this.lineItems = lineItems == null ? new ArrayList() : lineItems;
-	}
+  private final String id;
+  private final List<LineItem> lineItems;
+ 
+  public Invoice(String id, List<LineItem> linesItems)
+  {
+    this.id = id;
+    this.lineItems = lineItems == null ? new ArrayList() : lineItems;
+  }
 }
 ```
 
-## 3. Wrap All Primitives And Strings
+## Wrap All Primitives And Strings
 
 Following this rule is pretty easy, you simply have to encapsulate all the primitives within objects, in order to avoid the Primitive Obsession anti-pattern.
 
@@ -267,116 +284,130 @@ In the Java language, int is a primitive, not a real object, so it obeys differe
 
 Small objects like Hour or Money also give us an obvious place to put behavior that would otherwise have been littered around other classes. This becomes especially true when you apply Rule 9, and only the small object can access the value. Note that this does not mean using object wrappers that are available in languages like Java. Using an Integer instead of an int confers no additional advantages in terms of expressing intent, whereas using a wrapper that expresses meaning within the problem domain both clarifies its usage and makes intent evident.
 
-Example: 
-You have a SMS subscription which has a quantity and is valid for a month and year, you have to store month a as integer. 1 will represent January and 12 will represent December, quantity of SMS can be minimum 1 and maximum 250 and year cannot be less than 1970.  
+Example:
+
+You have a SMS subscription which has a quantity and is valid for a month and year, you have to store month a as integer. 1 will represent January and 12 will represent December, quantity of SMS can be minimum 1 and maximum 250 and year cannot be less than 1970.
+
 One way of doing it is:
+
 ```java
 public class SMSSubscription
 {
-	private String id;
-	private int quantity;
-	private int month;
-	private int year;
-	
-	public SMSSubscription(String id, int quantity, int month, int year)  
-	{  
-	    this.id = id;  
-	  
-	    if (quantity < 1 || quantity > 250)  
-	    {  
-	        throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250");  
-	    }  
-	    this.quantity = quantity;  
-	  
-	    if (month < 1 || month > 12)  
-	    {  
-	        throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12");  
-	    }  
-	    this.month = month;  
-	  
-	    if (year < 1970)  
-	    {  
-	        throw new IllegalArgumentException("Year cannot be less than 1970");  
-	    }  
-	    this.year = year;  
-	}
+  private String id;
+  private int quantity;
+  private int month;
+  private int year;
+ 
+  public SMSSubscription(String id, int quantity, int month, int year) 
+  { 
+      this.id = id; 
+   
+      if (quantity < 1 || quantity > 250) 
+      { 
+          throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250"); 
+      } 
+      this.quantity = quantity; 
+   
+      if (month < 1 || month > 12) 
+      { 
+          throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12"); 
+      } 
+      this.month = month; 
+   
+      if (year < 1970) 
+      { 
+          throw new IllegalArgumentException("Year cannot be less than 1970"); 
+      } 
+      this.year = year; 
+  }
 }
 ```
-You can clearly see in above code that SMSSubsctiption is doing more then what it is supposed to do. Quantity, month and year has their own specific behaviors, which must be encapsulated. 
+
+You can clearly see in above code that SMSSubsctiption is doing more then what it is supposed to do. Quantity, month and year has their own specific behaviors, which must be encapsulated.
 
 Lets do it in a right way, first we will encapsulate quantity, month and year.
-**Quantity.java**
+
+`Quantity.java`:
+
 ```java
-public class Quantity  
-{  
-    private int quantity;  
-  
-    public Quantity(int quantity)  
-    {  
-        if (quantity < 1 || quantity > 250)  
-        {  
-            throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250");  
-        }  
-        this.quantity = quantity;  
-    }  
+public class Quantity 
+{ 
+    private int quantity; 
+ 
+    public Quantity(int quantity) 
+    { 
+        if (quantity < 1 || quantity > 250) 
+        { 
+            throw new IllegalArgumentException("Quantity cannot be less than 1 or greater then 250"); 
+        } 
+        this.quantity = quantity; 
+    } 
 }
 ```
- **Month.java**
- ```java
- public class Month  
-{  
-    private int month;  
-  
-    public Month(int month)  
-    {  
-        if (month < 1 || month > 12)  
-        {  
-            throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12");  
-        }  
-        this.month = month;  
-    }  
-}
- ```
- **Year.java**
- ```java
- public class Year  
-{  
-    private int year;  
-    
-    public Year(int year)  
-    {  
-        if (year < 1970)  
-        {  
-            throw new IllegalArgumentException("Year cannot be less than 1970");  
-        }  
-        this.year = year;  
-    }  
-}
- ```
- and now this this is how SMSSubscription looks like:
-**SMSSubscription.java**
+
+`Month.java`:
+
 ```java
-public class SMSSubscription  
-{  
-    private String id;  
-    private Quantity quantity;  
-    private Month month;  
-    private Year year;  
-  
-    public SMSSubscription(String id, Quantity quantity, Month month, Year year)  
-    {  
-        this.id = id;  
-        this.quantity = quantity;  
-        this.month = month;  
-        this.year = year;  
-    }  
+public class Month 
+{ 
+    private int month; 
+ 
+    public Month(int month) 
+    { 
+        if (month < 1 || month > 12) 
+        { 
+            throw new IllegalArgumentException("Month cannot be less than 1 or greater then 12"); 
+        } 
+        this.month = month; 
+    } 
 }
 ```
+
+`Year.java`:
+
+```java
+ public class Year 
+{ 
+    private int year; 
+   
+    public Year(int year) 
+    { 
+        if (year < 1970) 
+        { 
+            throw new IllegalArgumentException("Year cannot be less than 1970"); 
+        } 
+        this.year = year; 
+    } 
+}
+```
+
+and now this this is how SMSSubscription looks like:
+
+`SMSSubscription.java`:
+
+```java
+public class SMSSubscription 
+{ 
+    private String id; 
+    private Quantity quantity; 
+    private Month month; 
+    private Year year; 
+ 
+    public SMSSubscription(String id, Quantity quantity, Month month, Year year) 
+    { 
+        this.id = id; 
+        this.quantity = quantity; 
+        this.month = month; 
+        this.year = year; 
+    } 
+}
+```
+
 See also:
 
 - [Primitive Obsession Anti-Pattern](http://c2.com/cgi/wiki?PrimitiveObsession)
 
-## 4. First Class Collections
+## First Class Collections
 
 Any class that contains a collection should contain no other member variables. If you have a set of elements and want to manipulate them, create a class that is dedicated for this set.
 
@@ -388,7 +419,7 @@ Thus the logic for using a collection goes into the wrapper class, instead of in
 
 Behaviors related to the collection have a home
 
-## 5. One Dot Per Line
+## One Dot Per Line
 
 Sometimes it’s hard to know which object should take responsibility for an activity. If you start looking for lines of code with multiple dots, you’ll start to find many misplaced responsibilities. If you’ve got more than one dot on any given line of code, the activity is happening in the wrong place. Maybe your object is dealing with two other objects at once. If this is the case, your object is a middleman; it knows too much about too many people. Consider moving the activity into one of the other objects.
 
@@ -396,13 +427,13 @@ If all those dots are connected, your object is digging deeply into another obje
 
 The Law of Demeter ("Only talk to your friends") is a good place to start.
 
-```
+```java
 a.getFoo().getBar().getBaaz().doSomething(); // bad
 ```
 
 Note that this rule doesn’t forbid the following:
 
-```
+```java
 a.foo(b.foo()); // okay
 ```
 
@@ -410,13 +441,13 @@ Rather, it’s a simplified way of stating the Law of Demeter.
 
 It’s worth noting that there are specific places where multiple dots make sense, but these are usually within the context of building a DSL or a design pattern, such as a Builder:
 
-```
+```java
 builder.property1("value").property2("value").build();
 ```
 
 In this case it doesn’t violate the spirit of the rule since it doesn’t return any internal state or other classes.
 
-## 6. Don’t Abbreviate
+## Don’t Abbreviate
 
 The right question is Why Do You Want To Abbreviate?
 
@@ -434,11 +465,11 @@ Think about why you want to abbreviate. Is it because you’re typing the same w
 
 Try to keep class and method names to 1-2 words, and avoid names that duplicate the context. If the class is an Order, the method doesn’t need to be called shipOrder(). Simply name the method ship() so that clients call order.ship() – a simple and clear representation of what’s going on.
 
-> Naming things is hard, that’s right, but naming things by their right names is even harder!
+Naming things is hard, that’s right, but naming things by their right names is even harder!
 
-> My Golden Rule is: if you’re not able to find a name for a class, then ask yourself if this class makes sense, or if you can decouple things a bit more.
+My Golden Rule is: if you’re not able to find a name for a class, then ask yourself if this class makes sense, or if you can decouple things a bit more.
 
-## 7. Keep All Entities Small
+## Keep All Entities Small
 
 No class over 50 lines and no package over 10 files. Well, it depends on you, but I think you could change the number of lines from 50 to 150.
 
@@ -448,33 +479,36 @@ Classes over 50 lines usually do more than one thing, which makes them harder to
 
 What’s challenging about creating such small classes is that there are often groups of behaviors that make logical sense together. This is where we need to leverage packages. As your classes become smaller and have fewer responsibilities, and as you limit package size, you’ll start to see that packages represent clusters of related classes that work together to achieve a goal. Packages, like classes, should be cohesive and have a purpose. Keeping those packages small forces them to have a real identity. If the real identity comes out to more than 50 lines, that is ok. This is software engineering; there is no black and white- as Uncle Bob regularly stresses, our craft is about trade-offs.
 
-## 8. Do Not Use Classes With More Than Two Instance Variables 
-
+## Do Not Use Classes With More Than Two Instance Variables
 
 I thought people would yell at me while introducing this rule, but it didn’t happen. This rule is probably the hardest one, but it promotes  **high cohesion**, and  **better encapsulation**.
 
-A picture is worth a thousand words, so here is the explanation of this rule in picture. 
+A picture is worth a thousand words, so here is the explanation of this rule in picture.
 
 ![RT](../img/2-instance-variables.png)
 
 Source: [Object Calisthenics](https://williamdurand.fr/2013/06/03/object-calisthenics/#8-no-classes-with-more-than-two-instance-variables)
 
-The main question was  _Why two attributes?_  My answer was  _Why not?_  Not the best explanation but, in my opinion, the main idea is to distinguish  **two kinds of classes**, those that  **maintain the state of a single instance variable**, and those that  **coordinate two separate variables**.  **Two**  is an arbitrary choice that forces you to decouple your classes a lot.
+The main question was  _Why two attributes?_  My answer was  _Why not?_  Not the best explanation but, in my opinion, the main idea is to distinguish  **two kinds of classes**, those that  **maintain the state of a single instance variable**, and those that  **coordinate two separate variables**. **Two** is an arbitrary choice that forces you to decouple your classes a lot.
 
-## 9. Do not Use Getters and Setters
+## Do not Use Getters and Setters
 
 The simplest way to avoid setters is to hand the values to the constructor method when you new up the object. This is also the usual pattern when you want to make an object immutable.
 
 DTOs are appropriate and useful in some situations, especially in transferring data across boundaries (e.g. serializing to JSON to send through a web service); so, they will have getters.
 
 Lets explain in detail why we should avoid getter and setters methods:
-Lets say we have a class Car1.java
+
+Lets say we have a class `Car1.java`:
+
 ```java
 public class Car1 {
   public Engine engine;
 }
 ```
-Now I want to point out that there is not functional difference between a public class with public member and a public class bellow with private member having a getter and setter method. 
+
+Now I want to point out that there is not functional difference between a public class with public member and a public class bellow with private member having a getter and setter method.
+
 ```java
 public class Car2 {
   private Engine engine;
@@ -488,7 +522,9 @@ public class Car2 {
   }
 }
 ```
+
 I can read and write engine of car in both classes in almost the same way:
+
 ```java
 // Car1 member read and write
 Car1 car1 = new Car1();
@@ -500,89 +536,104 @@ Car2 car2 = new Car2();
 logger.debug("Car2's engine is {}.", car2.getEngine());
 car2.setEngine(new HemiEngine();
 ```
-Point of this example is to show that, I can anything with Car1, I can do with Car2 and vice versa. Whenever we see a public member in a class, very first thought that crosses our mind is "its not safe", but on the other side a getter/setter method a sigh of relief. 
+
+Point of this example is to show that, I can anything with Car1, I can do with Car2 and vice versa. Whenever we see a public member in a class, very first thought that crosses our mind is "its not safe", but on the other side a getter/setter method a sigh of relief.
 
 **Some major disadvantages:**
+
 **Getter/Setter expose implementation level details:**
-Lets save we have api of Car
-```
+
+Lets save we have api of Car:
+
+```txt
 | Car                             |
 |---------------------------------|
 | + getGasAmount(): Liters        |
 | + setGasAmount(liters: Liters)  |
 |_________________________________|
 ```
+
 If you assume that this is a gas-powered car that internally tracks gasoline in liters, then you are going to be right 99.999% of the time. That's really bad and this is why getters and setters expose implementation / violate encapsulation. Now this code is brittle and hard to change. What if we want a hydrogen-fuelled car? We have to throw out this whole Car class now. It would have been better just to have behavior methods like `fillUp(Fuel fuel)`.
 
-**Getters and setters can actually be dangerous**
-Using getter method blindly can actually cause problems. Lets say we have debt class and there is a list of debts inside. 
+### Getters and setters can actually be dangerous
+
+Using getter method blindly can actually cause problems. Lets say we have debt class and there is a list of debts inside.
+
 ```java
-public class Debts 
+public class Debts
 {
   private List<Debt> debts;
 
-  public List<Debt> getDebts() 
+  public List<Debt> getDebts()
   {
     return debts;
   }
 }
 ```
-Class seems pretty reasonable. I can use this class to get debts and create a report. Simple as that. 
-But, Can I add more debts? There is no setter method. How? 
-Because Java returns reference for collections. 
+
+Class seems pretty reasonable. I can use this class to get debts and create a report. Simple as that.
+But, Can I add more debts? There is no setter method. How?
+Because Java returns reference for collections.
+
 ```java
 Debts scottsDebts = DebtTracker.lookupDebts(scott);
 List<Debt> debts = scottsDebts.getDebts();
 
 // add the debt outside scotts debts, outside the debt tracker even
-debts.add(new Debt(new BigDecimal(1000000))); 
+debts.add(new Debt(new BigDecimal(1000000)));
 
 // prints a new entry with one million dollars
 DebtTracker.lookupDebts(scott).printReport();
 ```
+
 One way to guard against this is to return a copy instead. Another way is to have an immutable member. The best way, though, is to not expose the member in any way at all and instead bring the behavior that manipulates the member inside the class. This achieves full isolation of the implementation and creates only one place to change.
 
-Let see how we can avoid getter/setter methods: 
+Let see how we can avoid getter/setter methods.
 
-**Tell, Dont Ask**
+### Tell, Dont Ask
+
 Rule is very simple, classes should not have getter/setter method which simple get/set values, rather there should be method which represent behaviors. Lets explain it with a example.
-We have *BankAccount* class which has amount, in below implementation we have setter method with set amount.
+
+We have the `BankAccount` class which has amount, in below implementation we have setter method with set amount:
+
 ```java
 public class BankAccount {
     private final int amount;
-	
-	public BankAccount(int amount) {
-		this.amount = amount;
-	}
-	
+ 
+  public BankAccount(int amount) {
+    this.amount = amount;
+  }
+ 
     public void setAmount(int amount) {
         this.amount = amount;
     }
 }
 ```
+
 This is the code we need to avoid, because it exposes implementation level details. Lets apply the rule and add methods which represent behavior.
+
 ```java
 public class BankAccount {
     private final int amount;
-	
-	public BankAccount(int amount) {
-		this.amount = amount;
-	}
-	
+ 
+  public BankAccount(int amount) {
+    this.amount = amount;
+  }
+ 
     public void depositAmount(int amount) {
         this.amount+=amount;
     }
-	
-	public void withdrawAmount(int amount) {
-		this.amount -= amount;
-	}
+ 
+  public void withdrawAmount(int amount) {
+    this.amount -= amount;
+  }
 }
 ```
-This way, implementation level details are hidden and even if you have have to change the way amount is kept in account, your exposed methods will remain the same, providing the same behavior. 
+
+This way, implementation level details are hidden and even if you have have to change the way amount is kept in account, your exposed methods will remain the same, providing the same behavior.
 
 There are some places where getter/setter method actually make sense like before updating the state in current object according to some input, we validate the input. The input validation is additional functionality.
 Purpose of this point to avoid getter/setter methods as much as you can, but if you can think there is no other way, you need to careful while writing your code by keep above points in mind.
-
 
 ## References
 

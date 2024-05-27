@@ -12,7 +12,7 @@ For files that didn't change from one commit to another, git stores just a link 
 
 The image below shows how git stores data over time, in which each "Version" is a commit:
 
-![](https://i.stack.imgur.com/AQ5TG.png)
+![checkins over time](https://i.stack.imgur.com/AQ5TG.png)
 
 ## Why are commit messages important?
 
@@ -29,15 +29,9 @@ These are some practices collected from my experiences, internet articles, and o
 
 ### Use imperative form
 
-```
-# Good
-Use InventoryBackendPool to retrieve inventory backend
-```
+Good: Use InventoryBackendPool to retrieve inventory backend
 
-```
-# Bad
-Used InventoryBackendPool to retrieve inventory backend
-```
+Bad: Used InventoryBackendPool to retrieve inventory backend
 
 _But why use the imperative form?_
 
@@ -45,33 +39,19 @@ A commit message describes what the referenced change actually **does**, its eff
 
 [This excellent article from Chris Beams](https://chris.beams.io/posts/git-commit/) gives us a simple sentence that can be used to help us write better commit messages in imperative form:
 
-```
-If applied, this commit will <commit message>
-```
+`If applied, this commit will <commit message>`
 
 Examples:
 
-```
-# Good
-If applied, this commit will use InventoryBackendPool to retrieve inventory backend
-```
+Good: If applied, this commit will use InventoryBackendPool to retrieve inventory backend
 
-```
-# Bad
-If applied, this commit will used InventoryBackendPool to retrieve inventory backend
-```
+Bad: If applied, this commit will used InventoryBackendPool to retrieve inventory backend
 
 ### Capitalize the first letter
 
-```
-# Good
-Add `use` method to Credit model
-```
+Good: Add `use` method to Credit model
 
-```
-# Bad
-add `use` method to Credit model
-```
+Bad: add `use` method to Credit model
 
 The reason that the first letter should be capitalized is to follow the grammar rule of using capital letters at the beginning of sentences.
 
@@ -80,33 +60,21 @@ Capitalized or not, an important point is to stick to a single standard and foll
 
 ### Try to communicate what the change does without having to look at the source code
 
-```
-# Good
-Add `use` method to Credit model
+Good: Add `use` method to Credit model
 
-```
+Bad: Add `use` method
 
-```
-# Bad
-Add `use` method
-```
+Good: Increase left padding between textbox and layout frame
 
-```
-# Good
-Increase left padding between textbox and layout frame
-```
-
-```
-# Bad
-Adjust css
-```
+Bad: Adjust css
 
 It is useful in many scenarios (e.g. multiple commits, several changes and refactors) to help reviewers understand what the committer was thinking.
 
 ### Use the message body to explain "why", "for what", "how" and additional details
 
-```
-# Good
+Good:
+
+```txt
 Fix method name of InventoryBackend child classes
 
 Classes derived from InventoryBackend were not
@@ -116,8 +84,9 @@ It worked because the cart was calling the backend implementation
 incorrectly.
 ```
 
-```
-# Good
+Good:
+
+```txt
 Serialize and deserialize credits to JSON in Cart
 
 Convert the Credit instances to dict for two main reasons:
@@ -127,8 +96,9 @@ Convert the Credit instances to dict for two main reasons:
   - Dict and built-in types are pickleable by default
 ```
 
-```
-# Good
+Good:
+
+```txt
 Add `use` method to Credit
 
 Change from namedtuple to class because we need to
@@ -142,8 +112,9 @@ Characters like `-`, `*` and \` are elements that improve readability.
 
 ### Avoid generic messages or messages without any context
 
-```
-# Bad
+Bad:
+
+```txt
 Fix this
 
 Fix stuff
@@ -165,22 +136,25 @@ For project owners: Choose a language and write all commit messages using that l
 
 For contributors: Write your commit messages using the same language as the existing commit history.
 
-```
-# Good
+Good:
+
+```txt
 ababab Add `use` method to Credit model
 efefef Use InventoryBackendPool to retrieve inventory backend
 bebebe Fix method name of InventoryBackend child classes
 ```
 
-```
-# Good (Portuguese example)
+Good:
+
+```txt
 ababab Adiciona o método `use` ao model Credit
 efefef Usa o InventoryBackendPool para recuperar o backend de estoque
 bebebe Corrige nome de método na classe InventoryBackend
 ```
 
-```
-# Bad (mixes English and Portuguese)
+Bad - mixes English and Portuguese:
+
+```txt
 ababab Usa o InventoryBackendPool para recuperar o backend de estoque
 efefef Add `use` method to Credit model
 cdcdcd Agora vai
@@ -190,7 +164,7 @@ cdcdcd Agora vai
 
 This is a template, [written originally by Tim Pope](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html), which appears in the [_Pro Git Book_](https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project).
 
-```
+```txt
 Summarize changes in around 50 characters or less
 
 More detailed explanatory text, if necessary. Wrap it to about 72

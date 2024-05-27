@@ -14,7 +14,7 @@ to specify when more data is available and how to retrieve it. See the
 for the details of request and response headers, status codes, limits,
 ordering, and iteration.
 
-# Require Secure Connections
+## Require Secure Connections
 
 Require secure connections with TLS to access the API, without exception.
 It’s not worth trying to figure out or explain when it is OK to use TLS
@@ -25,10 +25,10 @@ http or port 80 to avoid any insecure data exchange. In environments where this
 is not possible, respond with `403 Forbidden`.
 
 Redirects are discouraged since they allow sloppy/bad client behaviour without
-providing any clear gain.  Clients that rely on redirects double up on
+providing any clear gain. Clients that rely on redirects double up on
 server traffic and render TLS useless since sensitive data will already
  have been exposed during the first call.
- 
+
 ## Separate Concerns
 
 Keep things simple while designing by separating the concerns between the
@@ -47,4 +47,3 @@ Include an `ETag` header in all responses, identifying the specific
 version of the returned resource. This allows users to cache resources
 and use requests with this value in the `If-None-Match` header to determine
 if the cache should be updated.
-
