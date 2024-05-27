@@ -22,7 +22,7 @@
     "cosmiconfig": "^7.0.0",
     "ecstatic": "^4.1.4",
     "gray-matter": "^4.0.2",
-    "http-server": "^0.12.3",
+    "http-server": "^14.0.0",
     "js-yaml": "^3.14.1",
     "minimist": "^1.2.5",
     "lodash": "^4.17.21",
