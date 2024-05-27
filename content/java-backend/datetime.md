@@ -1,9 +1,9 @@
-# DateTime
+# `DateTime`
 
 Let’s say you’re building your first API. Be it public, private, or some hybrid thereof, don’t be surprised if your first defect is date/time-related. Do not underestimate how much trouble you can get into when it comes to handling date and times. Here are some tips which might keep you out of this potential future.
 
 - Always use `java.util.Date`! Domain shouldn’t need to care about timezone! `java.util.date` is the safest and best way to store stuff in data stores.
-- TimeZone is a presentation concern; and presentation should bother about it and take care of it. Backend should be free of timezone and should only contain datetime in UTC format.
+- TimeZone is a presentation concern; and presentation should bother about it and take care of it. Backend should be free of timezone and should only contain `datetime` in UTC format.
 - Always use `UTC` timezone
 - Always use `ISO-8601` for your dates and set this property: `spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS = false`
 - Accept any timezone
@@ -23,7 +23,7 @@ Generally, ISO-8601 looks something like `2009-05-20` for dates and `2009-05-20T
 
 Convert Date String to/from ISO 8601 respecting UTC in Java.
 
-```
+```java
 public static String toISO8601UTC(Date date) {
   TimeZone tz = TimeZone.getTimeZone("UTC");
   DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
@@ -35,13 +35,13 @@ public static Date fromISO8601UTC(String dateStr) {
   TimeZone tz = TimeZone.getTimeZone("UTC");
   DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
   df.setTimeZone(tz);
-  
+ 
   try {
     return df.parse(dateStr);
   } catch (ParseException e) {
     // TODO: throw exception
   }
-  
+ 
   // TODO: throw exception
 }
 ```
@@ -54,7 +54,7 @@ We’ll do the conversion in JS – but it’s worth understanding that, for rea
 
 This code should work (haven't tested it on browser)
 
-```
+```java
 function convertDate(date){
     // this will return UTC
     var serverTimezone = [[${#dates.format(#calendars.createToday(), 'z')}]];
@@ -75,13 +75,13 @@ The question is if server is always returning UTC then how do I convert in the b
 
 You can use:
 
-```
+```java
 moment-timezone
 <script src="moment.js"></script>
 <script src="moment-timezone-with-data.js"></script>
 ```
 
-```
+```java
 // retrieve timezone by name (i.e. "America/Chicago")
 moment.tz.guess();
 ```
@@ -90,13 +90,12 @@ Browser time zone detection is rather tricky to get right, as there is little in
 
 Moment Timezone uses Date.getTimezoneOffset() and Date.toString() on a handful of moments around the current year to gather as much information about the browser environment as possible. It then compares that information with all the time zone data loaded and returns the closest match. In case of ties, the time zone with the city with largest population is returned.
 
-```
+```java
 console.log(moment.tz.guess()); // America/Chicago
 ```
 
-This is the only one that gives the actual timezone name rather than offset. Remember that timezone offset can be derived from the name, the opposite isn't true. Because of DST and other subtleties, multiple timezones can have the same offset on some specific days of the year only. 
+This is the only one that gives the actual timezone name rather than offset. Remember that timezone offset can be derived from the name, the opposite isn't true. Because of DST and other subtleties, multiple timezones can have the same offset on some specific days of the year only.
 
 ## References
 
 - [The 5 laws of API dates and times](http://apiux.com/2013/03/20/5-laws-api-dates-and-times/)
-- [Show date in users timezone](https://www.baeldung.com/reddit-app-show-date-in-the-users-timezone)

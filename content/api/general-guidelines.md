@@ -20,7 +20,7 @@ By defining APIs outside the code, we want to facilitate early review feedback a
 Moreover, API definitions with standardized specification format also facilitate...
 
 - single source of truth for the API specification; it is a crucial part of a contract between service provider and client users
-- infrastructure tooling for API discovery, API GUIs, API documents, automated quality checks
+- infrastructure tooling for API discovery, API GUI, API documents, automated quality checks
 
 It is important to learn, that API First is not in conflict with the agile development principles that we love. Service applications should evolve incrementally — and so its APIs. Of course, API specification will and should evolve iteratively in different cycles, each starting with draft status and early team and peer review feedback.
 

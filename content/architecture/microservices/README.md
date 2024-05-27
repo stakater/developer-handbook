@@ -19,4 +19,3 @@ The convention should also be followed in automation, CI, etc.
 
 We follow kebab-case or hyphen-case i.e. `carbook-gitlab-config`, `synthetic-tests`, `e2e-tests` naming convention whenever creating
 a git repo
-

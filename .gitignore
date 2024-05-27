@@ -3,3 +3,8 @@ node_modules/
 .DS_Store
 .vscode
 .idea
+
+dist/
+site/
+styles/
+/mkdocs.yml
