@@ -1,7 +1,7 @@
 # JSON Guidelines
 
 These guidelines provides recommendations for defining JSON data. JSON here refers to [RFC 7159](http://www.rfc-editor.org/rfc/rfc7159.txt) (which updates [RFC 4627](https://www.ietf.org/rfc/rfc4627.txt)), 
-the “application/json” media type and custom JSON media types defined for APIs. The guidelines clarifies some specific 
+the `application/json` media type and custom JSON media types defined for APIs. The guidelines clarifies some specific 
 cases to allow JSON data to have an idiomatic form across teams and services.
 
 ## Must: Use Consistent Property Names

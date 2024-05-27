@@ -2,7 +2,7 @@
 
 A DTO or ValueObject should be designed like this:
 
-```
+```java
 package com.carbook.ratings.json.upsert;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,7 +36,7 @@ public class ApiCreateReviewItem {
 
 The lombok will generate a class like this:
 
-```
+```java
 //
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
@@ -189,5 +189,4 @@ public final class ApiCreateReviewItem {
         }
     }
 }
-
 ```

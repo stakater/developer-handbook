@@ -3,9 +3,7 @@
 trunk-based development (TBD) continuous delivery (CD) workflow
 
 ![TBD](../img/tbd.png)
-*By [Paul Hammant](https://devops.paulhammant.com/) (https://trunkbaseddevelopment.com/)*
-
-
+*By [`Paul Hammant`](https://devops.paulhammant.com/) (https://trunkbaseddevelopment.com/)*
 
 > Trunk-Based Development is a source-control branching model, where developers collaborate on code in a single branch called ‘trunk’ *, resist any pressure to create other long-lived development branches by employing documented techniques. They therefore avoid merge hell, do not break the build, and live happily ever after.
 
@@ -36,11 +34,11 @@ But working on long-lived branches adds significant risk that cannot be fixed wi
 
 **Secondly**, this pain creates a tendency to hold back on refactoring on feature branches. Developers become wary of moving code between classes or even renaming methods because of the looming fear of having to resolve merge conflicts. Inevitably, this leads to piling up of technical debt.
 
-**Thirdly**, working out of long lived branches does not give a chance for other developers on the team to pick up your changes quickly enough. This affects code reuse and can also result in duplicated efforts. For example, multiple developers upgrading to a new version of a library they need. Also, there is likely no visibility on changes happening in feature branches which eliminates any feedback loop from other developers in the project until the work is pushed to master, by which time it is too late to make changes to the design.
+**Thirdly**, working out of long lived branches does not give a chance for other developers on the team to pick up your changes quickly enough. This affects code reuse and can also result in duplicated efforts. For example, multiple developers upgrading to a new version of a library they need. Also, there is likely no visibility on changes happening in feature branches which eliminates any feedback loop from other developers in the project until the work is pushed to primary branch, by which time it is too late to make changes to the design.
 
-**Fourthly**, notice that the feedback loop with integration pipelines is long. If you have merge conflicts leading up-to master or test failures, it can be slow and painful to resolve.
+**Fourthly**, notice that the feedback loop with integration pipelines is long. If you have merge conflicts leading up-to primary branch or test failures, it can be slow and painful to resolve.
 
-**Finally**, feature branches promote the tendency of big bang feature releases — “Let me add one more thing before I merge to master” — which means not only delayed integration but also delay in delivering customer value and receiving early feedback. Also, the large change-set makes it difficult to troubleshoot issues or even rollback changes in Production if things go wrong.
+**Finally**, feature branches promote the tendency of big bang feature releases — “Let me add one more thing before I merge to primary branch” — which means not only delayed integration but also delay in delivering customer value and receiving early feedback. Also, the large change-set makes it difficult to troubleshoot issues or even rollback changes in Production if things go wrong.
 
 In short, working out of long-lived branches adds risks and friction to the process of software delivery.
 
@@ -57,7 +55,7 @@ In addition, because you rebuild the artifacts for every branch, there is even m
 # What is TBD?
 ---
 
-In trunk-based development (TBD), developers always check into one branch, typically the master branch also called the “mainline” or “trunk”. You almost never create long-lived branches and as developer, check in as frequently as possible to the master — at least few times a day.
+In trunk-based development (TBD), developers always check into one branch, typically the primary branch also called the `mainline` or `trunk`. You almost never create long-lived branches and as developer, check in as frequently as possible to the primary branch — at least few times a day.
 
 With everyone working out of the same branch, TBD increases visibility into what everyone is doing, increases collaboration and reduces duplicate effort.
 
@@ -148,11 +146,11 @@ Also, because there is no friction that comes with intermediate branches, this w
 
 ## Pull Requests in Trunk Based Development
 
-In trunk based development it is different. Since we want to merge our commits into the master branch as quickly as possible, we cannot wait until the complete feature is finished. Unlike in the original trunk based development approach we still use feature branches but we have much less divergence from the master branch than in Git Flow. We create a pull request as soon as the first commit is pushed into the feature branch. Of course that requires that no commit breaks anything or causes tests to fail. Remember that unfinished features can always be disabled with feature toggles.
+In trunk based development it is different. Since we want to merge our commits into the primary branch as quickly as possible, we cannot wait until the complete feature is finished. Unlike in the original trunk based development approach we still use feature branches but we have much less divergence from the primary branch than in Git Flow. We create a pull request as soon as the first commit is pushed into the feature branch. Of course that requires that no commit breaks anything or causes tests to fail. Remember that unfinished features can always be disabled with feature toggles.
 
 Now, with part of the new feature committed and the pull request created, another developer from the team can review it. In most cases that doesn’t happen immediately because the developers don’t want to interrupt their work every time a team member pushes a commit. Instead, the code reviews are done when another developer is open for it. Meanwhile, the pull request might grow by a few commits.
 
-The code is not always reviewed immediately after the commit but in most cases it reaches the master branch much quicker than in Git Flow.
+The code is not always reviewed immediately after the commit but in most cases it reaches the primary branch much quicker than in Git Flow.
 
 # Feature Toggles
 ---
@@ -171,7 +169,7 @@ Feature toggles can be categorized across two major dimensions: how long the fea
 
 ### 1. Release Toggles
 
-These are toggles used to enable trunk-based development for teams practicing Continuous Delivery. They allow in-progress features to be checked into a shared integration branch (e.g. master or trunk) while still allowing that branch to be deployed to production at any time. Release Toggles allow incomplete and un-tested codepaths to be shipped to production as latent code which may never be turned on.
+These are toggles used to enable trunk-based development for teams practicing Continuous Delivery. They allow in-progress features to be checked into a shared integration branch (e.g. primary branch or trunk) while still allowing that branch to be deployed to production at any time. Release Toggles allow incomplete and un-tested codepaths to be shipped to production as latent code which may never be turned on.
 
 ![RT](../img/chart-1.png)
 
@@ -193,7 +191,7 @@ These toggles are used to control operational aspects of our system's behavior. 
 
 Most Ops Toggles will be relatively short-lived - once confidence is gained in the operational aspects of a new feature the toggle should be retired. However it's not uncommon for systems to have a small number of long-lived "Kill Switches" which allow operators of production environments to gracefully degrade non-vital system functionality when the system is enduring unusually high load.
 
-### 4. Permissioning Toggles
+### 4. Permission Toggles
 
 These toggles are used to change the features or product experience that certain users receive. For example we may have a set of "premium" features which we only toggle on for our paying customers. Or perhaps we have a set of "alpha" features which are only available to internal users and another set of "beta" features which are only available to internal users plus beta users
 
@@ -206,20 +204,14 @@ Release toggles are a useful technique and lots of teams use them. However they 
 Your first choice should be to break the feature down so you can safely introduce parts of the feature into the product. The advantages of doing this are the same ones as any strategy based on small, frequent releases. You reduce the risk of things going wrong and you get valuable feedback on how users actually use the feature that will improve the enhancements you make later.
 
 # Rules
----
 
 1. Raise a PR as soon as you have first commit in your feature branch - 
-
-2. No long living feature branches
-
-3. Small, incremental changes over big bang changes
-
-4. Hide unfinished functionality with feature toggles ( runtime switches )
-
-5. Comprehensive automated tests to give confidence
+1. No long living feature branches
+1. Small, incremental changes over big bang changes
+1. Hide unfinished functionality with feature toggles ( runtime switches )
+1. Comprehensive automated tests to give confidence
 
 # Conclusion
----
 
 > TBD is awesome, but it is not a silver bullet. Trying to implement it before having a reliable test suite and continuous integration in place (at least) will lead to serious quality issues in production.
 
@@ -236,7 +228,6 @@ Your first choice should be to break the feature down so you can safely introduc
 > no branches, runtime switches, tons of automated testing, relentless refactoring, and staying very close to HEAD of our dependencies.
 
 # Questions
----
 
 **Q 1:** So, question: how do you manage to carry out refactoring and particularly the “major modularization” without using long-lived branches, and while everything is changing so fast?
 

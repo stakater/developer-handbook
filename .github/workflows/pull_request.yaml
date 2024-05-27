@@ -1,94 +1,23 @@
 name: Pull Request
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
-      - 'master'
-
-env:
-  DOCKER_FILE_PATH: Dockerfile
-  CONTAINER_REGISTRY_URL: ghcr.io/stakater
-  CONTAINER_REGISTRY_USERNAME: stakater-user
-  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+      - 'main'
 
 jobs:
+  qa:
+    uses: stakater/.github/.github/workflows/pull_request_doc_qa.yaml@v0.0.75
+    with:
+      MD_CONFIG: .github/md_config.json
+      DOC_SRC: content
+      MD_LINT_CONFIG: .markdownlint.yaml
   build:
-    runs-on: ubuntu-latest
-    if: "! contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
-
-    steps:
-
-      - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
-          ref: ${{github.event.pull_request.head.sha}}
-          
-      - name: Generate Tag
-        id: generate_tag
-        run: |
-          sha=${{ github.event.pull_request.head.sha }}
-          tag="SNAPSHOT-PR-${{ github.event.pull_request.number }}-${sha:0:8}"
-          echo "##[set-output name=GIT_TAG;]$(echo ${tag})"
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        
-      - name: Login to Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.CONTAINER_REGISTRY_URL }}
-          username: ${{ env.CONTAINER_REGISTRY_USERNAME }}
-          password: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
-
-      - name: Generate image repository path
-        id: image_repository_op
-        run: |
-          echo IMAGE_REPOSITORY=$(echo ${{ env.CONTAINER_REGISTRY_URL }}/${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-   
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ${{ env.DOCKER_FILE_PATH }}
-          pull: true
-          push: true
-          build-args: BUILD_PARAMETERS=${{ env.BUILD_PARAMETERS }}
-          cache-to: type=inline
-          tags: |
-            ${{ env.IMAGE_REPOSITORY }}:${{ steps.generate_tag.outputs.GIT_TAG }}
-          labels: |
-            org.opencontainers.image.source=${{ github.event.repository.clone_url }}
-            org.opencontainers.image.created=${{ steps.prep.outputs.created }}
-            org.opencontainers.image.revision=${{ github.sha }}
-
-      - name: Comment on PR
-        uses: mshick/add-pr-comment@v2
-        env:
-          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
-        with:
-          message: '@${{ github.actor }} Image is available for testing. `docker pull ${{ env.CONTAINER_REGISTRY_URL }}/${{ github.repository }}:${{ steps.generate_tag.outputs.GIT_TAG }}`'
-          allow-repeats: false
-
-      - name: Notify Failure
-        if: failure()
-        uses: mshick/add-pr-comment@v2
-        env:
-          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
-        with:
-          message: '@${{ github.actor }} Yikes! You better fix it before anyone else finds out! [Build](https://github.com/${{ github.repository }}/commit/${{ github.event.pull_request.head.sha }}/checks) has Failed!'
-          allow-repeats: false
-
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v3
-        if: always() # Pick up events even if the job fails or is canceled.
-        with:
-          status: ${{ job.status }}
-          fields: repo,author,action,eventName,ref,workflow
-        env:
-          GITHUB_TOKEN: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
-          SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
+    uses: stakater/.github/.github/workflows/pull_request_container_build.yaml@v0.0.75
+    with:
+      DOCKER_FILE_PATH: Dockerfile
+    secrets:
+      CONTAINER_REGISTRY_URL: ghcr.io/stakater
+      CONTAINER_REGISTRY_USERNAME: stakater-user
+      CONTAINER_REGISTRY_PASSWORD: ${{ secrets.STAKATER_GITHUB_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
