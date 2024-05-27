@@ -10,10 +10,6 @@ In simple terms, a commit is a _snapshot_ of your local files, written in your l
 Contrary to what some people think, [git doesn't store only the difference between the files, it stores a full version of all files](https://git-scm.com/book/en/v2/Appendix-C%3A-Git-Commands-Basic-Snapshotting).
 For files that didn't change from one commit to another, git stores just a link to the previous identical file that is already stored.
 
-The image below shows how git stores data over time, in which each "Version" is a commit:
-
-![check-ins over time](https://i.stack.imgur.com/AQ5TG.png)
-
 ## Why are commit messages important?
 
 - To speed up and streamline code reviews

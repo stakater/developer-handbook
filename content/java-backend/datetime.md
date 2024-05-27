@@ -99,4 +99,3 @@ This is the only one that gives the actual timezone name rather than offset. Rem
 ## References
 
 - [The 5 laws of API dates and times](http://apiux.com/2013/03/20/5-laws-api-dates-and-times/)
-- [Show date in users timezone](https://www.baeldung.com/reddit-app-show-date-in-the-users-timezone)
