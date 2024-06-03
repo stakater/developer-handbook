@@ -12,7 +12,7 @@ COPY --chown=1001:root . .
 # build the docs
 RUN chmod +x prepare_theme.sh && ./prepare_theme.sh
 RUN mkdocs build
-FROM nginxinc/nginx-unprivileged:1.26-alpine as deploy
+FROM nginxinc/nginx-unprivileged:1.27-alpine as deploy
 COPY --from=builder $HOME/application/site/ /usr/share/nginx/html/
 COPY default.conf /etc/nginx/conf.d/
 
