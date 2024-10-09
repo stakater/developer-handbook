@@ -1,4 +1,4 @@
-FROM python:3.12 as builder
+FROM python:3.13 as builder
 
 RUN pip3 install mkdocs-mermaid2-plugin mkdocs-table-reader-plugin mkdocs-include-markdown-plugin
 
