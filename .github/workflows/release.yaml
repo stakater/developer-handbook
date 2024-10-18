@@ -7,6 +7,6 @@ on:
 
 jobs:
   release:
-    uses: stakater/.github/.github/workflows/release_template.yaml@v0.0.75
+    uses: stakater/.github/.github/workflows/release_template.yaml@v0.0.97
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.STAKATER_DELIVERY_SLACK_WEBHOOK }}
